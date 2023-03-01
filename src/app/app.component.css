@@ -1,0 +1,18 @@
+.system-body {
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    right: 9px;
+    top: 0;
+    left: 21rem;
+    padding-top: 60px;
+}
+
+.menu-icon-bar {
+    display: flex;
+    flex-direction: row;
+    width: 70px;
+    align-items: center;
+    height: 35px;
+    justify-content: space-around;
+}

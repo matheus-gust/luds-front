@@ -1,1 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+.p-menu {
+    border: none !important;
+    width: 100% !important;
+}
+
+.p-sidebar-left {
+    top: 55px !important;
+    left: 8px !important;
+    bottom: 8px !important;
+    height: unset !important;
+    z-index: -1 !important;
+}
+
+.p-panel {
+    height: 500px !important;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+input {
+    width: 100%;
+}
+
+.p-sidebar-footer {
+    bottom: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.system-body {
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    right: 9px;
+    top: 0;
+    left: 21rem;
+    padding-top: 60px;
+}
+
+.p-panel-content {
+    height: 100%;
+}

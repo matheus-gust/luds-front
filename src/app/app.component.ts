@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,32 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'luds-front';
+
+  public items: MenuItem[] = [];
+
+  ngOnInit() {
+    this.items = [
+      {
+        expanded: true,
+        label: 'Cadastros',
+        items: [
+          { label: 'Unidades', icon: 'pi pi-building' },
+          { label: 'Insumos', icon: 'pi pi-download' }
+        ]
+      },
+      {
+        expanded: true,
+        label: 'Movimentos',
+        items: [
+          { label: 'Solicitação de Insumo', icon: 'pi pi-cart-plus' }
+        ]
+      },
+      {
+        expanded: true,
+        label: 'Relatórios',
+        items: [
+          { label: 'Solicitações', icon: 'pi pi-list' }
+        ]
+      }];
+  }
 }

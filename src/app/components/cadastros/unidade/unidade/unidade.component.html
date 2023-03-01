@@ -1,0 +1,68 @@
+<div class="system-body">
+    <br>
+<p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
+<br>
+<p-panel header="Unidades" [style]="{'height': '100%'}">
+    <button (click)="display = true" pButton type="button" label="Adicionar Unidade"></button>
+    <br>
+    <br>
+    <p-table [paginator]="true" [rows]="10" [value]="unidades" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="text-align: center;">Nome</th>
+                <th style="text-align: center;">Localidade</th>
+                <th style="text-align: center;">CNPJ</th>
+                <th style="text-align: center;">Ações</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-unidade>
+            <tr>
+                <td style="text-align: center;">{{unidade.nome}}</td>
+                <td style="text-align: center;">{{unidade.localidade}}</td>
+                <td style="text-align: center;">{{unidade.cnpj}}</td>
+                <td style="text-align: center;">
+                    <button style="margin-right: 5px;" pButton type="button"
+                        class="p-button-outlined p-button-rounded p-button-warn" icon="pi pi-pencil"></button>
+                    <button pButton type="button" class="p-button-outlined p-button-rounded p-button-danger"
+                        icon="pi pi-trash"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-panel>
+
+<p-sidebar [(visible)]="display" position="right" styleClass="p-sidebar-md">
+    <h1 style="font-size: 20pt;">
+        Adicionar Unidade
+    </h1>
+
+    <div class="grid">
+        <div class="col-12">
+            <span class="p-float-label">
+                <input id="nome-unidade" type="text" pInputText>
+                <label for="nome-unidade">Nome</label>
+            </span>
+        </div>
+
+        <div class="col-12">
+            <span class="p-float-label">
+                <input id="float-input" type="text" pInputText>
+                <label for="float-input">Localidade</label>
+            </span>
+        </div>
+
+        <div class="col-12">
+            <span class="p-float-label">
+                <input id="float-input" type="text" pInputText>
+                <label for="float-input">CNPJ</label>
+            </span>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <div class="grid" style="justify-content: space-around;">
+            <button pButton type="button" label="Salvar" class="col-5 p-button-success"></button>
+            <button (click)="display = false" pButton type="button" label="Cancelar" class="col-5 p-button-secondary"></button>
+        </div>
+    </ng-template>
+</p-sidebar>
+</div>
