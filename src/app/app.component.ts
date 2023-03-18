@@ -17,8 +17,8 @@ export class AppComponent {
         expanded: true,
         label: 'Cadastros',
         items: [
-          { label: 'Unidades', icon: 'pi pi-building' },
-          { label: 'Insumos', icon: 'pi pi-download' }
+          { label: 'Unidades', icon: 'pi pi-building', routerLink: ['/components/unidades'] },
+          { label: 'Insumos', icon: 'pi pi-download', routerLink: ['/components/insumos'] }
         ]
       },
       {

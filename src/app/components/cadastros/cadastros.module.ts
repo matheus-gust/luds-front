@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UnidadeModule } from './unidade/unidade.module';
 import { CadastrosRoutingModule } from './cadastros-routing.module';
+import { InsumosModule } from './insumos/insumos.module';
 
 
 
@@ -10,7 +11,8 @@ import { CadastrosRoutingModule } from './cadastros-routing.module';
   imports: [
     CommonModule,
     UnidadeModule,
-    CadastrosRoutingModule
+    InsumosModule,
+    CadastrosRoutingModule,
   ]
 })
 export class CadastrosModule { }
