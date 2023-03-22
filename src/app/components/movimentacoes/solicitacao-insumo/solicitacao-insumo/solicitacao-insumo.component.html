@@ -1,0 +1,73 @@
+<app-generic-loading [visible]="isGlobalLoading"></app-generic-loading>
+<div class="system-body">
+    <br>
+<p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
+<br>
+<p-panel header="SolicitacaoInsumos" [style]="{'height': '100%'}">
+    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Solicitacao Insumo"></button>
+    <br>
+    <br>
+    <p-table [paginator]="true" [rows]="10" [value]="solicitacaoInsumos" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="text-align: center;">Unidade</th>
+                <th style="text-align: center;">Insumo</th>
+                <th style="text-align: center;">Quantidade</th>
+                <th style="text-align: center;">Ações</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-solicitacaoInsumo>
+            <tr>
+                <td style="text-align: center;">{{solicitacaoInsumo.unidade.nome}}</td>
+                <td style="text-align: center;">{{solicitacaoInsumo.insumo.nome}}</td>
+                <td style="text-align: center;">{{solicitacaoInsumo.quantidadeSolicitada}}</td>
+                <td style="text-align: center;">
+                    <button (click)="abreSlideEditar(solicitacaoInsumo)" style="margin-right: 5px;" pButton type="button"
+                        class="p-button-outlined p-button-rounded p-button-warn" icon="pi pi-pencil"></button>
+                    <button (click)="abreModalExclusao(solicitacaoInsumo)" pButton type="button" class="p-button-outlined p-button-rounded p-button-danger"
+                        icon="pi pi-trash"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+            <tr class="text-center">
+                <td style="text-align: center;" *ngIf="!isGlobalLoading" [attr.colspan]="5">
+                    Nenhum dado encontrado
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-panel>
+
+<p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
+    <h1 style="font-size: 20pt;">
+        Adicionar Solicitacao Insumo
+    </h1>
+
+    <div class="grid">
+        <div class="col-12">
+            <label for="float-input">Unidade</label><br>
+            <p-dropdown [panelStyle]="{'width': '100%'}" [options]="unidades" [(ngModel)]="unidadeSelecionada" optionLabel="nome"></p-dropdown>   
+        </div>
+        <div class="col-12">
+            <label for="float-input">Insumo</label><br>
+            <p-dropdown [panelStyle]="{'width': '100%'}" [options]="insumos" [(ngModel)]="insumoSelecionado" optionLabel="nome"></p-dropdown>
+        </div>
+        <div class="col-12 mar-1">
+            <span class="p-float-label mar-1">
+                <p-inputNumber [disabled]="!insumoSelecionado || !unidadeSelecionada" style="width: 100%" [(ngModel)]="solicitacaoInsumoSalvar.quantidadeSolicitada" id="quantidade-solicitada-unidade"></p-inputNumber>
+                <label for="quantidade-solicitada-unidade">Quantidade Solicitada</label>
+            </span>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <div class="grid" style="justify-content: space-around;">
+            <button (click)="salvarSolicitacaoInsumo()" pButton type="button" label="Salvar" class="col-5 p-button-success"></button>
+            <button (click)="displaySaveBar = false;" pButton type="button" label="Cancelar" class="col-5 p-button-secondary"></button>
+        </div>
+    </ng-template>
+</p-sidebar>
+
+<p-confirmDialog header="Confirmar Exclusão" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+</div>

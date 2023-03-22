@@ -7,6 +7,9 @@ import {ButtonModule} from 'primeng/button';
 import {SidebarModule} from 'primeng/sidebar';
 import {InputTextModule} from 'primeng/inputtext';
 import { InsumosComponent } from './insumos/insumos.component';
+import { FormsModule } from '@angular/forms';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {InputNumberModule} from 'primeng/inputnumber';
 
 
 
@@ -21,7 +24,10 @@ import { InsumosComponent } from './insumos/insumos.component';
     TableModule,
     ButtonModule,
     SidebarModule,
-    InputTextModule
+    InputTextModule,
+    FormsModule,
+    ConfirmDialogModule,
+    InputNumberModule
   ]
 })
 export class InsumosModule { }

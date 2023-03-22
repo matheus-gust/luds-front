@@ -25,7 +25,7 @@ export class AppComponent {
         expanded: true,
         label: 'Movimentos',
         items: [
-          { label: 'Solicitação de Insumo', icon: 'pi pi-cart-plus' }
+          { label: 'Solicitação de Insumo', icon: 'pi pi-cart-plus', routerLink: ['/components/solicitacao-insumo'] }
         ]
       },
       {

@@ -1,77 +1,106 @@
 <div class="system-body">
     <br>
-<p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
-<br>
-<p-panel header="Insumos" [style]="{'height': '100%'}">
-    <button (click)="display = true" pButton type="button" label="Adicionar Insumo"></button>
+    <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
     <br>
-    <br>
-    <p-table [paginator]="true" [rows]="10" [value]="insumos" [tableStyle]="{'min-width': '50rem'}">
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="text-align: center;">Nome</th>
-                <th style="text-align: center;">Fornecedor</th>
-                <th style="text-align: center;">Valor Custo</th>
-                <th style="text-align: center;">Valor Venda</th>
-                <th style="text-align: center;">Ações</th>
-            </tr>
+    <p-panel header="Insumos" [style]="{'height': '100%'}">
+        <button (click)="displaySaveBar = true" pButton type="button" label="Adicionar Insumo"></button>
+        <br>
+        <br>
+        <p-table [paginator]="true" [rows]="10" [value]="insumos" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="text-align: center;">Código</th>
+                    <th style="text-align: center;">Nome</th>
+                    <th style="text-align: center;">Fornecedor</th>
+                    <th style="text-align: center;">Custo Compra / R$</th>
+                    <th style="text-align: center;">Valor Venda / R$</th>
+                    <th style="text-align: center;">Unidade Medida</th>
+                    <th style="text-align: center;">Ações</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-insumo>
+                <tr>
+                    <td style="text-align: center;">{{insumo.codigo}}</td>
+                    <td style="text-align: center;">{{insumo.nome}}</td>
+                    <td style="text-align: center;">{{insumo.fornecedor}}</td>
+                    <td style="text-align: center;">R$ {{insumo.custoCompra}}</td>
+                    <td style="text-align: center;">R$ {{insumo.valorVenda}}</td>
+                    <td style="text-align: center;">{{insumo.unidadeMedida}}</td>
+                    <td style="text-align: center;">
+                        <button (click)="abreSlideEditar(insumo)" style="margin-right: 5px;" pButton type="button"
+                            class="p-button-outlined p-button-rounded p-button-warn" icon="pi pi-pencil"></button>
+                        <button (click)="abreModalExclusao(insumo)" pButton type="button"
+                            class="p-button-outlined p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage" let-columns>
+                <tr class="text-center">
+                    <td style="text-align: center;" *ngIf="!isGlobalLoading" [attr.colspan]="7">
+                        Nenhum dado encontrado
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-panel>
+
+    <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
+        <h1 style="font-size: 20pt;">
+            Adicionar Insumo
+        </h1>
+
+        <div class="grid">
+            <div class="col-12 mar-1">
+                <span class="p-float-label">
+                    <p-inputNumber style="width: 100%" [(ngModel)]="insumoSalvar.codigo" id="codigo-unidade"></p-inputNumber>
+                    <label for="codigo-unidade">Codigo</label>
+                </span>
+            </div>
+
+            <div class="col-6 mar-1">
+                <span class="p-float-label">
+                    <input [(ngModel)]="insumoSalvar.nome" id="nome-insumo" type="text" pInputText>
+                    <label for="nome-insumo">Nome</label>
+                </span>
+            </div>
+
+            <div class="col-6 mar-1">
+                <span class="p-float-label">
+                    <input [(ngModel)]="insumoSalvar.fornecedor" id="fornecedor-input" type="text" pInputText>
+                    <label for="fornecedor-input">Fornecedor</label>
+                </span>
+            </div>
+
+            <div class="col-6 mar-1">
+                <span class="p-float-label">
+                    <p-inputNumber style="width: 100%" [(ngModel)]="insumoSalvar.custoCompra" id="custo-compra-input" mode="decimal" [minFractionDigits]="2"> </p-inputNumber>
+                    <label for="custo-compra-input">Custo Compra</label>
+                </span>
+            </div>
+
+            <div class="col-6 mar-1">
+                <span class="p-float-label">
+                    <p-inputNumber style="width: 100%" [(ngModel)]="insumoSalvar.valorVenda" id="valor-venda-input" mode="decimal" [minFractionDigits]="2"></p-inputNumber>
+                    <label for="valor-venda-input">Valor Venda</label>
+                </span>
+            </div>
+
+            <div class="col-12 mar-1">
+                <span class="p-float-label">
+                    <input [(ngModel)]="insumoSalvar.unidadeMedida" id="float-input" type="text" pInputText>
+                    <label for="unidade-medida-input">Unidade Medida</label>
+                </span>
+            </div>
+        </div>
+        <ng-template pTemplate="footer">
+            <div class="grid" style="justify-content: space-around;">
+                <button (click)="salvarInsumo()" pButton type="button" label="Salvar"
+                    class="col-5 p-button-success"></button>
+                <button (click)="displaySaveBar = false;" pButton type="button" label="Cancelar"
+                    class="col-5 p-button-secondary"></button>
+            </div>
         </ng-template>
-        <ng-template pTemplate="body" let-insumo>
-            <tr>
-                <td style="text-align: center;">{{insumo.nome}}</td>
-                <td style="text-align: center;">{{insumo.fornecedor}}</td>
-                <td style="text-align: center;">{{insumo.valorCusto}}</td>
-                <td style="text-align: center;">{{insumo.valorVenda}}</td>
-                <td style="text-align: center;">
-                    <button style="margin-right: 5px;" pButton type="button"
-                        class="p-button-outlined p-button-rounded p-button-warn" icon="pi pi-pencil"></button>
-                    <button pButton type="button" class="p-button-outlined p-button-rounded p-button-danger"
-                        icon="pi pi-trash"></button>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
-</p-panel>
-
-<p-sidebar [(visible)]="display" position="right" styleClass="p-sidebar-md">
-    <h1 style="font-size: 20pt;">
-        Adicionar Insumo
-    </h1>
-
-    <div class="grid">
-        <div class="col-12">
-            <span class="p-float-label">
-                <input id="nome-insumo" type="text" pInputText>
-                <label for="nome-insumo">Nome</label>
-            </span>
-        </div>
-
-        <div class="col-12">
-            <span class="p-float-label">
-                <input id="float-input" type="text" pInputText>
-                <label for="float-input">Fornecedor</label>
-            </span>
-        </div>
-
-        <div class="col-12">
-            <span class="p-float-label">
-                <input id="float-input" type="text" pInputText>
-                <label for="float-input">Valor Venda</label>
-            </span>
-        </div>
-
-        <div class="col-12">
-            <span class="p-float-label">
-                <input id="float-input" type="text" pInputText>
-                <label for="float-input">Valor Custo</label>
-            </span>
-        </div>
-    </div>
-    <ng-template pTemplate="footer">
-        <div class="grid" style="justify-content: space-around;">
-            <button pButton type="button" label="Salvar" class="col-5 p-button-success"></button>
-            <button (click)="display = false" pButton type="button" label="Cancelar" class="col-5 p-button-secondary"></button>
-        </div>
-    </ng-template>
-</p-sidebar>
+    </p-sidebar>
 </div>
+
+<p-confirmDialog header="Confirmar Exclusão" icon="pi pi-exclamation-triangle"></p-confirmDialog>

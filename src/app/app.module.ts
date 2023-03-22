@@ -9,6 +9,7 @@ import {PanelMenuModule} from 'primeng/panelmenu';
 import { AppComponent } from './app.component';
 import { ComponentsModule } from './components/components.module';
 import { AppRoutingModule } from './app-routing.module';
+import { GenericLoadingModule } from './commons/modules/generic-loading/generic-loading.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AppRoutingModule } from './app-routing.module';
     CommonModule,
     MenubarModule,
     ComponentsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    GenericLoadingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
