@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CadastrosModule } from './cadastros/cadastros.module';
 import { ComponentsRoutingModule } from './components-routing.module';
 import { MovimentacoesModule } from './movimentacoes/movimentacoes.module';
+import { ToastModule } from 'primeng/toast';
 
 
 
@@ -12,7 +13,9 @@ import { MovimentacoesModule } from './movimentacoes/movimentacoes.module';
     CommonModule,
     CadastrosModule,
     MovimentacoesModule,
-    ComponentsRoutingModule
-  ]
+    ComponentsRoutingModule,
+    ToastModule
+  ],
+  providers: []
 })
 export class ComponentsModule { }

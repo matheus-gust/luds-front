@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfirmationService, MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { Insumo } from '../model/insumo.model';
 import { InsumoService } from '../service/insumo-service';
@@ -25,7 +25,8 @@ export class InsumosComponent implements OnInit {
 
   constructor(    
     private insumoService: InsumoService,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService) { }
 
   ngOnInit() {
     this.items = [
@@ -53,6 +54,8 @@ export class InsumosComponent implements OnInit {
         next: (response: ApiCollectionResponse<Insumo>) => {
           this.insumos = response.items;
           this.isGlobalLoading = false;
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -65,6 +68,8 @@ export class InsumosComponent implements OnInit {
         next: (response: Insumo) => {
           this.isGlobalLoading = false;
           this.insumoSalvar = response;
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -79,6 +84,9 @@ export class InsumosComponent implements OnInit {
           this.isGlobalLoading = false;
           this.insumoSalvar = new Insumo();
           this.displaySaveBar = false;
+          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Insumo inserido com sucesso'});
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -91,6 +99,9 @@ export class InsumosComponent implements OnInit {
           this.listarInsumos();
           this.insumoSalvar = new Insumo();
           this.displaySaveBar = false;
+          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Insumo alterado com sucesso'});
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -102,6 +113,9 @@ export class InsumosComponent implements OnInit {
       {
         next: () => {
           this.listarInsumos();
+          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Insumo removido com sucesso'});
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )

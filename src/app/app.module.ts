@@ -10,6 +10,9 @@ import { AppComponent } from './app.component';
 import { ComponentsModule } from './components/components.module';
 import { AppRoutingModule } from './app-routing.module';
 import { GenericLoadingModule } from './commons/modules/generic-loading/generic-loading.module';
+import {ToastModule} from 'primeng/toast';
+import { Interceptor } from './interceptors/http-interceptor.service';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -24,9 +27,11 @@ import { GenericLoadingModule } from './commons/modules/generic-loading/generic-
     MenubarModule,
     ComponentsModule,
     AppRoutingModule,
-    GenericLoadingModule
+    GenericLoadingModule,
+    ToastModule,
+    Interceptor
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

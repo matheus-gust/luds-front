@@ -12,7 +12,7 @@ import { InsumosModule } from './insumos/insumos.module';
     CommonModule,
     UnidadeModule,
     InsumosModule,
-    CadastrosRoutingModule,
+    CadastrosRoutingModule
   ]
 })
 export class CadastrosModule { }

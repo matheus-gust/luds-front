@@ -3,13 +3,14 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { ApiCollectionResponse } from "src/app/commons/api-collection-response.model";
 import { Insumo } from "../model/insumo.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 export class InsumoService {
 
-    _server: string = 'http://127.0.0.1:8080'
+    _server: string = environment.urlBackEnd;
 
     constructor(
         private httpClient: HttpClient

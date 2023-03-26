@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfirmationService, MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { Unidade } from '../model/unidade.model';
 import { UnidadeService } from '../service/unidade-service';
@@ -23,7 +23,8 @@ export class UnidadeComponent implements OnInit {
 
   constructor(
     private unidadeService: UnidadeService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -52,6 +53,8 @@ export class UnidadeComponent implements OnInit {
         next: (response: ApiCollectionResponse<Unidade>) => {
           this.unidades = response.items;
           this.isGlobalLoading = false;
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -64,6 +67,8 @@ export class UnidadeComponent implements OnInit {
         next: (response: Unidade) => {
           this.isGlobalLoading = false;
           this.unidadeSalvar = response;
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -78,6 +83,9 @@ export class UnidadeComponent implements OnInit {
           this.isGlobalLoading = false;
           this.unidadeSalvar = new Unidade();
           this.displaySaveBar = false;
+          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Unidade inserida com sucesso'});
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -90,6 +98,9 @@ export class UnidadeComponent implements OnInit {
           this.listarUnidades();
           this.unidadeSalvar = new Unidade();
           this.displaySaveBar = false;
+          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Unidade inserida com sucesso'});
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -101,6 +112,9 @@ export class UnidadeComponent implements OnInit {
       {
         next: () => {
           this.listarUnidades();
+          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Unidade removida com sucesso'});
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfirmationService, MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { Insumo } from 'src/app/components/cadastros/insumos/model/insumo.model';
 import { InsumoService } from 'src/app/components/cadastros/insumos/service/insumo-service';
@@ -37,7 +37,8 @@ export class SolicitacaoInsumoComponent implements OnInit {
     private insumoService: InsumoService,
     private unidadeService: UnidadeService,
     private solicitacaoInsumoService: SolicitacaoInsumoService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -98,6 +99,8 @@ export class SolicitacaoInsumoComponent implements OnInit {
             this.unidades.push(unidade);
           });
           this.isGlobalLoading = false;
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -110,6 +113,8 @@ export class SolicitacaoInsumoComponent implements OnInit {
         next: (response: SolicitacaoInsumo) => {
           this.isGlobalLoading = false;
           this.solicitacaoInsumoSalvar = response;
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -126,6 +131,9 @@ export class SolicitacaoInsumoComponent implements OnInit {
           this.isGlobalLoading = false;
           this.solicitacaoInsumoSalvar = new SolicitacaoInsumo();
           this.displaySaveBar = false;
+          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Solicitação inserida com sucesso'});
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -138,6 +146,9 @@ export class SolicitacaoInsumoComponent implements OnInit {
           this.listarSolicitacaoInsumos();
           this.solicitacaoInsumoSalvar = new SolicitacaoInsumo();
           this.displaySaveBar = false;
+          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Solicitação alterada com sucesso'});
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )
@@ -149,6 +160,10 @@ export class SolicitacaoInsumoComponent implements OnInit {
       {
         next: () => {
           this.listarSolicitacaoInsumos();
+          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Solicitação removida com sucesso'});
+
+        }, error: () => {
+          this.isGlobalLoading = false;
         }
       }
     )

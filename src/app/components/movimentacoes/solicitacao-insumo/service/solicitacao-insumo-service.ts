@@ -4,13 +4,14 @@ import { Observable } from "rxjs";
 import { SolicitacaoInsumo } from "../model/solicitacao-insumo.model";
 import { ApiCollectionResponse } from "src/app/commons/api-collection-response.model";
 import { SolicitacaoInsumoForm } from "../model/solicitacao-insumo-form.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 export class SolicitacaoInsumoService {
 
-    _server: string = 'http://127.0.0.1:8080'
+    _server: string = environment.urlBackEnd;
 
     constructor(
         private httpClient: HttpClient
