@@ -13,6 +13,7 @@ import { GenericLoadingModule } from 'src/app/commons/modules/generic-loading/ge
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import {DropdownModule} from 'primeng/dropdown';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [SolicitacaoInsumoComponent],
@@ -29,7 +30,8 @@ import {DropdownModule} from 'primeng/dropdown';
     GenericLoadingModule,
     ConfirmDialogModule,
     InputNumberModule,
-    DropdownModule
+    DropdownModule,
+    ProgressSpinnerModule
   ]
 })
 export class SolicitacaoInsumoModule { }

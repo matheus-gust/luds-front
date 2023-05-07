@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UnidadeModule } from './unidade/unidade.module';
 import { CadastrosRoutingModule } from './cadastros-routing.module';
 import { InsumosModule } from './insumos/insumos.module';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 
@@ -12,7 +13,8 @@ import { InsumosModule } from './insumos/insumos.module';
     CommonModule,
     UnidadeModule,
     InsumosModule,
-    CadastrosRoutingModule
+    CadastrosRoutingModule,
+    ProgressSpinnerModule
   ]
 })
 export class CadastrosModule { }

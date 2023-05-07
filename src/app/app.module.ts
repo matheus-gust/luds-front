@@ -13,6 +13,7 @@ import { GenericLoadingModule } from './commons/modules/generic-loading/generic-
 import {ToastModule} from 'primeng/toast';
 import { Interceptor } from './interceptors/http-interceptor.service';
 import { MessageService } from 'primeng/api';
+import { MenuLateralModule } from './commons/menu-lateral/menu-lateral.module';
 
 @NgModule({
   declarations: [
@@ -25,11 +26,13 @@ import { MessageService } from 'primeng/api';
     SidebarModule,
     CommonModule,
     MenubarModule,
+    MenubarModule,
     ComponentsModule,
     AppRoutingModule,
     GenericLoadingModule,
     ToastModule,
-    Interceptor
+    Interceptor,
+    MenuLateralModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

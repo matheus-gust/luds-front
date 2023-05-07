@@ -1,0 +1,99 @@
+.dashboard {
+    z-index: 99;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #424242;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    border-bottom: 2px solid rgb(0, 0, 0);
+}
+
+.ano-dashboard {
+    font-size: 25pt;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.ano-dashboard:hover {
+    transition: .5s;
+    color: #a0a0a0;
+}
+
+
+.btn-menu {
+    cursor: pointer;
+    margin-left: 15px;
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
+
+.menu-sidebar {
+    z-index: 2;
+    position: fixed;
+    width: 320px;
+    top: 60px;
+    bottom: 0;
+    left: 0px;
+    background-color: #ffffff;
+    border-right: 2px solid rgb(0, 0, 0);
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    transition: .2s;
+}
+
+.conteudo {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    transition: .2s;
+    background-color: #ffffff;
+}
+
+.suporte-menu {
+    position: relative;
+    background-color: rgb(243, 243, 243);
+    border-radius: 10px;
+    padding: 5px;
+    width: 90%;
+    height: 96%;
+    box-shadow: 1px 1px 5px 0 black;
+}
+
+.button-sidevav {
+    background-color: #e7e7e7;
+    width: 100%;
+    outline: none;
+}
+
+.ativo {
+    background-color: #c6c9da;
+}
+
+@media only screen and (max-width: 800px) {
+    .menu-sidebar {
+        width: 100vw;
+    }
+    .conteudo {
+        margin-left: 0px;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .menu-sidebar {
+        width: 320px;
+    }
+    .conteudo {
+        margin-left: 330px;
+    }
+}

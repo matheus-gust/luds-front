@@ -1,13 +1,14 @@
-<p-menubar>
+
+<!--<p-menubar>
   <ng-template pTemplate="end">
     <div class="menu-icon-bar">
       <i class="pi pi-bell"></i>
       <i class="pi pi-user"></i>
     </div>
   </ng-template>
-</p-menubar>
+</p-menubar>>-->
 
-<p-sidebar [visible]="true" position="left" [modal]="false" [dismissible]="false" [showCloseIcon]="false"
+<!--<p-sidebar [visible]="true" position="left" [modal]="false" [dismissible]="false" [showCloseIcon]="false"
   [transitionOptions]="'0ms cubic-bezier(0, 0, 0.0, 0)'">
   <div style="height: 200px; display: flex; align-items: center; justify-content: center;">
     <i style="font-size: 12rem; color: rgba(0, 0, 0, 0.062) !important;" class="pi pi-image"></i>
@@ -17,10 +18,7 @@
   <div>
     <p-panelMenu [model]="items"></p-panelMenu>
   </div>
-</p-sidebar>
-
-<div>
-  <router-outlet style="position: relative; width: 100%;"></router-outlet>
-</div>
+</p-sidebar>-->
+<app-menu-lateral></app-menu-lateral>
 
 <p-toast position="bottom-right"></p-toast>

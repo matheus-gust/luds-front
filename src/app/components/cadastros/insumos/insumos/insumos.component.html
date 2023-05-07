@@ -1,48 +1,47 @@
 <div class="system-body">
-    <br>
     <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
     <br>
-    <p-panel header="Insumos" [style]="{'height': '100%'}">
-        <button (click)="displaySaveBar = true" pButton type="button" label="Adicionar Insumo"></button>
-        <br>
-        <br>
-        <p-table [paginator]="true" [rows]="10" [value]="insumos" [tableStyle]="{'min-width': '50rem'}">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th style="text-align: center;">Código</th>
-                    <th style="text-align: center;">Nome</th>
-                    <th style="text-align: center;">Fornecedor</th>
-                    <th style="text-align: center;">Custo Compra / R$</th>
-                    <th style="text-align: center;">Valor Venda / R$</th>
-                    <th style="text-align: center;">Unidade Medida</th>
-                    <th style="text-align: center;">Ações</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-insumo>
-                <tr>
-                    <td style="text-align: center;">{{insumo.codigo}}</td>
-                    <td style="text-align: center;">{{insumo.nome}}</td>
-                    <td style="text-align: center;">{{insumo.fornecedor}}</td>
-                    <td style="text-align: center;">R$ {{insumo.custoCompra}}</td>
-                    <td style="text-align: center;">R$ {{insumo.valorVenda}}</td>
-                    <td style="text-align: center;">{{insumo.unidadeMedida}}</td>
-                    <td style="text-align: center;">
-                        <button (click)="abreSlideEditar(insumo)" style="margin-right: 5px;" pButton type="button"
-                            class="p-button-outlined p-button-rounded p-button-warn" icon="pi pi-pencil"></button>
-                        <button (click)="abreModalExclusao(insumo)" pButton type="button"
-                            class="p-button-outlined p-button-rounded p-button-danger" icon="pi pi-trash"></button>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage" let-columns>
-                <tr class="text-center">
-                    <td style="text-align: center;" *ngIf="!isGlobalLoading" [attr.colspan]="7">
-                        Nenhum dado encontrado
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </p-panel>
+    <p-table #tabelaInsumos [paginator]="true" [rows]="8" [columns]="colunas" [value]="insumos" responsiveLayout="stack" [breakpoint]="'800px'">
+        <ng-template pTemplate="caption">
+            <div class="row justify-content-between">
+                <div class="col-12 col-md-3">
+                    <button (click)="displaySaveBar = true" pButton type="button" label="Adicionar Insumo"></button>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th class="text-center" *ngFor="let col of columns" [ngClass]="col.class">
+                    {{col.header}}
+                </th>
+                <th class="text-center">Ações</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td class="text-center" style="justify-content: center !important;" *ngFor="let col of columns; let i = index" [ngClass]="(i%2== 1)? 'table-row' : ''">
+                    <span class="p-column-title" style="font-weight: bold; margin-right: 20px;">{{col.header}}:</span>
+                    {{rowData[col.field]}}
+                </td>
+                <td class="text-center" style="justify-content: space-around !important;">
+                    <button (click)="abreSlideEditar(rowData)" style="margin-right: 5px;" pButton type="button"
+                        class="p-button-outlined p-button-rounded p-button-warn" icon="pi pi-pencil"></button>
+                    <button (click)="abreModalExclusao(rowData)" pButton type="button"
+                        class="p-button-outlined p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+                <td class="text-center" *ngIf="isGlobalLoading" [attr.colspan]="columns.length+1">
+                    <p-progressSpinner></p-progressSpinner>
+                </td>
+                <td class="text-center" *ngIf="!isGlobalLoading" [attr.colspan]="columns.length+1">
+                    Nenhum dado encontrado
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 
     <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
         <h1 style="font-size: 20pt;">
@@ -52,7 +51,8 @@
         <div class="grid">
             <div class="col-12 mar-1">
                 <span class="p-float-label">
-                    <p-inputNumber style="width: 100%" [(ngModel)]="insumoSalvar.codigo" id="codigo-unidade"></p-inputNumber>
+                    <input style="width: 100%" [(ngModel)]="insumoSalvar.codigo"
+                        id="codigo-unidade" type="text" pInputText>
                     <label for="codigo-unidade">Codigo</label>
                 </span>
             </div>
@@ -73,14 +73,16 @@
 
             <div class="col-6 mar-1">
                 <span class="p-float-label">
-                    <p-inputNumber style="width: 100%" [(ngModel)]="insumoSalvar.custoCompra" id="custo-compra-input" mode="decimal" [minFractionDigits]="2"> </p-inputNumber>
+                    <p-inputNumber style="width: 100%" [(ngModel)]="insumoSalvar.custoCompra" id="custo-compra-input"
+                        mode="decimal" [minFractionDigits]="2"> </p-inputNumber>
                     <label for="custo-compra-input">Custo Compra</label>
                 </span>
             </div>
 
             <div class="col-6 mar-1">
                 <span class="p-float-label">
-                    <p-inputNumber style="width: 100%" [(ngModel)]="insumoSalvar.valorVenda" id="valor-venda-input" mode="decimal" [minFractionDigits]="2"></p-inputNumber>
+                    <p-inputNumber style="width: 100%" [(ngModel)]="insumoSalvar.valorVenda" id="valor-venda-input"
+                        mode="decimal" [minFractionDigits]="2"></p-inputNumber>
                     <label for="valor-venda-input">Valor Venda</label>
                 </span>
             </div>

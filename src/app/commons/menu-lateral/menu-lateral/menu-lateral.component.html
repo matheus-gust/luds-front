@@ -1,0 +1,25 @@
+<div class="dashboard">
+    <button (click)="abrirMenu()" class="btn-menu">
+        <i style="color: #ffffff; font-size: 16pt;" class="pi pi-bars"></i>
+    </button>
+</div>
+
+<div #menuLateral class="menu-sidebar">
+    <div class="suporte-menu">
+        <div class="row mt-2">
+            <div class="col-12 text-center">
+                <span style="outline: none;" (click)="fecharMenu();"
+                    class="ano-dashboard"></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <p-panelMenu [model]="items"></p-panelMenu>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div #conteudo class="conteudo">
+    <router-outlet></router-outlet>
+</div>

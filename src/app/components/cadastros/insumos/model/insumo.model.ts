@@ -1,6 +1,6 @@
 export class Insumo {
     id: string;
-    codigo: number;
+    codigo: string;
     nome: string;
     fornecedor: string;
     localidade: string;

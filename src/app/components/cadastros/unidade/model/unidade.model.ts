@@ -1,6 +1,6 @@
 export class Unidade {
     id: string;
-    codigo: number;
+    codigo: string;
     nome: string;
     cnpj: string;
     localidade: string;

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
+import { FormValidService } from 'src/app/commons/services/form-valid.service';
 import { Unidade } from '../model/unidade.model';
 import { UnidadeService } from '../service/unidade-service';
 
@@ -21,10 +23,15 @@ export class UnidadeComponent implements OnInit {
 
   home: MenuItem = {};
 
+  public colunas: any[];
+
+  @ViewChild('fUnidade', { static: true }) formularioAdicionarUnidade = new NgForm([], []);
+
   constructor(
     private unidadeService: UnidadeService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private formValidService: FormValidService
   ) { }
 
   ngOnInit() {
@@ -36,10 +43,22 @@ export class UnidadeComponent implements OnInit {
     this.home = { icon: 'pi pi-home', routerLink: '/' };
 
     this.listarUnidades();
+
+    this.colunas = [
+      { field: 'codigo', header: 'Código', class: 'codigo' },
+      { field: 'nome', header: 'Nome', class: 'nome' },
+      { field: 'localidade', header: 'Localidade', class: 'localidade' },
+      { field: 'cnpj', header: 'CNPJ', class: 'cnpj' }
+    ];
   }
 
   salvarUnidade() {
-    if(this.unidadeSalvar.id) {
+
+    if(!this.formValidService.validaFormularioInsercao(this.formularioAdicionarUnidade, 'formAdicionarUnidade')) {
+      this.formValidService.validaFormularioInsercao(this.formularioAdicionarUnidade, 'formAdicionarUnidade')
+    }
+
+    if (this.unidadeSalvar.id) {
       this.alterarUnidade();
     } else {
       this.inserirUnidade();
@@ -83,7 +102,7 @@ export class UnidadeComponent implements OnInit {
           this.isGlobalLoading = false;
           this.unidadeSalvar = new Unidade();
           this.displaySaveBar = false;
-          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Unidade inserida com sucesso'});
+          this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Unidade inserida com sucesso' });
         }, error: () => {
           this.isGlobalLoading = false;
         }
@@ -98,7 +117,7 @@ export class UnidadeComponent implements OnInit {
           this.listarUnidades();
           this.unidadeSalvar = new Unidade();
           this.displaySaveBar = false;
-          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Unidade inserida com sucesso'});
+          this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Unidade inserida com sucesso' });
         }, error: () => {
           this.isGlobalLoading = false;
         }
@@ -112,7 +131,7 @@ export class UnidadeComponent implements OnInit {
       {
         next: () => {
           this.listarUnidades();
-          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Unidade removida com sucesso'});
+          this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Unidade removida com sucesso' });
         }, error: () => {
           this.isGlobalLoading = false;
         }
@@ -121,22 +140,21 @@ export class UnidadeComponent implements OnInit {
   }
 
   abreSlideInserir() {
-    this.displaySaveBar = true; 
+    this.displaySaveBar = true;
     this.unidadeSalvar = new Unidade();
   }
 
   abreSlideEditar(unidade: Unidade) {
-    this.displaySaveBar = true; 
-    this.unidadeSalvar = {...unidade}
+    this.displaySaveBar = true;
+    this.unidadeSalvar = { ...unidade }
   }
 
   abreModalExclusao(unidade: Unidade) {
     this.confirmationService.confirm({
       message: 'Deseja mesmo remover a unidade?',
       accept: () => {
-          this.removerUnidade(unidade.id!)
+        this.removerUnidade(unidade.id!)
       }
-  });
+    });
   }
-
 }

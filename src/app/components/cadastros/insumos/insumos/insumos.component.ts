@@ -22,6 +22,7 @@ export class InsumosComponent implements OnInit {
 
   isGlobalLoading: boolean = false;
 
+  public colunas: any[];
 
   constructor(    
     private insumoService: InsumoService,
@@ -37,6 +38,15 @@ export class InsumosComponent implements OnInit {
     this.home = { icon: 'pi pi-home', routerLink: '/' };
 
     this.listarInsumos();
+
+    this.colunas = [
+      { field: 'codigo', header: 'Código', class: 'codigo' },
+      { field: 'nome', header: 'Nome', class: 'nome' },
+      { field: 'fornecedor', header: 'Fornecedor', class: 'fornecedor' },
+      { field: 'custoCompra', header: 'Custo Compra / R$', class: 'custoCompra' },
+      { field: 'valorVenda', header: 'Valor Venda / R$', class: 'valorVenda' },
+      { field: 'unidadeMedida', header: 'Unidade Medida', class: 'unidadeMedida' }
+    ];
   }
 
   salvarInsumo() {

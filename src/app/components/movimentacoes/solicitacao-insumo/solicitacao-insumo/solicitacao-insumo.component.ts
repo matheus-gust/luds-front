@@ -33,6 +33,8 @@ export class SolicitacaoInsumoComponent implements OnInit {
   insumoSelecionado: Insumo;
   unidadeSelecionada: Unidade;
 
+  public colunas: any[];
+
   constructor(
     private insumoService: InsumoService,
     private unidadeService: UnidadeService,
@@ -52,6 +54,12 @@ export class SolicitacaoInsumoComponent implements OnInit {
     this.listarSolicitacaoInsumos();
     this.listarInsumos();
     this.listarUnidades();
+
+    this.colunas = [
+      { field: 'unidade.nome', header: 'Unidade', class: 'unidade.nome' },
+      { field: 'insumo.nome', header: 'Insumo', class: 'insumo.nome' },
+      { field: 'quantidadeSolicitada', header: 'Quantidade', class: 'quantidadeSolicitada' }
+    ];
   }
 
   salvarSolicitacaoInsumo() {
@@ -188,6 +196,13 @@ export class SolicitacaoInsumoComponent implements OnInit {
         this.removerSolicitacaoInsumo(solicitacaoInsumo.id)
       }
     });
+  }
+
+  defineValorPropriedade(objeto: any, atributos: string[]): string {
+    if(atributos.length > 1) {
+      return this.defineValorPropriedade(objeto[atributos[0]], atributos.slice(1, atributos.length));
+    }
+    return objeto[atributos[0]];
   }
 
 }

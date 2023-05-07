@@ -8,11 +8,12 @@ import {ButtonModule} from 'primeng/button';
 import {SidebarModule} from 'primeng/sidebar';
 import {InputTextModule} from 'primeng/inputtext';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GenericLoadingModule } from 'src/app/commons/modules/generic-loading/generic-loading.module';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -29,7 +30,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
     HttpClientModule,
     GenericLoadingModule,
     ConfirmDialogModule,
-    InputNumberModule
+    InputNumberModule,
+    ProgressSpinnerModule,
+    ReactiveFormsModule
   ],
   providers: [
     ConfirmationService

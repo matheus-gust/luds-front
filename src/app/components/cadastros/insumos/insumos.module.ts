@@ -10,7 +10,8 @@ import { InsumosComponent } from './insumos/insumos.component';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {InputNumberModule} from 'primeng/inputnumber';
-
+import { InputMaskModule } from 'primeng/inputmask';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -27,7 +28,9 @@ import {InputNumberModule} from 'primeng/inputnumber';
     InputTextModule,
     FormsModule,
     ConfirmDialogModule,
-    InputNumberModule
+    InputNumberModule,
+    InputMaskModule,
+    ProgressSpinnerModule
   ]
 })
 export class InsumosModule { }
