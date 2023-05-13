@@ -1,0 +1,81 @@
+<div class="system-body">
+    <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
+    <br>
+    <p-table #tabelaCategoriaCardapios [paginator]="true" [rows]="8" [columns]="colunas" [value]="categoriaCardapios"
+        responsiveLayout="stack" [breakpoint]="'800px'">
+        <ng-template pTemplate="caption">
+            <div class="row justify-content-between">
+                <div class="col-12 col-md-3">
+                    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Categoria Cardapio"></button>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th class="text-center" *ngFor="let col of columns" [ngClass]="col.class">
+                    {{col.header}}
+                </th>
+                <th class="text-center">Ações</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td class="text-center" style="justify-content: center !important;"
+                    *ngFor="let col of columns; let i = index" [ngClass]="(i%2== 1)? 'table-row' : ''">
+                    <span class="p-column-title" style="font-weight: bold; margin-right: 20px;">{{col.header}}:</span>
+                    {{rowData[col.field]}}
+                </td>
+                <td class="text-center" style="justify-content: space-around !important;">
+                    <button (click)="abreSlideEditar(rowData)" style="margin-right: 5px;" pButton type="button"
+                        class="p-button-outlined p-button-rounded p-button-warn" icon="pi pi-pencil"></button>
+                    <button (click)="abreModalExclusao(rowData)" pButton type="button"
+                        class="p-button-outlined p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+                <td class="text-center" *ngIf="isGlobalLoading" [attr.colspan]="columns.length+1">
+                    <p-progressSpinner></p-progressSpinner>
+                </td>
+                <td class="text-center" *ngIf="!isGlobalLoading" [attr.colspan]="columns.length+1">
+                    Nenhum dado encontrado
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
+        <h1 style="font-size: 20pt;">
+            Adicionar Categoria Cardapio
+        </h1>
+        <form #fCategoriaCardapio='ngForm' id="formAdicionarCategoriaCardapio" autocomplete="off">
+            <div class="grid">
+                <div class="col-12 m-1">
+                    <span class="p-float-label">
+                        <input required style="width: 100%" [(ngModel)]="categoriaCardapioSalvar.codigo" name="codigo-categoriaCardapio" id="codigo-categoriaCardapio" type="text"
+                            pInputText>
+                        <label for="codigo-categoriaCardapio">Codigo</label>
+                    </span>
+                </div>
+                <div class="col-12 m-1">
+                    <span class="p-float-label">
+                        <input required [(ngModel)]="categoriaCardapioSalvar.nome" name="nome-categoriaCardapio" id="nome-categoriaCardapio" type="text" pInputText>
+                        <label for="nome-categoriaCardapio">Nome</label>
+                    </span>
+                </div>
+            </div>
+        </form>
+        <ng-template pTemplate="footer">
+            <div class="grid" style="justify-content: space-around;">
+                <button (click)="salvarCategoriaCardapio()" pButton type="button" label="Salvar"
+                    class="col-5 p-button-success"></button>
+                <button (click)="displaySaveBar = false;" pButton type="button" label="Cancelar"
+                    class="col-5 p-button-secondary"></button>
+            </div>
+        </ng-template>
+    </p-sidebar>
+
+    <p-confirmDialog header="Confirmar Exclusão" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+</div>
