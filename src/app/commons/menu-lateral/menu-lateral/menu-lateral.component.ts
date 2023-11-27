@@ -41,6 +41,8 @@ export class MenuLateralComponent implements OnInit {
         label: 'Cadastros',
         items: [
           { label: 'Unidades', icon: 'pi pi-building', routerLink: ['/components/unidades'], command: this.fecharMenu.bind(this) },
+          { label: 'Unidade Medida', icon: 'pi pi-at', routerLink: ['/components/unidade-medida'], command: this.fecharMenu.bind(this) },
+          { label: 'Fornecedores', icon: 'pi pi-box', routerLink: ['/components/fornecedores'], command: this.fecharMenu.bind(this) },
           { label: 'Insumos', icon: 'pi pi-download', routerLink: ['/components/insumos'], command: this.fecharMenu.bind(this) }
         ]
       },

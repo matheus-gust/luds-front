@@ -1,11 +1,11 @@
 <div class="system-body">
     <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
     <br>
-    <p-table #tabelaInsumos [paginator]="true" [rows]="8" [columns]="colunas" [value]="insumos" responsiveLayout="stack" [breakpoint]="'800px'">
+    <p-table #tabelaUnidadeMedidas [paginator]="true" [rows]="8" [columns]="colunas" [value]="unidadeMedidas" responsiveLayout="stack" [breakpoint]="'800px'">
         <ng-template pTemplate="caption">
             <div class="row justify-content-between">
                 <div class="col-12 col-md-3">
-                    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Insumo"></button>
+                    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Unidade de Medida"></button>
                 </div>
             </div>
         </ng-template>
@@ -45,49 +45,20 @@
 
     <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
         <h1 style="font-size: 20pt;">
-            Adicionar Insumo
+            Adicionar Unidade de Medida
         </h1>
 
         <div class="grid">
             <div class="col-12 mar-1">
                 <span class="p-float-label">
-                    <input style="width: 100%" [(ngModel)]="insumoSalvar.codigo"
-                        id="codigo-unidade" type="text" pInputText>
-                    <label for="codigo-unidade">Codigo</label>
+                    <input [(ngModel)]="unidadeMedidaSalvar.nome" id="nome-unidadeMedida" type="text" pInputText>
+                    <label for="nome-unidadeMedida">Nome</label>
                 </span>
             </div>
-
-            <div class="col-12 mar-1">
-                <label for="float-input">Fornecedor</label><br>
-                <span class="p-float-label">
-                    <p-dropdown name="fornecedor" [panelStyle]="{'width': '100%'}" [options]="fornecedores" [(ngModel)]="fornecedor" optionLabel="nome"></p-dropdown>
-                </span>
-            </div>
-            
-            <div class="col-12 mar-1">
-                <span class="p-float-label">
-                    <input [(ngModel)]="insumoSalvar.nome" id="nome-insumo" type="text" pInputText>
-                    <label for="nome-insumo">Nome</label>
-                </span>
-            </div>
-            
-            <div class="col-12 mar-1">
-                <label for="float-input">Unidade de Medida</label><br>
-                <span class="p-float-label">
-                    <p-dropdown name="fornecedor" [panelStyle]="{'width': '100%'}" [options]="unidadesMedida" [(ngModel)]="unidadeMedidaSelecionada" optionLabel="nome"></p-dropdown>
-                </span>
-            </div>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
         </div>
         <ng-template pTemplate="footer">
             <div class="grid" style="justify-content: space-around;">
-                <button (click)="salvarInsumo()" pButton type="button" label="Salvar"
+                <button (click)="salvarUnidadeMedida()" pButton type="button" label="Salvar"
                     class="col-5 p-button-success"></button>
                 <button (click)="displaySaveBar = false;" pButton type="button" label="Cancelar"
                     class="col-5 p-button-secondary"></button>

@@ -6,18 +6,17 @@ import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
 import {SidebarModule} from 'primeng/sidebar';
 import {InputTextModule} from 'primeng/inputtext';
-import { InsumosComponent } from './insumos/insumos.component';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {InputNumberModule} from 'primeng/inputnumber';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { DropdownModule } from 'primeng/dropdown';
+import { FornecedoresComponent } from './fornecedores/fornecedor.component';
 
 
 @NgModule({
   declarations: [
-    InsumosComponent
+    FornecedoresComponent
   ],
   imports: [
     CommonModule,
@@ -31,8 +30,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ConfirmDialogModule,
     InputNumberModule,
     InputMaskModule,
-    ProgressSpinnerModule,
-    DropdownModule
+    ProgressSpinnerModule
   ]
 })
-export class InsumosModule { }
+export class FornecedoresModule { }

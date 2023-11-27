@@ -180,6 +180,8 @@ export class SolicitacaoInsumoComponent implements OnInit {
   abreSlideInserir() {
     this.displaySaveBar = true;
     this.solicitacaoInsumoSalvar = new SolicitacaoInsumo();
+    this.unidadeSelecionada = new Unidade();
+    this.insumoSelecionado = new Insumo();
   }
 
   abreSlideEditar(solicitacaoInsumo: SolicitacaoInsumo) {

@@ -3,6 +3,10 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { Insumo } from '../model/insumo.model';
 import { InsumoService } from '../service/insumo-service';
+import { Fornecedor } from '../../fornecedores/model/fornecedor.model';
+import { FornecedorService } from '../../fornecedores/service/fornecedor-service';
+import { UnidadeMedida } from '../../unidademedida/model/unidademedida.model';
+import { UnidadeMedidaService } from '../../unidademedida/service/unidademedida-service';
 
 @Component({
   selector: 'app-insumos',
@@ -20,12 +24,20 @@ export class InsumosComponent implements OnInit {
   insumos: Insumo[] = [];
   insumoSalvar: Insumo = new Insumo();
 
+  fornecedor: Fornecedor;
+  fornecedores: Fornecedor[] = [];
+
+  unidadeMedidaSelecionada: UnidadeMedida;
+  unidadesMedida: UnidadeMedida[] = [];
+
   isGlobalLoading: boolean = false;
 
   public colunas: any[];
 
   constructor(    
     private insumoService: InsumoService,
+    private fornecedorService: FornecedorService,
+    private unidadeMedidaService: UnidadeMedidaService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService) { }
 
@@ -38,13 +50,13 @@ export class InsumosComponent implements OnInit {
     this.home = { icon: 'pi pi-home', routerLink: '/' };
 
     this.listarInsumos();
+    this.listarFornecedores();
+    this.listarUnidadeMedidas();
 
     this.colunas = [
       { field: 'codigo', header: 'Código', class: 'codigo' },
       { field: 'nome', header: 'Nome', class: 'nome' },
       { field: 'fornecedor', header: 'Fornecedor', class: 'fornecedor' },
-      { field: 'custoCompra', header: 'Custo Compra / R$', class: 'custoCompra' },
-      { field: 'valorVenda', header: 'Valor Venda / R$', class: 'valorVenda' },
       { field: 'unidadeMedida', header: 'Unidade Medida', class: 'unidadeMedida' }
     ];
   }
@@ -55,6 +67,21 @@ export class InsumosComponent implements OnInit {
     } else {
       this.inserirInsumo();
     }
+  }
+
+  listarUnidadeMedidas() {
+    this.isGlobalLoading = true;
+    this.unidadeMedidaService.listarUnidadeMedidas().subscribe(
+      {
+        next: (response: ApiCollectionResponse<UnidadeMedida>) => {
+          let unidades: UnidadeMedida[] = [new UnidadeMedida()];
+          this.unidadesMedida = unidades.concat(response.items);;
+          this.isGlobalLoading = false;
+        }, error: () => {
+          this.isGlobalLoading = false;
+        }
+      }
+    )
   }
 
   listarInsumos() {
@@ -87,6 +114,8 @@ export class InsumosComponent implements OnInit {
 
   inserirInsumo() {
     this.isGlobalLoading = true;
+    this.insumoSalvar.fornecedor = this.fornecedor?.id;
+    this.insumoSalvar.unidadeMedida = this.unidadeMedidaSelecionada?.id;
     this.insumoService.inserirInsumo(this.insumoSalvar).subscribe(
       {
         next: (response: Insumo) => {
@@ -131,9 +160,24 @@ export class InsumosComponent implements OnInit {
     )
   }
 
+  listarFornecedores() {
+    this.isGlobalLoading = true;
+    this.fornecedorService.listarFornecedores().subscribe(
+      {
+        next: (response: ApiCollectionResponse<Fornecedor>) => {
+          let fornecedores: Fornecedor[] = [new Fornecedor()];
+          this.fornecedores = fornecedores.concat(response.items);
+          this.isGlobalLoading = false;
+        }
+      }
+    )
+  }
+
   abreSlideInserir() {
     this.displaySaveBar = true; 
     this.insumoSalvar = new Insumo();
+    this.fornecedor = new Fornecedor();
+    this.unidadeMedidaSelecionada = new UnidadeMedida();
   }
 
   abreSlideEditar(insumo: Insumo) {

@@ -4,6 +4,8 @@ import { UnidadeModule } from './unidade/unidade.module';
 import { CadastrosRoutingModule } from './cadastros-routing.module';
 import { InsumosModule } from './insumos/insumos.module';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FornecedoresModule } from './fornecedores/fornecedor.module';
+import { UnidadeMedidaModule } from './unidademedida/unidademedida.module';
 
 
 
@@ -12,6 +14,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   imports: [
     CommonModule,
     UnidadeModule,
+    UnidadeMedidaModule,
+    FornecedoresModule,
     InsumosModule,
     CadastrosRoutingModule,
     ProgressSpinnerModule

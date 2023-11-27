@@ -16,7 +16,7 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
                         this.messageService.add({severity:'error', summary:'Erro', detail:'Falha interna de Servidor'});
                         return throwError(() => error.error.message);
                     }
-                    this.messageService.add({severity:'error', summary:error.error.msg, detail:error.error.message});
+                    this.messageService.add({severity:'error', summary:error.error.msg, detail: error.error.message || 'Erro inesperado ou falta de conexão com o servidor'});
                     return throwError(() => error.error.message);
                 })
             )

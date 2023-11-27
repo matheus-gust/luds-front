@@ -1,11 +1,11 @@
 <div class="system-body">
     <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
     <br>
-    <p-table #tabelaInsumos [paginator]="true" [rows]="8" [columns]="colunas" [value]="insumos" responsiveLayout="stack" [breakpoint]="'800px'">
+    <p-table #tabelaFornecedores [paginator]="true" [rows]="8" [columns]="colunas" [value]="fornecedores" responsiveLayout="stack" [breakpoint]="'800px'">
         <ng-template pTemplate="caption">
             <div class="row justify-content-between">
                 <div class="col-12 col-md-3">
-                    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Insumo"></button>
+                    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Fornecedor"></button>
                 </div>
             </div>
         </ng-template>
@@ -45,49 +45,42 @@
 
     <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
         <h1 style="font-size: 20pt;">
-            Adicionar Insumo
+            Adicionar Fornecedor
         </h1>
 
         <div class="grid">
             <div class="col-12 mar-1">
                 <span class="p-float-label">
-                    <input style="width: 100%" [(ngModel)]="insumoSalvar.codigo"
+                    <input style="width: 100%" [(ngModel)]="fornecedorSalvar.codigo"
                         id="codigo-unidade" type="text" pInputText>
                     <label for="codigo-unidade">Codigo</label>
                 </span>
             </div>
 
-            <div class="col-12 mar-1">
-                <label for="float-input">Fornecedor</label><br>
+            <div class="col-6 mar-1">
                 <span class="p-float-label">
-                    <p-dropdown name="fornecedor" [panelStyle]="{'width': '100%'}" [options]="fornecedores" [(ngModel)]="fornecedor" optionLabel="nome"></p-dropdown>
+                    <input [(ngModel)]="fornecedorSalvar.nome" id="nome-fornecedor" type="text" pInputText>
+                    <label for="nome-fornecedor">Nome</label>
                 </span>
             </div>
-            
-            <div class="col-12 mar-1">
+
+            <div class="col-6 mar-1">
                 <span class="p-float-label">
-                    <input [(ngModel)]="insumoSalvar.nome" id="nome-insumo" type="text" pInputText>
-                    <label for="nome-insumo">Nome</label>
+                    <input [(ngModel)]="fornecedorSalvar.diaEntregaPrev" id="fornecedor-input" type="number" pInputText>
+                    <label for="fornecedor-input">N° Dias previsto Entrega</label>
                 </span>
             </div>
-            
-            <div class="col-12 mar-1">
-                <label for="float-input">Unidade de Medida</label><br>
+
+            <div class="col-6 mar-1">
                 <span class="p-float-label">
-                    <p-dropdown name="fornecedor" [panelStyle]="{'width': '100%'}" [options]="unidadesMedida" [(ngModel)]="unidadeMedidaSelecionada" optionLabel="nome"></p-dropdown>
+                    <input [(ngModel)]="fornecedorSalvar.diaEntregaSemana" id="fornecedor-input" type="text" pInputText>
+                    <label for="fornecedor-input">Dia Da Semana para Entrega</label>
                 </span>
             </div>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
         </div>
         <ng-template pTemplate="footer">
             <div class="grid" style="justify-content: space-around;">
-                <button (click)="salvarInsumo()" pButton type="button" label="Salvar"
+                <button (click)="salvarFornecedor()" pButton type="button" label="Salvar"
                     class="col-5 p-button-success"></button>
                 <button (click)="displaySaveBar = false;" pButton type="button" label="Cancelar"
                     class="col-5 p-button-secondary"></button>
