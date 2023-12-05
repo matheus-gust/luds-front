@@ -40,19 +40,20 @@ export class MenuLateralComponent implements OnInit {
         expanded: true,
         label: 'Cadastros',
         items: [
-          { label: 'Unidades', icon: 'pi pi-building', routerLink: ['/components/unidades'], command: this.fecharMenu.bind(this) },
+          //{ label: 'Unidades', icon: 'pi pi-building', routerLink: ['/components/unidades'], command: this.fecharMenu.bind(this) },
           { label: 'Unidade Medida', icon: 'pi pi-at', routerLink: ['/components/unidade-medida'], command: this.fecharMenu.bind(this) },
+          { label: 'Categoria', icon: 'pi pi-at', routerLink: ['/components/categoria'], command: this.fecharMenu.bind(this) },
           { label: 'Fornecedores', icon: 'pi pi-box', routerLink: ['/components/fornecedores'], command: this.fecharMenu.bind(this) },
           { label: 'Insumos', icon: 'pi pi-download', routerLink: ['/components/insumos'], command: this.fecharMenu.bind(this) }
         ]
       },
-      {
+      /*{
         expanded: true,
         label: 'Movimentos',
         items: [
           { label: 'Solicitação de Insumo', icon: 'pi pi-cart-plus', routerLink: ['/components/solicitacao-insumo'], command: this.fecharMenu.bind(this) }
         ]
-      },
+      },*/
       {
         expanded: true,
         label: 'Cardapio',

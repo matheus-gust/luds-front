@@ -1,11 +1,11 @@
 <div class="system-body">
     <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
     <br>
-    <p-table #tabelaUnidadeMedidas [paginator]="true" [rows]="8" [columns]="colunas" [value]="unidadeMedidas" responsiveLayout="stack" [breakpoint]="'800px'">
+    <p-table #tabelaCategorias [paginator]="true" [rows]="8" [columns]="colunas" [value]="categorias" responsiveLayout="stack" [breakpoint]="'800px'">
         <ng-template pTemplate="caption">
             <div class="row justify-content-between">
                 <div class="col-12 col-md-3">
-                    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Unidade Medida"></button>
+                    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Categoria"></button>
                 </div>
             </div>
         </ng-template>
@@ -45,20 +45,21 @@
 
     <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
         <h1 style="font-size: 20pt;">
-            Adicionar Unidade de Medida
+            Adicionar Categoria
         </h1>
 
         <div class="grid">
+            
             <div class="col-12 mar-1">
                 <span class="p-float-label">
-                    <input [(ngModel)]="unidadeMedidaSalvar.nome" id="nome-unidadeMedida" type="text" pInputText>
-                    <label for="nome-unidadeMedida">Nome</label>
+                    <input [(ngModel)]="categoriaSalvar.nome" id="nome-categoria" type="text" pInputText>
+                    <label for="nome-categoria">Nome</label>
                 </span>
             </div>
         </div>
         <ng-template pTemplate="footer">
             <div class="grid" style="justify-content: space-around;">
-                <button (click)="salvarUnidadeMedida()" pButton type="button" label="Salvar"
+                <button (click)="salvarCategoria()" pButton type="button" label="Salvar"
                     class="col-5 p-button-success"></button>
                 <button (click)="displaySaveBar = false;" pButton type="button" label="Cancelar"
                     class="col-5 p-button-secondary"></button>
