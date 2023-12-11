@@ -59,8 +59,8 @@ export class MenuLateralComponent implements OnInit {
         label: 'Cardapio',
         items: [
           { label: 'Categoria', icon: 'pi pi-align-justify', routerLink: ['/components/categoria-cardapio'], command: this.fecharMenu.bind(this) },
-          { label: 'Adicional', icon: 'pi pi-align-justify', routerLink: ['/components/adicional-cardapio'], command: this.fecharMenu.bind(this) },
-          { label: 'Variedade', icon: 'pi pi-align-justify', routerLink: ['/components/variedade-cardapio'], command: this.fecharMenu.bind(this) },
+          { label: 'Adicional', icon: 'pi pi-plus', routerLink: ['/components/adicional-cardapio'], command: this.fecharMenu.bind(this) },
+          { label: 'Variedade', icon: 'pi pi-tag', routerLink: ['/components/variedade-cardapio'], command: this.fecharMenu.bind(this) },
           { label: 'Item Cardapio', icon: 'pi pi-book', routerLink: ['/components/item-cardapio'], command: this.fecharMenu.bind(this) }
         ]
       },
