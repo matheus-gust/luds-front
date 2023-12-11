@@ -1,0 +1,45 @@
+input[type="file"] {
+    display: none;
+}
+.label-arquivo {
+    padding: 10px 5px;
+    width: 150px;
+    background-color: #4a6119b7;
+    color: #FFF;
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.label-arquivo:hover + .hide {
+    display: block;
+}
+
+.campo-foto {
+    display: flex;
+    flex-direction: column;
+}
+
+.campo-foto-carregada {
+    display: flex;
+    flex-direction: column;
+}
+
+.hide {
+    display: none;
+}
+
+@media only screen and (max-width: 892px) {
+    .campo-foto-carregada {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .campo-foto {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+}

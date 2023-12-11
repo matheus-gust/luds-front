@@ -1,12 +1,12 @@
 <div class="system-body">
     <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
     <br>
-    <p-table #tabelaCategoriaCardapios [paginator]="true" [rows]="8" [columns]="colunas" [value]="categoriaCardapios"
+    <p-table #tabelaVariedadeCardapios [paginator]="true" [rows]="8" [columns]="colunas" [value]="variedadeCardapios"
         responsiveLayout="stack" [breakpoint]="'800px'">
         <ng-template pTemplate="caption">
             <div class="row justify-content-between">
                 <div class="col-12 col-md-3">
-                    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Categoria Cardapio"></button>
+                    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Variedade Cardapio"></button>
                 </div>
             </div>
         </ng-template>
@@ -47,21 +47,27 @@
 
     <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
         <h1 style="font-size: 20pt;">
-            Adicionar Categoria Cardapio
+            Adicionar Variedade Cardapio
         </h1>
-        <form #fCategoriaCardapio='ngForm' id="formAdicionarCategoriaCardapio" autocomplete="off">
+        <form #fVariedadeCardapio='ngForm' id="formAdicionarVariedadeCardapio" autocomplete="off">
             <div class="grid">
                 <div class="col-12 m-1">
                     <span class="p-float-label">
-                        <input required [(ngModel)]="categoriaCardapioSalvar.nome" name="nome-categoriaCardapio" id="nome-categoriaCardapio" type="text" pInputText>
-                        <label for="nome-categoriaCardapio">Nome</label>
+                        <input required [(ngModel)]="variedadeCardapioSalvar.nome" name="nome-variedadeCardapio" id="nome-variedadeCardapio" type="text" pInputText>
+                        <label for="nome-variedadeCardapio">Nome</label>
+                    </span>
+                </div>
+                <div class="col-12 mar-1">
+                    <label for="float-input">Categoria no Cardapio</label><br>
+                    <span class="p-float-label">
+                        <p-dropdown name="categoria" [panelStyle]="{'width': '100%'}" [options]="categoriasCardapio" [(ngModel)]="categoriaCardapioSelecionada" optionLabel="nome"></p-dropdown>
                     </span>
                 </div>
             </div>
         </form>
         <ng-template pTemplate="footer">
             <div class="grid" style="justify-content: space-around;">
-                <button (click)="salvarCategoriaCardapio()" pButton type="button" label="Salvar"
+                <button (click)="salvarVariedadeCardapio()" pButton type="button" label="Salvar"
                     class="col-5 p-button-success"></button>
                 <button (click)="displaySaveBar = false;" pButton type="button" label="Cancelar"
                     class="col-5 p-button-secondary"></button>

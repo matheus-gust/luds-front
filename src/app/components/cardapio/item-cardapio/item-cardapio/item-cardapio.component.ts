@@ -8,6 +8,11 @@ import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.m
 import { CategoriaCardapio } from '../../categoria-cardapio/model/categoria-cardapio.model';
 import { CategoriaCardapioService } from '../../categoria-cardapio/service/categoria-cardapio.service';
 
+export interface ItensListagem {
+  categoria: CategoriaCardapio;
+  itens: ItemCardapio[];
+}
+
 @Component({
   selector: 'app-item-cardapio',
   templateUrl: './item-cardapio.component.html',
@@ -29,7 +34,9 @@ export class ItemCardapioComponent implements OnInit {
 
   categorias: CategoriaCardapio[] = [];
 
-  categoriaSelecionada: CategoriaCardapio;
+  categoriaSelecionada: CategoriaCardapio = new CategoriaCardapio();
+
+  listagensDeItens: ItensListagem[] = [];
 
   itensCardapio: ItemCardapio[] = [
     {
@@ -41,7 +48,6 @@ export class ItemCardapioComponent implements OnInit {
       tamanho: "P,M,G",
       categoria: {
         id: "0001",
-        codigo: "0001",
         nome: "Pizzas"
       },
       imagem: "",
@@ -55,7 +61,6 @@ export class ItemCardapioComponent implements OnInit {
       tamanho: "P,M,G",
       categoria: {
         id: "0001",
-        codigo: "0001",
         nome: "Pizzas"
       },
       imagem: "",
@@ -123,6 +128,8 @@ export class ItemCardapioComponent implements OnInit {
       {
         next: (response: ApiCollectionResponse<ItemCardapio>) => {
           this.itemCardapios = response.items;
+          this.listagensDeItens = this.transformarParaItensListagem(response.items);
+          console.log(this.listagensDeItens);
           this.isGlobalLoading = false;
         }, error: () => {
           this.isGlobalLoading = false;
@@ -147,6 +154,8 @@ export class ItemCardapioComponent implements OnInit {
 
   inserirItemCardapio() {
     this.isGlobalLoading = true;
+    this.itemCardapioSalvar.categoria = new CategoriaCardapio();
+    this.itemCardapioSalvar.categoria.id = this.categoriaSelecionada?.id;
     this.itemCardapioService.inserirItemCardapio(this.itemCardapioSalvar).subscribe(
       {
         next: (response: ItemCardapio) => {
@@ -163,6 +172,8 @@ export class ItemCardapioComponent implements OnInit {
   }
 
   alterarItemCardapio() {
+    this.itemCardapioSalvar.categoria = new CategoriaCardapio();
+    this.itemCardapioSalvar.categoria.id = this.categoriaSelecionada?.id;
     this.itemCardapioService.alterarItemCardapio(this.itemCardapioSalvar).subscribe(
       {
         next: (response: ItemCardapio) => {
@@ -210,4 +221,45 @@ export class ItemCardapioComponent implements OnInit {
     });
   }
 
+  adicionarImagem(evento: any) {
+    var imagem = evento.target.files[0];
+    var myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+      this.itemCardapioSalvar.imagem =  myReader.result!.toString().split(',')[1];
+    }
+    myReader.readAsDataURL(imagem);
+  }
+  
+  transformarParaItensListagem(itens: ItemCardapio[]): ItensListagem[] {
+    const itensListagem: ItensListagem[] = [];
+  
+    const itensPorCategoria: { [categoriaId: string]: ItemCardapio[] } = {};
+    itens.forEach((item) => {
+      if (!itensPorCategoria[item.categoria.id]) {
+        itensPorCategoria[item.categoria.id] = [];
+      }
+      itensPorCategoria[item.categoria.id].push(item);
+    });
+  
+    for (const categoriaId in itensPorCategoria) {
+      if (itensPorCategoria.hasOwnProperty(categoriaId)) {
+        const categoria: CategoriaCardapio = {
+          id: categoriaId,
+          nome: itensPorCategoria[categoriaId][0].categoria.nome,
+        };
+  
+        const itensDaCategoria: ItemCardapio[] = itensPorCategoria[categoriaId];
+  
+        const itensListagemCategoria: ItensListagem = {
+          categoria,
+          itens: itensDaCategoria,
+        };
+  
+        itensListagem.push(itensListagemCategoria);
+      }
+    }
+  
+    return itensListagem;
+  }
 }

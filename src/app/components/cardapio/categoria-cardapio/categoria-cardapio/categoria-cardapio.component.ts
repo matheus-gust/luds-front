@@ -45,7 +45,6 @@ export class CategoriaCardapioComponent implements OnInit {
     this.listarCategoriaCardapios();
 
     this.colunas = [
-      { field: 'codigo', header: 'Código', class: 'codigo' },
       { field: 'nome', header: 'Nome', class: 'nome' }
     ];
   }

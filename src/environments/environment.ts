@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  urlBackEnd: 'http://192.168.100.142:8081/app'
+  urlBackEnd: 'http://127.0.0.1:8080/app'
 };
 
 /*

@@ -132,6 +132,8 @@ export class InsumosComponent implements OnInit {
   }
 
   alterarInsumo() {
+    this.insumoSalvar.fornecedor = this.fornecedor?.id;
+    this.insumoSalvar.unidadeMedida = this.unidadeMedidaSelecionada?.id;
     this.insumoService.alterarInsumo(this.insumoSalvar).subscribe(
       {
         next: (response: Insumo) => {

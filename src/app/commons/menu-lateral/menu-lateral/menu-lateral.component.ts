@@ -42,7 +42,7 @@ export class MenuLateralComponent implements OnInit {
         items: [
           //{ label: 'Unidades', icon: 'pi pi-building', routerLink: ['/components/unidades'], command: this.fecharMenu.bind(this) },
           { label: 'Unidade Medida', icon: 'pi pi-at', routerLink: ['/components/unidade-medida'], command: this.fecharMenu.bind(this) },
-          { label: 'Categoria', icon: 'pi pi-at', routerLink: ['/components/categoria'], command: this.fecharMenu.bind(this) },
+          { label: 'Categoria', icon: 'pi pi-align-justify', routerLink: ['/components/categoria'], command: this.fecharMenu.bind(this) },
           { label: 'Fornecedores', icon: 'pi pi-box', routerLink: ['/components/fornecedores'], command: this.fecharMenu.bind(this) },
           { label: 'Insumos', icon: 'pi pi-download', routerLink: ['/components/insumos'], command: this.fecharMenu.bind(this) }
         ]
@@ -59,6 +59,8 @@ export class MenuLateralComponent implements OnInit {
         label: 'Cardapio',
         items: [
           { label: 'Categoria', icon: 'pi pi-align-justify', routerLink: ['/components/categoria-cardapio'], command: this.fecharMenu.bind(this) },
+          { label: 'Adicional', icon: 'pi pi-align-justify', routerLink: ['/components/adicional-cardapio'], command: this.fecharMenu.bind(this) },
+          { label: 'Variedade', icon: 'pi pi-align-justify', routerLink: ['/components/variedade-cardapio'], command: this.fecharMenu.bind(this) },
           { label: 'Item Cardapio', icon: 'pi pi-book', routerLink: ['/components/item-cardapio'], command: this.fecharMenu.bind(this) }
         ]
       },
