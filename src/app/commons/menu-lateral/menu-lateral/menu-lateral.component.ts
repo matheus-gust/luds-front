@@ -47,13 +47,14 @@ export class MenuLateralComponent implements OnInit {
           { label: 'Insumos', icon: 'pi pi-download', routerLink: ['/components/insumos'], command: this.fecharMenu.bind(this) }
         ]
       },
-      /*{
+      {
         expanded: true,
         label: 'Movimentos',
         items: [
-          { label: 'Solicitação de Insumo', icon: 'pi pi-cart-plus', routerLink: ['/components/solicitacao-insumo'], command: this.fecharMenu.bind(this) }
+          { label: 'Vendas', icon: 'pi pi-cart-plus', routerLink: ['/components/vendas'], command: this.fecharMenu.bind(this) },
+          { label: 'Compras', icon: 'pi pi-cart-plus', routerLink: ['/components/compras'], command: this.fecharMenu.bind(this) }
         ]
-      },*/
+      },
       {
         expanded: true,
         label: 'Cardapio',

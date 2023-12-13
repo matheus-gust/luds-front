@@ -51,13 +51,13 @@
         </h1>
         <form #fVariedadeCardapio='ngForm' id="formAdicionarVariedadeCardapio" autocomplete="off">
             <div class="grid">
-                <div class="col-12 m-1">
+                <div class="col-12">
                     <span class="p-float-label">
                         <input required [(ngModel)]="variedadeCardapioSalvar.nome" name="nome-variedadeCardapio" id="nome-variedadeCardapio" type="text" pInputText>
                         <label for="nome-variedadeCardapio">Nome</label>
                     </span>
                 </div>
-                <div class="col-12 mar-1">
+                <div class="col-12">
                     <label for="float-input">Categoria no Cardapio</label><br>
                     <span class="p-float-label">
                         <p-dropdown name="categoria" [panelStyle]="{'width': '100%'}" [options]="categoriasCardapio" [(ngModel)]="categoriaCardapioSelecionada" optionLabel="nome"></p-dropdown>

@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MovimentacoesRoutingModule } from './movimentacoes-routing.module';
-import { SolicitacaoInsumoComponent } from './solicitacao-insumo/solicitacao-insumo/solicitacao-insumo.component';
 import { SolicitacaoInsumoModule } from './solicitacao-insumo/solicitacao-insumo.module';
+import { VendasModule } from './vendas/vendas.module';
+import { ComprasModule } from './compras/compras.module';
 
 
 
@@ -12,6 +13,8 @@ import { SolicitacaoInsumoModule } from './solicitacao-insumo/solicitacao-insumo
   imports: [
     CommonModule,
     SolicitacaoInsumoModule,
+    VendasModule,
+    ComprasModule,
     MovimentacoesRoutingModule
   ]
 })

@@ -67,29 +67,27 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="col-12">
-                        <label for="float-input">Categoria no Cardapio</label><br>
-                        <span class="p-float-label">
-                            <p-dropdown name="categoria" [panelStyle]="{'width': '100%'}" [options]="categorias"
-                                [(ngModel)]="categoriaSelecionada" optionLabel="nome"></p-dropdown>
-                        </span>
-                    </div>
+                    <label for="float-input">Categoria no Cardapio</label><br>
+                    <span class="p-float-label">
+                        <p-dropdown name="categoria" [panelStyle]="{'width': '100%'}" [options]="categorias"
+                            [(ngModel)]="categoriaSelecionada" optionLabel="nome"></p-dropdown>
+                    </span>
                 </div>
-                <div class="col-12 m-1">
+                <div class="col-12">
                     <span class="p-float-label">
                         <input required style="width: 100%" [(ngModel)]="itemCardapioSalvar.codigo"
                             name="codigo-item-cardapio" id="codigo-item-cardapio" type="text" pInputText>
                         <label for="codigo-item-cardapio">Codigo</label>
                     </span>
                 </div>
-                <div class="col-12 m-1">
+                <div class="col-12">
                     <span class="p-float-label">
                         <input required [(ngModel)]="itemCardapioSalvar.nome" name="nome-item-cardapio"
                             id="nome-item-cardapio" type="text" pInputText>
                         <label for="nome-item-cardapio">Nome</label>
                     </span>
                 </div>
-                <div class="col-12 m-1">
+                <div class="col-12">
                     <span class="p-float-label">
                         <textarea style="width: 100%" rows="5" cols="30" required
                             [(ngModel)]="itemCardapioSalvar.descricao" name="descricao-item-cardapio"
@@ -97,7 +95,7 @@
                         <label for="nome-item-cardapio">Descricao</label>
                     </span>
                 </div>
-                <div class="col-12 m-1">
+                <div class="col-12">
                     <span class="p-float-label">
                         <p-inputNumber style="width: 100%" name="valor-item-cardapio" id="valor-item-cardapio"
                             [(ngModel)]="itemCardapioSalvar.valor" inputId="valor-item-cardapio" mode="currency"
