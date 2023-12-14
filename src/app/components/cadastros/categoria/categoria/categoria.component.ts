@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { Categoria } from '../model/categoria.model';
@@ -7,6 +7,8 @@ import { FornecedorService } from '../../fornecedores/service/fornecedor-service
 import { UnidadeMedida } from '../../unidademedida/model/unidademedida.model';
 import { UnidadeMedidaService } from '../../unidademedida/service/unidademedida-service';
 import { CategoriaService } from '../service/cotegoria-service';
+import { NgForm } from '@angular/forms';
+import { FormValidService } from 'src/app/commons/services/form-valid.service';
 
 @Component({
   selector: 'app-categorias',
@@ -34,11 +36,14 @@ export class CategoriasComponent implements OnInit {
 
   public colunas: any[];
 
+  @ViewChild('fFormularioAdicionar', { static: false }) formularioAdicionar: NgForm;
+
   constructor(    
     private categoriaService: CategoriaService,
     private fornecedorService: FornecedorService,
     private unidadeMedidaService: UnidadeMedidaService,
     private confirmationService: ConfirmationService,
+    private formValidService: FormValidService,
     private messageService: MessageService) { }
 
   ngOnInit() {
@@ -59,6 +64,10 @@ export class CategoriasComponent implements OnInit {
   }
 
   salvarCategoria() {
+    if(!this.formValidService.validaFormularioInsercao(this.formularioAdicionar, 'fFormAdicionar')) {
+      return;
+    }
+
     if(this.categoriaSalvar.id) {
       this.alterarCategoria();
     } else {

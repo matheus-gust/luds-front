@@ -25,7 +25,7 @@ export class CategoriaCardapioComponent implements OnInit {
 
   public colunas: any[];
 
-  @ViewChild('fCategoriaCardapio', { static: true }) formularioAdicionarCategoriaCardapio = new NgForm([], []);
+  @ViewChild('fFormularioAdicionar', { static: false }) formularioAdicionar: NgForm;
 
   constructor(
     private categoriaCardapioService: CategoriaCardapioService,
@@ -51,8 +51,8 @@ export class CategoriaCardapioComponent implements OnInit {
 
   salvarCategoriaCardapio() {
 
-    if(!this.formValidService.validaFormularioInsercao(this.formularioAdicionarCategoriaCardapio, 'formAdicionarCategoriaCardapio')) {
-      this.formValidService.validaFormularioInsercao(this.formularioAdicionarCategoriaCardapio, 'formAdicionarCategoriaCardapio')
+    if(!this.formValidService.validaFormularioInsercao(this.formularioAdicionar, 'fFormularioAdicionar')) {
+      this.formValidService.validaFormularioInsercao(this.formularioAdicionar, 'fFormularioAdicionar')
     }
 
     if (this.categoriaCardapioSalvar.id) {

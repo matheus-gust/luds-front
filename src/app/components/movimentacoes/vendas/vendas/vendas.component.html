@@ -29,7 +29,7 @@
                 <td class="text-center" style="justify-content: center !important;"
                     *ngFor="let col of columns; let i = index" [ngClass]="(i%2== 1)? 'table-row' : ''">
                     <span class="p-column-title" style="font-weight: bold; margin-right: 20px;">{{col.header}}:</span>
-                    {{rowData[col.field]}}
+                    <span>{{rowData[col.field]}}</span>
                 </td>
                 <td class="text-center" style="justify-content: space-around !important;">
                     <button (click)="abreSlideEditar(rowData)" style="margin-right: 5px;" pButton type="button"
@@ -40,110 +40,130 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="rowexpansion" let-rowData>
-            <tr>
+            <tr style="background-color: #f8f9fa;">
                 <td [attr.colspan]="6">
                     <div style="display: flex; flex-direction: column;" class="p-3">
                         <h3 style="justify-self: center; text-align: center;">Itens da venda</h3>
                         <p-table [value]="rowData.itens" dataKey="id" [columns]="colunasDetalhes">
                             <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 5rem"></th>
-                <th pSortableColumn="nome">Nome<p-sortIcon field="nome"></p-sortIcon></th>
-                <th pSortableColumn="valor">Valor<p-sortIcon field="valor"></p-sortIcon></th>
-                <th pSortableColumn="quantidade">Quantidade<p-sortIcon field="quantidade"></p-sortIcon></th>
+                                <tr>
+                                    <th class="text-center" style="width: 5rem"></th>
+                                    <th class="text-center" pSortableColumn="nome">Nome<p-sortIcon field="nome"></p-sortIcon></th>
+                                    <th class="text-center" pSortableColumn="valor">Valor<p-sortIcon field="valor"></p-sortIcon></th>
+                                    <th class="text-center" pSortableColumn="quantidade">Quantidade<p-sortIcon field="quantidade"></p-sortIcon></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-detail>
+                                <tr>
+                                    <td class="text-center" [attr.colspan]="2">{{ detail.item.nome }}</td>
+                                    <td class="text-center" [attr.colspan]="1">{{ detail.variedade.valor }}</td>
+                                    <td class="text-center" [attr.colspan]="1">{{ detail.quantidade }}</td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td [attr.colspan]="7" class="text-center">Nenhum item inserido.</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <span style="width: 100%; margin-bottom: 40px;"></span>
+                    </div>
+                </td>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-detail>
+        <ng-template pTemplate="emptymessage" let-columns>
             <tr>
-                <td [attr.colspan]="2">{{ detail.nome }}</td>
-                <td [attr.colspan]="1">{{ detail.valor }}</td>
-                <td [attr.colspan]="1">{{ detail.quantidade }}</td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td class="text-center">Nenhum item inserido.</td>
+                <td class="text-center" [attr.colspan]="columns.length+2">
+                    Nenhum dado encontrado
+                </td>
             </tr>
         </ng-template>
     </p-table>
 </div>
-</td>
-</tr>
-</ng-template>
-<ng-template pTemplate="emptymessage" let-columns>
-    <tr>
-        <td class="text-center" [attr.colspan]="columns.length+2">
-            Nenhum dado encontrado
-        </td>
-    </tr>
-</ng-template>
-</p-table>
 
 <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-lg">
-    
+
     <ng-template pTemplate="content">
         <h1 style="font-size: 20pt;">
             Adicionar Venda
         </h1>
-        <div class="grid">
-            <div class="col-6 col-md-6">
-                <label for="float-input">Data</label><br>
-                <span>
-                    <p-calendar style="display: inline-grid; width: 100%;" [(ngModel)]="vendaSalvar.data"
-                        dateFormat="dd/mm/yy" name="data"></p-calendar>
-                </span>
-            </div>
-            <div class="col-6  col-md-6">
-                <label for="float-input">Origem</label><br>
-                <span>
-                    <p-dropdown name="origem" [options]="origens" [(ngModel)]="vendaSalvar.origem" optionLabel="label"></p-dropdown>
-                </span>
-            </div>
-        </div>
-        <div class="grid mt-2">
-            <div class="col-12 col-md-12">
-                <div style="margin-left: 0px;" class="row justify-content-between">
-                    <h3>Itens</h3>
-                    <button pButton class="p-button-outlined p-button-raised p-button-rounded" icon="pi pi-plus" severity="secondary" (click)="adicionarItem()" ></button>
+        <form #fVenda='ngForm' id="formAdicionarVenda" autocomplete="off">
+            <div class="grid">
+                <div class="col-6 col-md-6">
+                    <label for="float-input">Data</label><br>
+                    <span>
+                        <p-calendar [required]="true" style="display: inline-grid; width: 100%;" [(ngModel)]="vendaSalvar.data"
+                            dateFormat="dd/mm/yy" name="data"></p-calendar>
+                    </span>
+                </div>
+                <div class="col-6  col-md-6">
+                    <label for="float-input">Origem</label><br>
+                    <span>
+                        <p-dropdown [required]="true" name="origem" [options]="origens" [(ngModel)]="vendaSalvar.origem" optionLabel="label" optionValue="label"></p-dropdown>
+                    </span>
                 </div>
             </div>
-        </div>
-        <h2>Total: R${{vendaSalvar.valor}}</h2>
-        <div *ngFor="let venda of vendaSalvar.itens; let i = index" class="grid mt-2">
-            <div class="col-6 lg:col-3">
-                <label>Item</label><br>
-                <span>
-                    <p-dropdown (onChange)="selecionaItem($event, drp)" [(ngModel)]="vendaSalvar.itens[i].item" [filter]="true" name="item" optionLabel="label" [options]="itensCardapio"[optionLabel]="'nome'"></p-dropdown>
-                </span>
+            <div class="grid mt-2">
+                <div class="col-12 col-md-12">
+                    <div style="margin-left: 0px;" class="row justify-content-between">
+                        <h3>Itens</h3>
+                        <button pButton class="p-button-outlined p-button-raised p-button-rounded" icon="pi pi-plus"
+                            severity="secondary" (click)="adicionarItem()"></button>
+                    </div>
+                </div>
             </div>
-            <div class="col-6 lg:col-3">
-                <label>Variedade</label><br>
-                <span>
-                    <p-dropdown #drp (onChange)="calculaValor(vendaSalvar.itens[i])" [(ngModel)]="vendaSalvar.itens[i].variedade" [filter]="true" name="variedade" optionLabel="label" [optionLabel]="'variedade.nome'"></p-dropdown>
-                </span>
-            </div>
-            <div class="col-6 lg:col-2">
-                <span>
-                    <label for="quantidade">Quantidade</label>
-                    <input (change)="calculaValor(vendaSalvar.itens[i])" [(ngModel)]="vendaSalvar.itens[i].quantidade" id="quantidade" type="text" pInputText>
-                </span>
-            </div>
-            <div class="col-6 lg:col-2">
-                <span>
-                    <label for="valor">Valor</label>
-                    <input [(ngModel)]="vendaSalvar.itens[i].valor" [readOnly]="true" id="valor" type="text" pInputText>
-                </span>
-            </div>
-            <div class="col-6 lg:col-2" style="margin-top: 20px;">
-                <button (click)="abreModalExclusaoitem(i)" pButton type="button"
+            <h2>Total: R${{vendaSalvar.valor}}</h2>
+            <div *ngFor="let venda of vendaSalvar.itens; let i = index" class="grid mt-2">
+                <div class="col-6 lg:col-3">
+                    <label>Item</label><br>
+                    <span>
+                        <p-dropdown 
+                            ngModel
+                            (onChange)="selecionaItem($event.value, i); calculaValor(vendaSalvar.itens[i])" 
+                            [ngModel]="defineItemFormulario(vendaSalvar.itens[i])"
+                            [filter]="true" name="item{{i}}" id="item{{i}}" optionLabel="label" [options]="itensCardapio"
+                            [optionLabel]="'nome'"
+                            [required]="true"></p-dropdown>
+                    </span>
+                </div>
+                <div class="col-6 lg:col-3">
+                    <label>Variedade</label><br>
+                    <span>
+                        <p-dropdown
+                        #dropVariedade
+                        ngModel
+                        [disabled]="!vendaSalvar.itens[i].item"
+                        [options]="defineOpcoes(vendaSalvar.itens[i].item)"
+                        (onChange)="calculaValor(vendaSalvar.itens[i])"
+                        [(ngModel)]="vendaSalvar.itens[i].variedade"
+                        [filter]="true" name="variedade{{i}}" id="variedade{{i}}"
+                            optionLabel="label" [optionLabel]="'variedade.nome'"></p-dropdown>
+                    </span>
+                </div>
+                <div class="col-6 lg:col-2">
+                    <span>
+                        <label for="quantidade">Quantidade</label>
+                        <input ngModel required [disabled]="!vendaSalvar.itens[i].item" (change)="calculaValor(vendaSalvar.itens[i])" [(ngModel)]="vendaSalvar.itens[i].quantidade"
+                            name="quantidade{{i}}" id="quantidade{{i}}" type="text" pInputText>
+                    </span>
+                </div>
+                <div class="col-6 lg:col-2">
+                    <span>
+                        <label for="valor">Valor</label>
+                        <input ngModel [(ngModel)]="vendaSalvar.itens[i].valor" [readOnly]="true" name="valor{{i}}" id="valor{{i}}" type="text" pInputText>
+                    </span>
+                </div>
+                <div class="col-6 lg:col-2" style="margin-top: 20px;">
+                    <button (click)="abreModalExclusaoitem(i)" pButton type="button"
                         class="p-button-outlined p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+                </div>
             </div>
-        </div>
-        <div style="width: 100%; padding: 50px;">
-
-        </div>
-    </ng-template>
+            <div style="width: 100%; padding: 50px;">
     
+            </div>
+        </form>
+    </ng-template>
+
     <ng-template pTemplate="footer">
         <div class="grid" style="justify-content: space-around;">
             <button (click)="salvarVenda()" pButton type="button" label="Salvar"
@@ -153,6 +173,5 @@
         </div>
     </ng-template>
 </p-sidebar>
-</div>
 
 <p-confirmDialog header="Confirmar Exclusão" icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { UnidadeMedida } from '../model/unidademedida.model';
 import { UnidadeMedidaService } from '../service/unidademedida-service';
 import { Fornecedor } from '../../fornecedores/model/fornecedor.model';
+import { NgForm } from '@angular/forms';
+import { FormValidService } from 'src/app/commons/services/form-valid.service';
 
 @Component({
   selector: 'app-unidadeMedidas',
@@ -28,9 +30,12 @@ export class UnidadeMedidasComponent implements OnInit {
 
   public colunas: any[];
 
+  @ViewChild('fFormularioAdicionar', { static: false }) formularioAdicionar: NgForm;
+
   constructor(    
     private unidadeMedidaService: UnidadeMedidaService,
     private confirmationService: ConfirmationService,
+    private formValidService: FormValidService,
     private messageService: MessageService) { }
 
   ngOnInit() {
@@ -49,6 +54,10 @@ export class UnidadeMedidasComponent implements OnInit {
   }
 
   salvarUnidadeMedida() {
+    if(!this.formValidService.validaFormularioInsercao(this.formularioAdicionar, 'fFormAdicionar')) {
+      return;
+    }
+
     if(this.unidadeMedidaSalvar.id) {
       this.alterarUnidadeMedida();
     } else {

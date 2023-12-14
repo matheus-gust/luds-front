@@ -47,37 +47,39 @@
         <h1 style="font-size: 20pt;">
             Adicionar Fornecedor
         </h1>
-
-        <div class="grid">
-            <div class="col-12 mar-1">
-                <span class="p-float-label">
-                    <input style="width: 100%" [(ngModel)]="fornecedorSalvar.codigo"
-                        id="codigo-unidade" type="text" pInputText>
-                    <label for="codigo-unidade">Codigo</label>
-                </span>
+        <form #fFormularioAdicionar='ngForm' id="fFormAdicionar" autocomplete="off">
+            <div class="grid">
+                <div class="col-12 mar-1">
+                    <span class="p-float-label">
+                        <input required style="width: 100%" [(ngModel)]="fornecedorSalvar.codigo"
+                            name="codigo-unidade" id="codigo-unidade" type="text" pInputText>
+                        <label for="codigo-unidade">Codigo</label>
+                    </span>
+                </div>
+    
+                <div class="col-6 mar-1">
+                    <span class="p-float-label">
+                        <input required [(ngModel)]="fornecedorSalvar.nome" name="nome-fornecedor" id="nome-fornecedor" type="text" pInputText>
+                        <label for="nome-fornecedor">Nome</label>
+                    </span>
+                </div>
+    
+                <div class="col-6 mar-1">
+                    <span class="p-float-label">
+                        <input [(ngModel)]="fornecedorSalvar.diaEntregaPrev" name="fornecedor-diasp" id="fornecedor-diasp" type="number" pInputText>
+                        <label for="fornecedor-input">N° Dias previsto Entrega</label>
+                    </span>
+                </div>
+    
+                <div class="col-6 mar-1">
+                    <span class="p-float-label">
+                        <input [(ngModel)]="fornecedorSalvar.diaEntregaSemana" id="fornecedor-diassem-prev" type="text" pInputText>
+                        <label for="fornecedor-input">Dia Da Semana para Entrega</label>
+                    </span>
+                </div>
             </div>
+        </form>
 
-            <div class="col-6 mar-1">
-                <span class="p-float-label">
-                    <input [(ngModel)]="fornecedorSalvar.nome" id="nome-fornecedor" type="text" pInputText>
-                    <label for="nome-fornecedor">Nome</label>
-                </span>
-            </div>
-
-            <div class="col-6 mar-1">
-                <span class="p-float-label">
-                    <input [(ngModel)]="fornecedorSalvar.diaEntregaPrev" id="fornecedor-input" type="number" pInputText>
-                    <label for="fornecedor-input">N° Dias previsto Entrega</label>
-                </span>
-            </div>
-
-            <div class="col-6 mar-1">
-                <span class="p-float-label">
-                    <input [(ngModel)]="fornecedorSalvar.diaEntregaSemana" id="fornecedor-input" type="text" pInputText>
-                    <label for="fornecedor-input">Dia Da Semana para Entrega</label>
-                </span>
-            </div>
-        </div>
         <ng-template pTemplate="footer">
             <div class="grid" style="justify-content: space-around;">
                 <button (click)="salvarFornecedor()" pButton type="button" label="Salvar"

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { Insumo } from '../model/insumo.model';
@@ -7,6 +7,8 @@ import { Fornecedor } from '../../fornecedores/model/fornecedor.model';
 import { FornecedorService } from '../../fornecedores/service/fornecedor-service';
 import { UnidadeMedida } from '../../unidademedida/model/unidademedida.model';
 import { UnidadeMedidaService } from '../../unidademedida/service/unidademedida-service';
+import { FormValidService } from 'src/app/commons/services/form-valid.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-insumos',
@@ -34,11 +36,14 @@ export class InsumosComponent implements OnInit {
 
   public colunas: any[];
 
+  @ViewChild('fFormularioAdicionar', { static: false }) formularioAdicionar: NgForm;
+
   constructor(    
     private insumoService: InsumoService,
     private fornecedorService: FornecedorService,
     private unidadeMedidaService: UnidadeMedidaService,
     private confirmationService: ConfirmationService,
+    private formValidService: FormValidService,
     private messageService: MessageService) { }
 
   ngOnInit() {
@@ -62,6 +67,10 @@ export class InsumosComponent implements OnInit {
   }
 
   salvarInsumo() {
+    if(!this.formValidService.validaFormularioInsercao(this.formularioAdicionar, 'fFormAdicionar')) {
+      return;
+    }
+
     if(this.insumoSalvar.id) {
       this.alterarInsumo();
     } else {

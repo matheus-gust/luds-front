@@ -50,47 +50,50 @@
             Adicionar Insumo
         </h1>
 
-        <div class="grid">
-            <div class="col-12 mar-1">
-                <span class="p-float-label">
-                    <input style="width: 100%" [(ngModel)]="insumoSalvar.codigo" id="codigo-unidade" type="text"
-                        pInputText>
-                    <label for="codigo-unidade">Codigo</label>
-                </span>
-            </div>
+        <form #fFormularioAdicionar='ngForm' id="fFormAdicionar" autocomplete="off">
+            <div class="grid">
+                <div class="col-12 mar-1">
+                    <span class="p-float-label">
+                        <input required style="width: 100%" [(ngModel)]="insumoSalvar.codigo" name="codigo-insumo"
+                            id="codigo-insumo" type="text" pInputText>
+                        <label for="codigo-unidade">Codigo</label>
+                    </span>
+                </div>
 
-            <div class="col-12 mar-1">
-                <span class="p-float-label">
-                    <input [(ngModel)]="insumoSalvar.nome" id="nome-insumo" type="text" pInputText>
-                    <label for="nome-insumo">Nome</label>
-                </span>
-            </div>
+                <div class="col-12 mar-1">
+                    <span class="p-float-label">
+                        <input required [(ngModel)]="insumoSalvar.nome" id="nome-insumo" type="text" pInputText>
+                        <label for="nome-insumo">Nome</label>
+                    </span>
+                </div>
 
-            <div class="col-12 mar-1">
-                <label for="float-input">Unidade de Medida</label><br>
-                <span class="p-float-label">
-                    <p-dropdown name="fornecedor" [panelStyle]="{'width': '100%'}" [options]="unidadesMedida"
-                        [(ngModel)]="unidadeMedidaSelecionada" optionLabel="nome"></p-dropdown>
-                </span>
-            </div>
+                <div class="col-12 mar-1">
+                    <label for="float-input">Unidade de Medida</label><br>
+                    <span class="p-float-label">
+                        <p-dropdown [required]="true" name="unidadeMedida"
+                            [options]="unidadesMedida" [(ngModel)]="unidadeMedidaSelecionada"
+                            optionLabel="nome"></p-dropdown>
+                    </span>
+                </div>
 
-            
-            <div class="col-12 mar-1">
-                <label for="float-input">Fornecedor</label><br>
-                <span class="p-float-label">
-                    <p-dropdown name="fornecedor" [panelStyle]="{'width': '100%'}" [options]="fornecedores"
-                        [(ngModel)]="fornecedor" optionLabel="nome"></p-dropdown>
-                </span>
-            </div>
 
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-        </div>
+                <div class="col-12 mar-1">
+                    <label for="float-input">Fornecedor</label><br>
+                    <span class="p-float-label">
+                        <p-dropdown [required]="true" name="fornecedor"
+                            [options]="fornecedores" [(ngModel)]="fornecedor" optionLabel="nome"></p-dropdown>
+                    </span>
+                </div>
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        </form>
         <ng-template pTemplate="footer">
             <div class="grid" style="justify-content: space-around;">
                 <button (click)="salvarInsumo()" pButton type="button" label="Salvar"

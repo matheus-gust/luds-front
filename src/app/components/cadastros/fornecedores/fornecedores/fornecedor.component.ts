@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { Fornecedor } from '../model/fornecedor.model';
 import { FornecedorService } from '../service/fornecedor-service';
+import { FormValidService } from 'src/app/commons/services/form-valid.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-fornecedores',
@@ -24,9 +26,12 @@ export class FornecedoresComponent implements OnInit {
 
   public colunas: any[];
 
+  @ViewChild('fFormularioAdicionar', { static: false }) formularioAdicionar: NgForm;
+
   constructor(    
     private fornecedorService: FornecedorService,
     private confirmationService: ConfirmationService,
+    private formValidService: FormValidService,
     private messageService: MessageService) { }
 
   ngOnInit() {
@@ -48,6 +53,10 @@ export class FornecedoresComponent implements OnInit {
   }
 
   salvarFornecedor() {
+    if(!this.formValidService.validaFormularioInsercao(this.formularioAdicionar, 'fFormAdicionar')) {
+      return;
+    }
+
     if(this.fornecedorSalvar.id) {
       this.alterarFornecedor();
     } else {

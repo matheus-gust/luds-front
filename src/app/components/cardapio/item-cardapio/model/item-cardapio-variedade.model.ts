@@ -3,7 +3,7 @@ import { ItemCardapio } from "./item-cardapio.model";
 
 export class ItemCardapioVariedade {
     id: string;
-    itemCardapio: ItemCardapio;
+    item: ItemCardapio;
     variedade: VariedadeCardapio;
     valor: number;
 }

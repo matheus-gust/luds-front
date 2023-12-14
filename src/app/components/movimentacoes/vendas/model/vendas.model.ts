@@ -5,5 +5,5 @@ export class Venda {
     itens: VendaItemCardapio[] = [];
     origem: string;
     valor: number = 0;
-    data: string;
+    data: Date;
 }

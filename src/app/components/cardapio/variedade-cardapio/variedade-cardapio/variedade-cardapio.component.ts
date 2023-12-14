@@ -53,8 +53,22 @@ export class VariedadeCardapioComponent implements OnInit {
 
     this.colunas = [
       { field: 'nome', header: 'Nome', class: 'nome' },
-      { field: 'categoriaCardapio', header: 'Cartegoria', class: 'categoria' }
+      { field: 'categoriaCardapio.nome', header: 'Cartegoria', class: 'categoria' }
     ];
+  }
+
+  getNestedPropertyValue(obj: any, path: string): any {
+    const keys = path.split('.');
+  
+    for (const key of keys) {
+      if (obj && obj.hasOwnProperty(key)) {
+        obj = obj[key];
+      } else {
+        return undefined;
+      }
+    }
+  
+    return obj;
   }
 
   salvarVariedadeCardapio() {

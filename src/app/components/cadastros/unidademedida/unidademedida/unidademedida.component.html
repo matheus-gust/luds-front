@@ -47,15 +47,16 @@
         <h1 style="font-size: 20pt;">
             Adicionar Unidade de Medida
         </h1>
-
-        <div class="grid">
-            <div class="col-12 mar-1">
-                <span class="p-float-label">
-                    <input [(ngModel)]="unidadeMedidaSalvar.nome" id="nome-unidadeMedida" type="text" pInputText>
-                    <label for="nome-unidadeMedida">Nome</label>
-                </span>
+        <form #fFormularioAdicionar='ngForm' id="fFormAdicionar" autocomplete="off">
+            <div class="grid">
+                <div class="col-12 mar-1">
+                    <span class="p-float-label">
+                        <input required [(ngModel)]="unidadeMedidaSalvar.nome" name="nome-unidadeMedida" id="nome-unidadeMedida" type="text" pInputText>
+                        <label for="nome-unidadeMedida">Nome</label>
+                    </span>
+                </div>
             </div>
-        </div>
+        </form>
         <ng-template pTemplate="footer">
             <div class="grid" style="justify-content: space-around;">
                 <button (click)="salvarUnidadeMedida()" pButton type="button" label="Salvar"

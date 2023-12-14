@@ -23,7 +23,7 @@
                 <td class="text-center" style="justify-content: center !important;"
                     *ngFor="let col of columns; let i = index" [ngClass]="(i%2== 1)? 'table-row' : ''">
                     <span class="p-column-title" style="font-weight: bold; margin-right: 20px;">{{col.header}}:</span>
-                    {{rowData[col.field]}}
+                    {{getNestedPropertyValue(rowData, col.field)}}
                 </td>
                 <td class="text-center" style="justify-content: space-around !important;">
                     <button (click)="abreSlideEditar(rowData)" style="margin-right: 5px;" pButton type="button"
