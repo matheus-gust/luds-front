@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { ApiCollectionResponse } from "src/app/commons/api-collection-response.model";
 import { environment } from "src/environments/environment";
 import { ItemCardapio } from "../model/item-cardapio.model";
+import { ItemCardapioInfoDTO } from "../model/item-cardapio-info-dto.model";
 
 @Injectable({
     providedIn: 'root'
@@ -24,6 +25,10 @@ export class ItemCardapioService {
 
     listarItensCardapio(): Observable<ApiCollectionResponse<ItemCardapio>> {
         return this.httpClient.get<ApiCollectionResponse<ItemCardapio>>(`${this._server}/item-cardapio`);
+    }
+
+    listarItensCardapioInfo(): Observable<ApiCollectionResponse<ItemCardapioInfoDTO>> {
+        return this.httpClient.get<ApiCollectionResponse<ItemCardapioInfoDTO>>(`${this._server}/item-cardapio/info`);
     }
 
     inserirItemCardapio(itemCardapio: ItemCardapio): Observable<ItemCardapio> {

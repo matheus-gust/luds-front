@@ -114,7 +114,7 @@ export class VariedadeCardapioComponent implements OnInit {
 
   inserirVariedadeCardapio() {
     this.isGlobalLoading = true;
-    this.variedadeCardapioSalvar.categoriaCardapio = this.categoriaCardapioSelecionada?.id;
+    this.variedadeCardapioSalvar.categoriaCardapio = this.categoriaCardapioSelecionada;
     this.variedadeCardapioService.inserirVariedadeCardapio(this.variedadeCardapioSalvar).subscribe(
       {
         next: (response: VariedadeCardapio) => {
@@ -131,7 +131,7 @@ export class VariedadeCardapioComponent implements OnInit {
   }
 
   alterarVariedadeCardapio() {
-    this.variedadeCardapioSalvar.categoriaCardapio = this.categoriaCardapioSelecionada?.id;
+    this.variedadeCardapioSalvar.categoriaCardapio = this.categoriaCardapioSelecionada;
     this.variedadeCardapioService.alterarVariedadeCardapio(this.variedadeCardapioSalvar).subscribe(
       {
         next: (response: VariedadeCardapio) => {

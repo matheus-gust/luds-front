@@ -72,7 +72,7 @@
 </ng-template>
 <ng-template pTemplate="emptymessage" let-columns>
     <tr>
-        <td class="text-center" [attr.colspan]="4">
+        <td class="text-center" [attr.colspan]="columns.length+2">
             Nenhum dado encontrado
         </td>
     </tr>
@@ -96,7 +96,7 @@
             <div class="col-6  col-md-6">
                 <label for="float-input">Origem</label><br>
                 <span>
-                    <p-dropdown name="origem" [options]="origens" [(ngModel)]="origem" optionLabel="label"></p-dropdown>
+                    <p-dropdown name="origem" [options]="origens" [(ngModel)]="vendaSalvar.origem" optionLabel="label"></p-dropdown>
                 </span>
             </div>
         </div>
@@ -108,35 +108,39 @@
                 </div>
             </div>
         </div>
-        <div *ngFor="let veiculo of vendaSalvar.itens; let i = index" class="grid mt-2">
+        <h2>Total: R${{vendaSalvar.valor}}</h2>
+        <div *ngFor="let venda of vendaSalvar.itens; let i = index" class="grid mt-2">
             <div class="col-6 lg:col-3">
                 <label>Item</label><br>
                 <span>
-                    <p-dropdown name="item" optionLabel="label"></p-dropdown>
+                    <p-dropdown (onChange)="selecionaItem($event, drp)" [(ngModel)]="vendaSalvar.itens[i].item" [filter]="true" name="item" optionLabel="label" [options]="itensCardapio"[optionLabel]="'nome'"></p-dropdown>
                 </span>
             </div>
             <div class="col-6 lg:col-3">
                 <label>Variedade</label><br>
                 <span>
-                    <p-dropdown name="variedade" optionLabel="label"></p-dropdown>
+                    <p-dropdown #drp (onChange)="calculaValor(vendaSalvar.itens[i])" [(ngModel)]="vendaSalvar.itens[i].variedade" [filter]="true" name="variedade" optionLabel="label" [optionLabel]="'variedade.nome'"></p-dropdown>
                 </span>
             </div>
             <div class="col-6 lg:col-2">
                 <span>
                     <label for="quantidade">Quantidade</label>
-                    <input id="quantidade" type="text" pInputText>
+                    <input (change)="calculaValor(vendaSalvar.itens[i])" [(ngModel)]="vendaSalvar.itens[i].quantidade" id="quantidade" type="text" pInputText>
                 </span>
             </div>
             <div class="col-6 lg:col-2">
                 <span>
                     <label for="valor">Valor</label>
-                    <input id="valor" type="text" pInputText>
+                    <input [(ngModel)]="vendaSalvar.itens[i].valor" [readOnly]="true" id="valor" type="text" pInputText>
                 </span>
             </div>
             <div class="col-6 lg:col-2" style="margin-top: 20px;">
                 <button (click)="abreModalExclusaoitem(i)" pButton type="button"
                         class="p-button-outlined p-button-rounded p-button-danger" icon="pi pi-trash"></button>
             </div>
+        </div>
+        <div style="width: 100%; padding: 50px;">
+
         </div>
     </ng-template>
     

@@ -1,4 +1,5 @@
 import { CategoriaCardapio } from "../../categoria-cardapio/model/categoria-cardapio.model";
+import { ItemCardapioVariedade } from "./item-cardapio-variedade.model";
 
 export class ItemCardapio {
     id: string;
@@ -9,4 +10,5 @@ export class ItemCardapio {
     tamanho: string;
     categoria: CategoriaCardapio;
     imagem: string;
+    variedades: ItemCardapioVariedade[] = [];
 }

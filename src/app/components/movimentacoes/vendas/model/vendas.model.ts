@@ -4,6 +4,6 @@ export class Venda {
     id: string;
     itens: VendaItemCardapio[] = [];
     origem: string;
-    valor: number;
+    valor: number = 0;
     data: string;
 }

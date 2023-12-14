@@ -4,9 +4,13 @@ import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.m
 import { Venda } from '../model/vendas.model';
 import { VendaService } from '../service/vendas-service';
 import { VariedadeCardapio } from 'src/app/components/cardapio/variedade-cardapio/model/variedade-cardapio.model';
-import { CategoriaCardapio } from 'src/app/components/cardapio/categoria-cardapio/model/categoria-cardapio.model';
 import { VendaItemCardapio } from '../model/venda-item-cardapio.model';
 import { ItemCardapio } from 'src/app/components/cardapio/item-cardapio/model/item-cardapio.model';
+import { ItemCardapioService } from 'src/app/components/cardapio/item-cardapio/service/item-cardapio.service';
+import { VariedadeCardapioService } from 'src/app/components/cardapio/variedade-cardapio/service/variedade-cardapio.service';
+import { ItemCardapioInfoDTO } from 'src/app/components/cardapio/item-cardapio/model/item-cardapio-info-dto.model';
+import { ItemCardapioVariedade } from 'src/app/components/cardapio/item-cardapio/model/item-cardapio-variedade.model';
+import { Dropdown } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-vendas',
@@ -27,21 +31,14 @@ export class VendasComponent implements OnInit {
   ];
   origem: any;
 
+  itensCardapio: ItemCardapioInfoDTO[] = [];
+  variedades: ItemCardapioVariedade[] = [];
+
+  variedadeCardapio: VariedadeCardapio = new VariedadeCardapio();
+
   displaySaveBar: boolean = false;
 
   vendas: Venda[] = [
-    {data: '22/08/2000', id: '123', itens: [
-      {id: '', boletim: '', quantidade: 5, valor: 50.00, variedade: new VariedadeCardapio(), item: new ItemCardapio() },
-      {id: '', boletim: '', quantidade: 5, valor: 50.00, variedade: new VariedadeCardapio(), item: new ItemCardapio() },
-      {id: '', boletim: '', quantidade: 5, valor: 50.00, variedade: new VariedadeCardapio(), item: new ItemCardapio() }
-    ], origem: 'Ifood', valor: 20.00},
-    {data: '22/08/2000', id: '124', itens: [
-      {id: '', boletim: '', quantidade: 5, valor: 50.00, variedade: new VariedadeCardapio(), item: new ItemCardapio() },
-      {id: '', boletim: '', quantidade: 5, valor: 50.00, variedade: new VariedadeCardapio(), item: new ItemCardapio() }
-    ], origem: 'Ifood', valor: 20.00},
-    {data: '22/08/2000', id: '125', itens: [
-      {id: '', boletim: '', quantidade: 5, valor: 50.00, variedade: new VariedadeCardapio(), item: new ItemCardapio() }
-    ], origem: 'Ifood', valor: 20.00}
   ];
   vendaSalvar: Venda = new Venda();
 
@@ -52,6 +49,8 @@ export class VendasComponent implements OnInit {
 
   constructor(    
     private vendaService: VendaService,
+    private itemService: ItemCardapioService,
+    private variedadeService: VariedadeCardapioService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService) { }
 
@@ -63,7 +62,8 @@ export class VendasComponent implements OnInit {
 
     this.home = { icon: 'pi pi-home', routerLink: '/' };
 
-    //this.listarVendas();
+    this.listarVendas();
+    this.listarItens();
 
     this.colunas = [
       { field: 'data', header: 'Data', class: 'data' },
@@ -83,6 +83,17 @@ export class VendasComponent implements OnInit {
     } else {
       this.inserirVenda();
     }
+  }
+
+  listarItens() {
+    this.itemService.listarItensCardapioInfo().subscribe(
+      {
+        next: (response: ApiCollectionResponse<ItemCardapioInfoDTO>) => {
+          this.itensCardapio = [new ItemCardapioInfoDTO()].concat(response.items);
+        }, error: () => {
+        }
+      }
+    )
   }
 
   listarVendas() {
@@ -115,6 +126,7 @@ export class VendasComponent implements OnInit {
 
   inserirVenda() {
     this.isGlobalLoading = true;
+    this.vendaSalvar.origem = this.origem.label;
     this.vendaService.inserirVenda(this.vendaSalvar).subscribe(
       {
         next: (response: Venda) => {
@@ -195,4 +207,25 @@ export class VendasComponent implements OnInit {
     this.vendaSalvar.itens.push(new VendaItemCardapio());
   }
 
+  public selecionaItem(event: any, dropDown: Dropdown) {
+    const item: ItemCardapio = event.value;
+    let varied: ItemCardapioVariedade[] = [];
+    item.variedades.forEach(vari => varied.push(vari));
+    dropDown.options = [new ItemCardapioVariedade()].concat(varied);
+  }
+  public calculaValor(item: VendaItemCardapio) {
+    if(item.variedade.valor && item.quantidade) {
+      let valor = item.variedade.valor * item.quantidade;
+      item.valor = valor;
+    } else {
+      item.valor = 0;
+    }
+    this.calculaValorTotal(this.vendaSalvar);
+  }
+
+  public calculaValorTotal(venda: Venda) {
+    let valorTotal = 0;
+    venda.itens.forEach(item => valorTotal += item.valor);
+    venda.valor = valorTotal;
+  }
 }

@@ -7,6 +7,9 @@ import { FormValidService } from 'src/app/commons/services/form-valid.service';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { CategoriaCardapio } from '../../categoria-cardapio/model/categoria-cardapio.model';
 import { CategoriaCardapioService } from '../../categoria-cardapio/service/categoria-cardapio.service';
+import { VariedadeCardapioService } from '../../variedade-cardapio/service/variedade-cardapio.service';
+import { VariedadeCardapio } from '../../variedade-cardapio/model/variedade-cardapio.model';
+import { ItemCardapioVariedade } from '../model/item-cardapio-variedade.model';
 
 export interface ItensListagem {
   categoria: CategoriaCardapio;
@@ -33,38 +36,13 @@ export class ItemCardapioComponent implements OnInit {
   public colunas: any[];
 
   categorias: CategoriaCardapio[] = [];
+  variedades: VariedadeCardapio[] = [];
 
   categoriaSelecionada: CategoriaCardapio = new CategoriaCardapio();
 
   listagensDeItens: ItensListagem[] = [];
 
   itensCardapio: ItemCardapio[] = [
-    {
-      id: "0001",
-      codigo: "0001",
-      nome: "Pizza Calabresa",
-      descricao: "Massa artesanal, Molho Lud's, Calabresa Defumada, Cebola e Finalização com ervas finas.",
-      valor: 95.59,
-      tamanho: "P,M,G",
-      categoria: {
-        id: "0001",
-        nome: "Pizzas"
-      },
-      imagem: "",
-    },
-    {
-      id: "0001",
-      codigo: "0001",
-      nome: "Pizza Calabresa",
-      descricao: "Massa artesanal, Molho Lud's, Calabresa Defumada, Cebola e Finalização com ervas finas.",
-      valor: 95.59,
-      tamanho: "P,M,G",
-      categoria: {
-        id: "0001",
-        nome: "Pizzas"
-      },
-      imagem: "",
-    }
   ]
 
   @ViewChild('fItemCardapio', { static: true }) formularioAdicionarItemCardapio = new NgForm([], []);
@@ -73,6 +51,7 @@ export class ItemCardapioComponent implements OnInit {
     private itemCardapioService: ItemCardapioService,
     private confirmationService: ConfirmationService,
     private categoriaService: CategoriaCardapioService,
+    private variedadeService: VariedadeCardapioService,
     private messageService: MessageService,
     private formValidService: FormValidService
   ) { }
@@ -86,6 +65,7 @@ export class ItemCardapioComponent implements OnInit {
     this.home = { icon: 'pi pi-home', routerLink: '/' };
 
     this.listarCategoriaCardapio();
+    this.listarVariedadesCardapio();
     this.listarItemCardapios();
 
     this.colunas = [
@@ -96,7 +76,7 @@ export class ItemCardapioComponent implements OnInit {
 
   salvarItemCardapio() {
 
-    if(!this.formValidService.validaFormularioInsercao(this.formularioAdicionarItemCardapio, 'formAdicionarItemCardapio')) {
+    if (!this.formValidService.validaFormularioInsercao(this.formularioAdicionarItemCardapio, 'formAdicionarItemCardapio')) {
       this.formValidService.validaFormularioInsercao(this.formularioAdicionarItemCardapio, 'formAdicionarItemCardapio')
     }
 
@@ -105,6 +85,38 @@ export class ItemCardapioComponent implements OnInit {
     } else {
       this.inserirItemCardapio();
     }
+  }
+
+  public adicionarItem() {
+    this.itemCardapioSalvar.variedades.push(new ItemCardapioVariedade());
+  }
+
+  public removerItem(index: number) {
+    this.itemCardapioSalvar.variedades.splice(index!, 1);
+  }
+
+  abreModalExclusaoitem(index: number) {
+    this.confirmationService.confirm({
+      message: 'Deseja mesmo remover a variedade?',
+      accept: () => {
+        this.removerItem(index)
+      }
+    });
+  }
+
+  listarVariedadesCardapio() {
+    this.isGlobalLoading = true;
+    this.variedades = [];
+    this.variedadeService.listarVariedadeCardapios().subscribe(
+      {
+        next: (response: ApiCollectionResponse<VariedadeCardapio>) => {
+          this.variedades = [new VariedadeCardapio].concat(response.items);
+          this.isGlobalLoading = false;
+        }, error: () => {
+          this.isGlobalLoading = false;
+        }
+      }
+    )
   }
 
   listarCategoriaCardapio() {
@@ -226,14 +238,14 @@ export class ItemCardapioComponent implements OnInit {
     var myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
-      this.itemCardapioSalvar.imagem =  myReader.result!.toString().split(',')[1];
+      this.itemCardapioSalvar.imagem = myReader.result!.toString().split(',')[1];
     }
     myReader.readAsDataURL(imagem);
   }
-  
+
   transformarParaItensListagem(itens: ItemCardapio[]): ItensListagem[] {
     const itensListagem: ItensListagem[] = [];
-  
+
     const itensPorCategoria: { [categoriaId: string]: ItemCardapio[] } = {};
     itens.forEach((item) => {
       if (!itensPorCategoria[item.categoria.id]) {
@@ -241,25 +253,25 @@ export class ItemCardapioComponent implements OnInit {
       }
       itensPorCategoria[item.categoria.id].push(item);
     });
-  
+
     for (const categoriaId in itensPorCategoria) {
       if (itensPorCategoria.hasOwnProperty(categoriaId)) {
         const categoria: CategoriaCardapio = {
           id: categoriaId,
           nome: itensPorCategoria[categoriaId][0].categoria.nome,
         };
-  
+
         const itensDaCategoria: ItemCardapio[] = itensPorCategoria[categoriaId];
-  
+
         const itensListagemCategoria: ItensListagem = {
           categoria,
           itens: itensDaCategoria,
         };
-  
+
         itensListagem.push(itensListagemCategoria);
       }
     }
-  
+
     return itensListagem;
   }
 }
