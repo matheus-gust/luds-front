@@ -59,7 +59,7 @@ export class ComprasComponent implements OnInit {
     this.colunas = [
       { field: 'data', header: 'Data', class: 'data' },
       { field: 'fornecedor.nome', header: 'Fornecedor', class: 'fornecedor' },
-      { field: 'valorTotal', header: 'Valor', class: 'valor' }
+      { field: 'valorTotal', header: 'Valor', class: 'valor', prefix: 'R$' }
     ];
   }
 
@@ -186,7 +186,7 @@ export class ComprasComponent implements OnInit {
   public calculaValorTotal(venda: Compra) {
     let valorTotal: number = 0;
     venda.itens.forEach(item => valorTotal = ((Number(item.valor) * Number(item.quantidade) || 0) + valorTotal));
-    venda.valorTotal = valorTotal;
+    venda.valorTotal = Number(valorTotal.toFixed(2));
   }
 
   abreModalExclusaoitem(index: number) {

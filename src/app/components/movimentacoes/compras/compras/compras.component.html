@@ -25,7 +25,7 @@
                 </td>
                 <td class="text-center" style="justify-content: center !important;" *ngFor="let col of columns; let i = index" [ngClass]="(i%2== 1)? 'table-row' : ''">
                     <span class="p-column-title" style="font-weight: bold; margin-right: 20px;">{{col.header}}:</span>
-                    {{getFieldValue(rowData,col.field)}}
+                    {{(col.prefix) ? col.prefix : ''}}{{getFieldValue(rowData,col.field)}}
                 </td>
                 <td class="text-center" style="justify-content: space-around !important;">
                     <button (click)="abreSlideEditar(rowData)" style="margin-right: 5px;" pButton type="button"
@@ -54,8 +54,8 @@
                                 <tr>
                                     <td  class="text-center" [attr.colspan]="2">{{ detail.insumo.nome }}</td>
                                     <td  class="text-center" [attr.colspan]="1">{{ detail.quantidade }}</td>
-                                    <td  class="text-center" [attr.colspan]="1">{{ detail.valor }}</td>
-                                    <td  class="text-center" [attr.colspan]="1">{{ detail.quantidade * detail.valor }}</td>
+                                    <td  class="text-center" [attr.colspan]="1">R${{ detail.valor }}</td>
+                                    <td  class="text-center" [attr.colspan]="1">R${{ detail.quantidade * detail.valor }}</td>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="emptymessage">
@@ -97,7 +97,7 @@
                     <div class="col-6  col-md-6">
                         <label for="float-input">Fornecedor</label><br>
                         <span>
-                            <p-dropdown (onShow)="listarFornecedores()" [required]="true" name="origem" [options]="fornecedores" [(ngModel)]="compraSalvar.fornecedor" [optionLabel]="'nome'"></p-dropdown>
+                            <p-dropdown (onShow)="listarFornecedores()" [filter]="true" [required]="true" name="origem" [options]="fornecedores" [(ngModel)]="compraSalvar.fornecedor" [optionLabel]="'nome'"></p-dropdown>
                         </span>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                             <label for="quantidade">Quantidade</label>
                             <span>
                                 <p-inputNumber ngModel [required]="true" [disabled]="!compraSalvar.itens[i].insumo" (onBlur)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].quantidade"
-                                name="quantidade{{i}}" id="quantidade{{i}}" type="number"></p-inputNumber>
+                                name="quantidade{{i}}" id="quantidade{{i}}"></p-inputNumber>
                             </span>
                             <span style="right: 0.75rem; color: #6c757d; position: absolute; top: 56%;">{{compraSalvar.itens[i]?.insumo?.unidadeMedida}}</span>
                                 <!---->
@@ -139,14 +139,14 @@
                     <div class="col-6 lg:col-2">
                         <label for="valor">Valor {{(compraSalvar.itens[i]?.insumo?.unidadeMedida) ? '(' + compraSalvar.itens[i]?.insumo?.unidadeMedida + ')' : ''}}</label>
                         <span>
-                            <p-inputNumber ngModel [required]="true" (onBlur)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].valor"
-                            name="valor{{i}}" id="valor{{i}}" type="number"> </p-inputNumber>
+                            <p-inputNumber ngModel [minFractionDigits]="2" mode="decimal" currency="BRL" locale="pt-BR" [required]="true" (onBlur)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].valor"
+                            name="valor{{i}}" id="valor{{i}}"> </p-inputNumber>
                         </span>
                     </div>
                     <div class="col-6 lg:col-2">
                         <span>
                             <label for="valor">Valor Total</label>
-                            <input ngModel [readonly]="true" name="valorTotal{{i}}" id="valorTotal{{i}}" type="text" [ngModel]="((compraSalvar.itens[i].valor * compraSalvar.itens[i].quantidade) || 0)" pInputText>
+                            <p-inputNumber ngModel [minFractionDigits]="2" mode="decimal" currency="BRL" locale="pt-BR" [readonly]="true" name="valorTotal{{i}}" id="valorTotal{{i}}" type="text" [ngModel]="((compraSalvar.itens[i].valor * compraSalvar.itens[i].quantidade) || 0)"></p-inputNumber>
                         </span>
                     </div>
                     <div class="col-6 lg:col-2" style="margin-top: 20px;">

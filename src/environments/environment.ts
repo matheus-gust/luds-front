@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  urlBackEnd: 'http://127.0.0.1:8080/app'
+  urlBackEnd: 'https://sw-luds-pizzaria-497eb927ff9e.herokuapp.com/app'
 };
 
 /*
