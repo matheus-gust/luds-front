@@ -129,7 +129,7 @@
                         <span style="position: relative;">
                             <label for="quantidade">Quantidade</label>
                             <span>
-                                <p-inputNumber ngModel [required]="true" [disabled]="!compraSalvar.itens[i].insumo" (onBlur)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].quantidade"
+                                <p-inputNumber ngModel [required]="true" [minFractionDigits]="2" mode="decimal" [disabled]="!compraSalvar.itens[i].insumo" (onBlur)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].quantidade"
                                 name="quantidade{{i}}" id="quantidade{{i}}"></p-inputNumber>
                             </span>
                             <span style="right: 0.75rem; color: #6c757d; position: absolute; top: 56%;">{{compraSalvar.itens[i]?.insumo?.unidadeMedida}}</span>
