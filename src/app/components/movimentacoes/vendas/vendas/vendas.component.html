@@ -46,39 +46,40 @@
                         <h3 style="justify-self: center; text-align: center;">Itens da venda</h3>
                         <p-table [value]="rowData.itens" dataKey="id" [columns]="colunasDetalhes">
                             <ng-template pTemplate="header">
-                                <tr>
-                                    <th class="text-center" style="width: 5rem"></th>
-                                    <th class="text-center" pSortableColumn="nome">Nome<p-sortIcon field="nome"></p-sortIcon></th>
-                                    <th class="text-center" pSortableColumn="valor">Valor<p-sortIcon field="valor"></p-sortIcon></th>
-                                    <th class="text-center" pSortableColumn="quantidade">Quantidade<p-sortIcon field="quantidade"></p-sortIcon></th>
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="body" let-detail>
-                                <tr>
-                                    <td class="text-center" [attr.colspan]="2">{{ detail.item.nome }}</td>
-                                    <td class="text-center" [attr.colspan]="1">{{ detail.variedade.valor }}</td>
-                                    <td class="text-center" [attr.colspan]="1">{{ detail.quantidade }}</td>
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="emptymessage">
-                                <tr>
-                                    <td [attr.colspan]="7" class="text-center">Nenhum item inserido.</td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                        <span style="width: 100%; margin-bottom: 40px;"></span>
-                    </div>
-                </td>
+            <tr>
+                <th class="text-center" style="width: 5rem"></th>
+                <th class="text-center" pSortableColumn="nome">Nome<p-sortIcon field="nome"></p-sortIcon></th>
+                <th class="text-center" pSortableColumn="valor">Valor<p-sortIcon field="valor"></p-sortIcon></th>
+                <th class="text-center" pSortableColumn="quantidade">Quantidade<p-sortIcon
+                        field="quantidade"></p-sortIcon></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="emptymessage" let-columns>
+        <ng-template pTemplate="body" let-detail>
             <tr>
-                <td class="text-center" [attr.colspan]="columns.length+2">
-                    Nenhum dado encontrado
-                </td>
+                <td class="text-center" [attr.colspan]="2">{{ detail.item.nome }}</td>
+                <td class="text-center" [attr.colspan]="1">{{ detail.variedade.valor }}</td>
+                <td class="text-center" [attr.colspan]="1">{{ detail.quantidade }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td [attr.colspan]="7" class="text-center">Nenhum item inserido.</td>
             </tr>
         </ng-template>
     </p-table>
+    <span style="width: 100%; margin-bottom: 40px;"></span>
+</div>
+</td>
+</tr>
+</ng-template>
+<ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+        <td class="text-center" [attr.colspan]="columns.length+2">
+            Nenhum dado encontrado
+        </td>
+    </tr>
+</ng-template>
+</p-table>
 </div>
 
 <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-lg">
@@ -92,20 +93,95 @@
                 <div class="col-6 col-md-6">
                     <label for="float-input">Data</label><br>
                     <span>
-                        <p-calendar [required]="true" style="display: inline-grid; width: 100%;" [(ngModel)]="vendaSalvar.data"
-                            dateFormat="dd/mm/yy" name="data"></p-calendar>
+                        <p-calendar [required]="true" ngModel style="display: inline-grid; width: 100%;"
+                            [(ngModel)]="vendaSalvar.data" dateFormat="dd/mm/yy" name="data"></p-calendar>
                     </span>
                 </div>
-                <div class="col-6  col-md-6">
+                <div class="col-6 col-md-6">
                     <label for="float-input">Origem</label><br>
                     <span>
-                        <p-dropdown [required]="true" name="origem" [options]="origens" [(ngModel)]="vendaSalvar.origem" optionLabel="label" optionValue="label"></p-dropdown>
+                        <p-dropdown [required]="true" name="origem" [options]="origens" [(ngModel)]="vendaSalvar.origem"
+                            optionLabel="label" optionValue="label"></p-dropdown>
                     </span>
                 </div>
             </div>
+            <div *ngIf="vendaSalvar.origem =='salao'" class="grid mt-3">
+                <div class="col-6 col-md-6">
+                    <span class="p-float-label">
+                        <input ngModel pInputText [required]="true" id="mesa" name="mesa" [(ngModel)]="vendaSalvar.mesa"
+                            type="number">
+                        <label for="mesa">Mesa</label><br>
+                    </span>
+                </div>
+                <div class="col-6 col-md-6">
+                    <span class="p-float-label">
+                        <input ngModel pInputText [required]="true" id="responsavel" name="responsavel"
+                            [(ngModel)]="vendaSalvar.responsavel" type="text">
+                        <label for="responsavel">Responsável (Opcional)</label><br>
+                    </span>
+                </div>
+            </div>
+            <hr>
             <div class="grid mt-2">
                 <div class="col-12 col-md-12">
-                    <div style="margin-left: 0px;" class="row justify-content-between">
+                    <div class="row justify-content-between">
+                        <h3>Partes</h3>
+                        <button pButton class="p-button-outlined p-button-raised p-button-rounded" icon="pi pi-plus"
+                            severity="secondary" (click)="adicionarParte()"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="grid">
+                <p-card class="col-12">
+                    <ng-template pTemplate="header">
+                        <div class="grid justify-content-center">
+                            <h2>Geral</h2>
+                        </div>
+                    </ng-template>
+                    <h4>Itens:</h4>
+                    <div class="grid">
+                        <span class="col-2"><h5>Item:</h5>SHAUSUAH</span>
+                        <span class="col-2"><h5>Variedade:</h5> SHAUSUAH</span>
+                        <span class="col-2"><h5>Valor:</h5> SHAUSUAH</span>
+                        <div style="display: flex; justify-content: center; align-items: center;" class="col-1">
+                            <i style="font-size: 15pt; color: #e24c4c; cursor: pointer;" class="pi pi-trash"></i>
+                        </div>
+                    </div>
+                    <ng-template pTemplate="footer">
+                        <h3>Total: R$0</h3>
+                    </ng-template>
+                </p-card>
+            </div>
+            <div class="grid mt-3">
+                <div *ngFor="let parte of partes; let i = index" class="col-12 lg:col-6">
+                    <p-card>
+                        <ng-template pTemplate="header">
+                            <div class="grid" style="align-items: baseline; justify-content: space-around; padding-left: 15px;padding-right: 15px;">
+                                <h2 style="color: rgb(115, 115, 243);">{{i+1}} - </h2>
+                                <input required ngModel [(ngModel)]="partes[i].nome" name="nome-parte{{i}}" id="nome-parte{{i}}" class="col-8 mt-3" pInputText>
+                                <i (click)="abreModalExclusaoParte(i)" style="font-size: 15pt; color: #e24c4c; cursor: pointer;" class="pi pi-times"></i>
+                            </div>
+                        </ng-template>
+                        <h4>Itens:</h4>
+                        <div class="grid" style="justify-content: space-around" *ngFor="let itemNaParte of parte.itens">
+                            <span class="col-2"><h5>Item:</h5>{{itemNaParte.item.nome}}</span>
+                            <span class="col-3"><h5>Variedade:</h5>{{itemNaParte.variedade.variedade.nome}}</span>
+                            <span class="col-3"><h5>Quantidade:</h5>{{itemNaParte.quantidade}}</span>
+                            <span class="col-2"><h5>Valor:</h5>{{itemNaParte.valor}}</span>
+                            <div style="display: flex; justify-content: center; align-items: center;" class="col-1">
+                                <i style="font-size: 15pt; color: #e24c4c; cursor: pointer;" class="pi pi-trash"></i>
+                            </div>
+                        </div>
+                        <ng-template pTemplate="footer">
+                            <h3>Total: R$0</h3>
+                        </ng-template>
+                    </p-card>
+                </div>
+            </div>
+            <hr>
+            <div class="grid mt-2">
+                <div class="col-12 col-md-12">
+                    <div class="row justify-content-between">
                         <h3>Itens</h3>
                         <button pButton class="p-button-outlined p-button-raised p-button-rounded" icon="pi pi-plus"
                             severity="secondary" (click)="adicionarItem()"></button>
@@ -113,53 +189,61 @@
                 </div>
             </div>
             <h2>Total: R${{vendaSalvar.valor}}</h2>
-            <div *ngFor="let venda of vendaSalvar.itens; let i = index" class="grid mt-2">
-                <div class="col-6 lg:col-3">
+            <div pDraggable="dd" *ngFor="let item of itens; let i = index"
+                class="grid justify-content-between mt-2">
+                <div class="col-6 lg:col-5">
                     <label>Item</label><br>
                     <span>
-                        <p-dropdown 
-                            ngModel
-                            (onChange)="selecionaItem($event.value, i); calculaValor(vendaSalvar.itens[i])" 
-                            [ngModel]="defineItemFormulario(vendaSalvar.itens[i])"
-                            [filter]="true" name="item{{i}}" id="item{{i}}" optionLabel="label" [options]="itensCardapio"
-                            [optionLabel]="'nome'"
+                        <p-dropdown ngModel
+                            (onChange)="selecionaItem($event.value, i); calculaValor(item)"
+                            [ngModel]="defineItemFormulario(item)" [filter]="true" name="item{{i}}"
+                            id="item{{i}}" optionLabel="label" [options]="itensCardapio" [optionLabel]="'nome'"
                             [required]="true"></p-dropdown>
                     </span>
                 </div>
                 <div class="col-6 lg:col-3">
                     <label>Variedade</label><br>
                     <span>
-                        <p-dropdown
-                        #dropVariedade
-                        ngModel
-                        [disabled]="!vendaSalvar.itens[i].item"
-                        [options]="defineOpcoes(vendaSalvar.itens[i].item)"
-                        (onChange)="calculaValor(vendaSalvar.itens[i])"
-                        [(ngModel)]="vendaSalvar.itens[i].variedade"
-                        [filter]="true" name="variedade{{i}}" id="variedade{{i}}"
-                            optionLabel="label" [optionLabel]="'variedade.nome'"></p-dropdown>
+                        <p-dropdown #dropVariedade ngModel [disabled]="!item.item"
+                            [options]="defineOpcoes(item.item)"
+                            (onChange)="calculaValor(item)" [(ngModel)]="item.variedade"
+                            [filter]="true" name="variedade{{i}}" id="variedade{{i}}" optionLabel="label"
+                            [optionLabel]="'variedade.nome'"></p-dropdown>
                     </span>
                 </div>
-                <div class="col-6 lg:col-2">
+                <div class="col-3 lg:col-2">
                     <span>
                         <label for="quantidade">Quantidade</label>
-                        <input ngModel required [disabled]="!vendaSalvar.itens[i].item" (change)="calculaValor(vendaSalvar.itens[i])" [(ngModel)]="vendaSalvar.itens[i].quantidade"
+                        <input ngModel required [disabled]="!item.item"
+                            (change)="calculaValor(item)" [(ngModel)]="item.quantidade"
                             name="quantidade{{i}}" id="quantidade{{i}}" type="text" pInputText>
                     </span>
                 </div>
-                <div class="col-6 lg:col-2">
+                <div class="col-3 lg:col-2">
                     <span>
                         <label for="valor">Valor</label>
-                        <input ngModel [(ngModel)]="vendaSalvar.itens[i].valor" [readOnly]="true" name="valor{{i}}" id="valor{{i}}" type="text" pInputText>
+                        <input ngModel required [(ngModel)]="item.valor"
+                            (change)="calculaValorTotal(vendaSalvar)" [readOnly]="false" name="valor{{i}}"
+                            id="valor{{i}}" type="text" pInputText>
                     </span>
                 </div>
-                <div class="col-6 lg:col-2" style="margin-top: 20px;">
+                <div class="col-5 col-md-2">
+                    <label for="float-input">Parte</label><br>
+                    <span>
+                        <p-dropdown [required]="true" name="parte" [options]="partes" [(ngModel)]="item.parte"
+                        optionLabel="nome">
+                        </p-dropdown>
+                    </span>
+                </div>
+                <div style="justify-content: space-around; display: flex; margin-top: 20px;" class="col-3 lg:col-2">
+                    <button (click)="confirmaItemNaParte(i, item, item.parte)" pButton type="button"
+                        class="p-button-outlined p-button-rounded p-button-success" icon="pi pi-check"></button>
                     <button (click)="abreModalExclusaoitem(i)" pButton type="button"
                         class="p-button-outlined p-button-rounded p-button-danger" icon="pi pi-trash"></button>
                 </div>
             </div>
             <div style="width: 100%; padding: 50px;">
-    
+
             </div>
         </form>
     </ng-template>

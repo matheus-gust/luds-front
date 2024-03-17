@@ -26,9 +26,6 @@ export class InsumosComponent implements OnInit {
   insumos: Insumo[] = [];
   insumoSalvar: Insumo = new Insumo();
 
-  fornecedor: Fornecedor;
-  fornecedores: Fornecedor[] = [];
-
   unidadeMedidaSelecionada: UnidadeMedida;
   unidadesMedida: UnidadeMedida[] = [];
 
@@ -38,9 +35,8 @@ export class InsumosComponent implements OnInit {
 
   @ViewChild('fFormularioAdicionar', { static: false }) formularioAdicionar: NgForm;
 
-  constructor(    
+  constructor(
     private insumoService: InsumoService,
-    private fornecedorService: FornecedorService,
     private unidadeMedidaService: UnidadeMedidaService,
     private confirmationService: ConfirmationService,
     private formValidService: FormValidService,
@@ -55,23 +51,21 @@ export class InsumosComponent implements OnInit {
     this.home = { icon: 'pi pi-home', routerLink: '/' };
 
     this.listarInsumos();
-    this.listarFornecedores();
     this.listarUnidadeMedidas();
 
     this.colunas = [
       { field: 'codigo', header: 'Código', class: 'codigo' },
       { field: 'nome', header: 'Nome', class: 'nome' },
-      { field: 'fornecedor', header: 'Fornecedor', class: 'fornecedor' },
       { field: 'unidadeMedida', header: 'Unidade Medida', class: 'unidadeMedida' }
     ];
   }
 
   salvarInsumo() {
-    if(!this.formValidService.validaFormularioInsercao(this.formularioAdicionar, 'fFormAdicionar')) {
+    if (!this.formValidService.validaFormularioInsercao(this.formularioAdicionar, 'fFormAdicionar')) {
       return;
     }
 
-    if(this.insumoSalvar.id) {
+    if (this.insumoSalvar.id) {
       this.alterarInsumo();
     } else {
       this.inserirInsumo();
@@ -123,7 +117,6 @@ export class InsumosComponent implements OnInit {
 
   inserirInsumo() {
     this.isGlobalLoading = true;
-    this.insumoSalvar.fornecedor = this.fornecedor?.id;
     this.insumoSalvar.unidadeMedida = this.unidadeMedidaSelecionada?.id;
     this.insumoService.inserirInsumo(this.insumoSalvar).subscribe(
       {
@@ -132,7 +125,7 @@ export class InsumosComponent implements OnInit {
           this.isGlobalLoading = false;
           this.insumoSalvar = new Insumo();
           this.displaySaveBar = false;
-          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Insumo inserido com sucesso'});
+          this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Insumo inserido com sucesso' });
         }, error: () => {
           this.isGlobalLoading = false;
         }
@@ -141,7 +134,6 @@ export class InsumosComponent implements OnInit {
   }
 
   alterarInsumo() {
-    this.insumoSalvar.fornecedor = this.fornecedor?.id;
     this.insumoSalvar.unidadeMedida = this.unidadeMedidaSelecionada?.id;
     this.insumoService.alterarInsumo(this.insumoSalvar).subscribe(
       {
@@ -149,7 +141,7 @@ export class InsumosComponent implements OnInit {
           this.listarInsumos();
           this.insumoSalvar = new Insumo();
           this.displaySaveBar = false;
-          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Insumo alterado com sucesso'});
+          this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Insumo alterado com sucesso' });
         }, error: () => {
           this.isGlobalLoading = false;
         }
@@ -163,7 +155,7 @@ export class InsumosComponent implements OnInit {
       {
         next: () => {
           this.listarInsumos();
-          this.messageService.add({severity:'success', summary:'Sucesso', detail:'Insumo removido com sucesso'});
+          this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Insumo removido com sucesso' });
         }, error: () => {
           this.isGlobalLoading = false;
         }
@@ -171,38 +163,35 @@ export class InsumosComponent implements OnInit {
     )
   }
 
-  listarFornecedores() {
-    this.isGlobalLoading = true;
-    this.fornecedorService.listarFornecedores().subscribe(
-      {
-        next: (response: ApiCollectionResponse<Fornecedor>) => {
-          let fornecedores: Fornecedor[] = [new Fornecedor()];
-          this.fornecedores = fornecedores.concat(response.items);
-          this.isGlobalLoading = false;
-        }
-      }
-    )
-  }
-
   abreSlideInserir() {
-    this.displaySaveBar = true; 
+    this.displaySaveBar = true;
     this.insumoSalvar = new Insumo();
-    this.fornecedor = new Fornecedor();
     this.unidadeMedidaSelecionada = new UnidadeMedida();
   }
 
   abreSlideEditar(insumo: Insumo) {
-    this.displaySaveBar = true; 
-    this.insumoSalvar = {...insumo}
+    this.displaySaveBar = true;
+    this.insumoSalvar = { ...insumo }
   }
 
   abreModalExclusao(insumo: Insumo) {
     this.confirmationService.confirm({
       message: 'Deseja mesmo remover a insumo?',
       accept: () => {
-          this.removerInsumo(insumo.id!)
+        this.removerInsumo(insumo.id!)
       }
-  });
+    });
   }
 
+  getFieldValue(rowData: any, field: string): any {
+    const fields = field.split('.'); // Dividindo o campo em partes se for aninhado
+    let value = rowData;
+    for (const f of fields) {
+      value = value[f]; // Acessando o próximo nível do objeto
+      if (value === undefined || value === null) {
+        return null; // Se o campo for undefined ou null, retornamos null
+      }
+    }
+    return value;
+  }
 }

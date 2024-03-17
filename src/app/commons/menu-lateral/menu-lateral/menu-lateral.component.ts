@@ -42,7 +42,7 @@ export class MenuLateralComponent implements OnInit {
         items: [
           //{ label: 'Unidades', icon: 'pi pi-building', routerLink: ['/components/unidades'], command: this.fecharMenu.bind(this) },
           { label: 'Unidade Medida', icon: 'pi pi-at', routerLink: ['/components/unidade-medida'], command: this.fecharMenu.bind(this) },
-          { label: 'Categoria', icon: 'pi pi-align-justify', routerLink: ['/components/categoria'], command: this.fecharMenu.bind(this) },
+          //{ label: 'Categoria', icon: 'pi pi-align-justify', routerLink: ['/components/categoria'], command: this.fecharMenu.bind(this) },
           { label: 'Fornecedores', icon: 'pi pi-box', routerLink: ['/components/fornecedores'], command: this.fecharMenu.bind(this) },
           { label: 'Insumos', icon: 'pi pi-download', routerLink: ['/components/insumos'], command: this.fecharMenu.bind(this) }
         ]
@@ -51,8 +51,8 @@ export class MenuLateralComponent implements OnInit {
         expanded: true,
         label: 'Movimentos',
         items: [
-          { label: 'Vendas', icon: 'pi pi-cart-plus', routerLink: ['/components/vendas'], command: this.fecharMenu.bind(this) },
-          { label: 'Compras', icon: 'pi pi-cart-plus', routerLink: ['/components/compras'], command: this.fecharMenu.bind(this) }
+          { label: 'Vendas', icon: 'pi pi-dollar', routerLink: ['/components/vendas'], command: this.fecharMenu.bind(this) },
+          { label: 'Compras', icon: 'pi pi-shopping-cart', routerLink: ['/components/compras'], command: this.fecharMenu.bind(this) }
         ]
       },
       {
@@ -65,13 +65,13 @@ export class MenuLateralComponent implements OnInit {
           { label: 'Item Cardapio', icon: 'pi pi-book', routerLink: ['/components/item-cardapio'], command: this.fecharMenu.bind(this) }
         ]
       },
-      {
+      /*{
         expanded: true,
         label: 'Relatórios',
         items: [
           { label: 'Solicitações', icon: 'pi pi-list' }
         ]
-      }];
+      }*/];
   }
 
   ngOnInit() {

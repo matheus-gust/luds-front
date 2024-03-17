@@ -77,7 +77,7 @@ export class ItemCardapioComponent implements OnInit {
   salvarItemCardapio() {
 
     if (!this.formValidService.validaFormularioInsercao(this.formularioAdicionarItemCardapio, 'formAdicionarItemCardapio')) {
-      this.formValidService.validaFormularioInsercao(this.formularioAdicionarItemCardapio, 'formAdicionarItemCardapio')
+      return;
     }
 
     if (this.itemCardapioSalvar.id) {

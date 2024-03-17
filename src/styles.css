@@ -70,3 +70,10 @@ input {
 .p-sidebar-content {
     height: 100%;
 }
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 20px 0;
+  }

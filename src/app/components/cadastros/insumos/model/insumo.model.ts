@@ -4,7 +4,5 @@ export class Insumo {
     nome: string;
     fornecedor: string;
     localidade: string;
-    custoCompra: string;
-    valorVenda: string;
     unidadeMedida: string;
 }

@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { ApiCollectionResponse } from "src/app/commons/api-collection-response.model";
 import { Insumo } from "../model/insumo.model";
 import { environment } from "src/environments/environment";
+import { InsumoFilter } from "../model/insumo-filter.model";
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +23,7 @@ export class InsumoService {
         return this.httpClient.get<Insumo>(`${this._server}/insumo/buscar/${id}`);
     }
 
-    listarInsumos(): Observable<ApiCollectionResponse<Insumo>> {
+    listarInsumos(filter?: InsumoFilter): Observable<ApiCollectionResponse<Insumo>> {
         return this.httpClient.get<ApiCollectionResponse<Insumo>>(`${this._server}/insumo`);
     }
 

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { ApiCollectionResponse } from "src/app/commons/api-collection-response.model";
 import { environment } from "src/environments/environment";
@@ -24,7 +24,9 @@ export class ItemCardapioService {
     }
 
     listarItensCardapio(): Observable<ApiCollectionResponse<ItemCardapio>> {
-        return this.httpClient.get<ApiCollectionResponse<ItemCardapio>>(`${this._server}/item-cardapio`);
+        let params = new HttpParams();
+        params = params.append('pageSize', 1000);
+        return this.httpClient.get<ApiCollectionResponse<ItemCardapio>>(`${this._server}/item-cardapio`, {params});
     }
 
     listarItensCardapioInfo(): Observable<ApiCollectionResponse<ItemCardapioInfoDTO>> {

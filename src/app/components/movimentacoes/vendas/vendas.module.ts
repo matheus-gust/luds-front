@@ -15,7 +15,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DropdownModule } from 'primeng/dropdown';
 import { TreeTableModule } from 'primeng/treetable';
 import { CalendarModule } from 'primeng/calendar';
-
+import {CardModule} from 'primeng/card';
+import {DragDropModule} from 'primeng/dragdrop';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,9 @@ import { CalendarModule } from 'primeng/calendar';
     ProgressSpinnerModule,
     DropdownModule,
     TreeTableModule,
-    CalendarModule
+    CalendarModule,
+    CardModule,
+    DragDropModule
   ]
 })
 export class VendasModule { }

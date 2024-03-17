@@ -23,7 +23,7 @@
                 <td class="text-center" style="justify-content: center !important;"
                     *ngFor="let col of columns; let i = index" [ngClass]="(i%2== 1)? 'table-row' : ''">
                     <span class="p-column-title" style="font-weight: bold; margin-right: 20px;">{{col.header}}:</span>
-                    {{rowData[col.field]}}
+                    {{getFieldValue(rowData, col.field)}}
                 </td>
                 <td class="text-center" style="justify-content: space-around !important;">
                     <button (click)="abreSlideEditar(rowData)" style="margin-right: 5px;" pButton type="button"
@@ -62,7 +62,7 @@
 
                 <div class="col-12 mar-1">
                     <span class="p-float-label">
-                        <input required [(ngModel)]="insumoSalvar.nome" id="nome-insumo" type="text" pInputText>
+                        <input required [(ngModel)]="insumoSalvar.nome" id="nome-insumo" name="nome-insumo" type="text" pInputText>
                         <label for="nome-insumo">Nome</label>
                     </span>
                 </div>
@@ -75,16 +75,6 @@
                             optionLabel="nome"></p-dropdown>
                     </span>
                 </div>
-
-
-                <div class="col-12 mar-1">
-                    <label for="float-input">Fornecedor</label><br>
-                    <span class="p-float-label">
-                        <p-dropdown [required]="true" name="fornecedor"
-                            [options]="fornecedores" [(ngModel)]="fornecedor" optionLabel="nome"></p-dropdown>
-                    </span>
-                </div>
-
                 <br>
                 <br>
                 <br>

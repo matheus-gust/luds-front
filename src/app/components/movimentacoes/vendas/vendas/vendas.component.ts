@@ -13,6 +13,7 @@ import { Dropdown } from 'primeng/dropdown';
 import { formatDate } from '@angular/common';
 import { FormValidService } from 'src/app/commons/services/form-valid.service';
 import { NgForm } from '@angular/forms';
+import { Parte } from '../model/partes.model';
 
 @Component({
   selector: 'app-vendas',
@@ -40,11 +41,14 @@ export class VendasComponent implements OnInit {
 
   displaySaveBar: boolean = false;
 
-  vendas: Venda[] = [
-  ];
+  vendas: Venda[] = [];
   vendaSalvar: Venda = new Venda();
+  partes: Parte[] = [];
+  itens: VendaItemCardapio[] = [];
 
   isGlobalLoading: boolean = false;
+
+  itemArrastado: VendaItemCardapio | null;
 
   public colunas: any[] = [];
   public colunasDetalhes: any[] = [];
@@ -83,183 +87,217 @@ export class VendasComponent implements OnInit {
     ];
   }
 
-salvarVenda() {
-  console.log(this.formularioVenda)
-  if (!this.formValidService.validaFormularioInsercao(this.formularioVenda, 'formAdicionarVenda')) {
-    return;
+  public salvarVenda() {
+    console.log(this.formularioVenda)
+    if (!this.formValidService.validaFormularioInsercao(this.formularioVenda, 'formAdicionarVenda')) {
+      return;
+    }
+
+    if (this.vendaSalvar.id) {
+      this.alterarVenda();
+    } else {
+      this.inserirVenda();
+    }
   }
 
-  if (this.vendaSalvar.id) {
-    this.alterarVenda();
-  } else {
-    this.inserirVenda();
+  public listarItens() {
+    this.itemService.listarItensCardapioInfo().subscribe(
+      {
+        next: (response: ApiCollectionResponse<ItemCardapioInfoDTO>) => {
+          this.itensCardapio = [new ItemCardapioInfoDTO()].concat(response.items);
+        }, error: () => {
+        }
+      }
+    )
   }
-}
 
-listarItens() {
-  this.itemService.listarItensCardapioInfo().subscribe(
-    {
-      next: (response: ApiCollectionResponse<ItemCardapioInfoDTO>) => {
-        this.itensCardapio = [new ItemCardapioInfoDTO()].concat(response.items);
-      }, error: () => {
+  public listarVendas() {
+    this.isGlobalLoading = true;
+    this.vendas = [];
+    this.vendaService.listarVendas().subscribe(
+      {
+        next: (response: ApiCollectionResponse<Venda>) => {
+          /*response.items.forEach(venda => {
+            venda.itens.map(venda => venda.item = venda.variedade.item)
+            this.vendas.push(venda);
+          });
+          this.isGlobalLoading = false;*/
+        }, error: () => {
+          this.isGlobalLoading = false;
+        }
       }
-    }
-  )
-}
+    )
+  }
 
-listarVendas() {
-  this.isGlobalLoading = true;
-  this.vendas = [];
-  this.vendaService.listarVendas().subscribe(
-    {
-      next: (response: ApiCollectionResponse<Venda>) => {
-        response.items.forEach(venda => {
-          venda.itens.map(venda => venda.item = venda.variedade.item)
-          this.vendas.push(venda);
-        });
-        this.isGlobalLoading = false;
-      }, error: () => {
-        this.isGlobalLoading = false;
+  public buscarVenda(idVenda: string) {
+    this.isGlobalLoading = true;
+    this.vendaService.buscarVendaPorId(idVenda).subscribe(
+      {
+        next: (response: Venda) => {
+          this.isGlobalLoading = false;
+          this.vendaSalvar = response;
+        }, error: () => {
+          this.isGlobalLoading = false;
+        }
       }
-    }
-  )
-}
+    )
+  }
 
-buscarVenda(idVenda: string) {
-  this.isGlobalLoading = true;
-  this.vendaService.buscarVendaPorId(idVenda).subscribe(
-    {
-      next: (response: Venda) => {
-        this.isGlobalLoading = false;
-        this.vendaSalvar = response;
-      }, error: () => {
-        this.isGlobalLoading = false;
+  public inserirVenda() {
+    this.isGlobalLoading = true;
+    this.vendaService.inserirVenda(this.vendaSalvar).subscribe(
+      {
+        next: (response: Venda) => {
+          this.listarVendas();
+          this.isGlobalLoading = false;
+          this.vendaSalvar = new Venda();
+          this.displaySaveBar = false;
+          this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda inserido com sucesso' });
+        }, error: () => {
+          this.isGlobalLoading = false;
+        }
       }
-    }
-  )
-}
+    )
+  }
 
-inserirVenda() {
-  this.isGlobalLoading = true;
-  this.vendaService.inserirVenda(this.vendaSalvar).subscribe(
-    {
-      next: (response: Venda) => {
-        this.listarVendas();
-        this.isGlobalLoading = false;
-        this.vendaSalvar = new Venda();
-        this.displaySaveBar = false;
-        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda inserido com sucesso' });
-      }, error: () => {
-        this.isGlobalLoading = false;
+  public alterarVenda() {
+    this.vendaService.alterarVenda(this.vendaSalvar).subscribe(
+      {
+        next: (response: Venda) => {
+          this.listarVendas();
+          this.vendaSalvar = new Venda();
+          this.displaySaveBar = false;
+          this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda alterado com sucesso' });
+        }, error: () => {
+          this.isGlobalLoading = false;
+        }
       }
-    }
-  )
-}
+    )
+  }
 
-alterarVenda() {
-  this.vendaService.alterarVenda(this.vendaSalvar).subscribe(
-    {
-      next: (response: Venda) => {
-        this.listarVendas();
-        this.vendaSalvar = new Venda();
-        this.displaySaveBar = false;
-        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda alterado com sucesso' });
-      }, error: () => {
-        this.isGlobalLoading = false;
+  public abreModalExclusaoitem(index: number) {
+    this.confirmationService.confirm({
+      message: 'Deseja mesmo remover o item?',
+      accept: () => {
+        this.removerItem(index)
       }
-    }
-  )
-}
+    });
+  }
 
-  public removerItem(index: number) {
-  this.vendaSalvar.itens.splice(index!, 1);
-  this.calculaValorTotal(this.vendaSalvar);
-}
-
-abreModalExclusaoitem(index: number) {
-  this.confirmationService.confirm({
-    message: 'Deseja mesmo remover o item?',
-    accept: () => {
-      this.removerItem(index)
-    }
-  });
-}
-
-removerVenda(idVenda: string) {
-  this.isGlobalLoading = true;
-  this.vendaService.removerVenda(idVenda).subscribe(
-    {
-      next: () => {
-        this.listarVendas();
-        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda removido com sucesso' });
-      }, error: () => {
-        this.isGlobalLoading = false;
+  
+  public abreModalExclusaoParte(index: number) {
+    this.confirmationService.confirm({
+      message: 'Deseja mesmo remover a parte?',
+      accept: () => {
+        this.removerParte(index)
       }
-    }
-  )
-}
+    });
+  }
 
-abreSlideInserir() {
-  this.displaySaveBar = true;
-  this.vendaSalvar = new Venda();
-}
+  public removerVenda(idVenda: string) {
+    this.isGlobalLoading = true;
+    this.vendaService.removerVenda(idVenda).subscribe(
+      {
+        next: () => {
+          this.listarVendas();
+          this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda removido com sucesso' });
+        }, error: () => {
+          this.isGlobalLoading = false;
+        }
+      }
+    )
+  }
 
-abreSlideEditar(venda: Venda) {
-  this.displaySaveBar = true;
-  this.vendaSalvar = { ...venda };
-  const itens: VendaItemCardapio[] = [];
-  venda.itens.forEach(item => itens.push({ ...item }));
-  this.vendaSalvar.itens = itens;
-}
+  public abreSlideInserir() {
+    this.displaySaveBar = true;
+    this.vendaSalvar = new Venda();
+  }
 
-abreModalExclusao(venda: Venda) {
-  this.confirmationService.confirm({
-    message: 'Deseja mesmo remover a venda?',
-    accept: () => {
-      this.removerVenda(venda.id!)
-    }
-  });
-}
+  public abreSlideEditar(venda: Venda) {
+    /*this.displaySaveBar = true;
+    this.vendaSalvar = { ...venda };
+    const itens: VendaItemCardapio[] = [];
+    venda.itens.forEach(item => itens.push({ ...item }));
+    this.vendaSalvar.itens = itens;*/
+  }
+
+  public abreModalExclusao(venda: Venda) {
+    this.confirmationService.confirm({
+      message: 'Deseja mesmo remover a venda?',
+      accept: () => {
+        this.removerVenda(venda.id!)
+      }
+    });
+  }
 
   public adicionarItem() {
-  this.vendaSalvar.itens.push(new VendaItemCardapio());
-}
+    this.itens.push(new VendaItemCardapio());
+  }
+
+  public removerItem(index: number) {
+    this.itens.splice(index!, 1);
+    this.calculaValorTotal(this.vendaSalvar);
+  }
+
+  public adicionarParte() {
+    const parte = new Parte();
+    parte.nome = String(this.partes.length + 1);
+    this.partes.push(parte);
+  }
+
+  public removerParte(index: number) {
+    this.partes.splice(index!, 1);
+    this.calculaValorTotal(this.vendaSalvar);
+  }
+
+  public confirmaItemNaParte(index: number, item: VendaItemCardapio, parte: Parte) {
+    this.partes[this.partes.indexOf(parte)].itens.push(item);
+    this.itens.splice(index!, 1);
+  }
+
+  public removerItemDaParte(indexItemNaParte: number, indexParte: number) {
+    this.partes[indexParte].itens.splice(indexItemNaParte!, 1);
+  }
 
   public selecionaItem(item: ItemCardapio, index: number) {
-  this.vendaSalvar.itens[index].item = { ...item };
-  this.vendaSalvar.itens[index].variedade = new ItemCardapioVariedade();
-}
-  public calculaValor(item: VendaItemCardapio) {
-  if (item.variedade.valor && item.quantidade) {
-    let valor = item.variedade.valor * item.quantidade;
-    item.valor = valor;
-  } else {
-    item.valor = 0;
+    this.itens[index].item = { ...item };
+    this.itens[index].variedade = new ItemCardapioVariedade();
   }
-  this.calculaValorTotal(this.vendaSalvar);
-}
+  public calculaValor(item: VendaItemCardapio) {
+    if (item.variedade.valor && item.quantidade) {
+      let valor = item.variedade.valor * item.quantidade;
+      item.valor = valor;
+    } else {
+      item.valor = 0;
+    }
+    this.calculaValorTotal(this.vendaSalvar);
+  }
 
   public calculaValorTotal(venda: Venda) {
-  let valorTotal = 0;
-  venda.itens.forEach(item => valorTotal += item.valor);
-  venda.valor = valorTotal;
-}
+    let valorTotal = 0;
+    //venda.itens.forEach(item => valorTotal += Number(item.valor));
+    venda.valor = valorTotal;
+  }
 
-formatarData(data: Date): string {
-  return formatDate(data, 'dd/MM/yyyy', 'pt');
-}
+  public formatarData(data: Date): string {
+    return formatDate(data, 'dd/MM/yyyy', 'pt');
+  }
 
   public defineItemFormulario(venda: VendaItemCardapio) {
-  const item = { ...venda.item };
-  return this.itensCardapio.filter(it => item?.id === it?.id)[0];
-}
+    const item = { ...venda.item };
+    return this.itensCardapio.filter(it => item?.id === it?.id)[0];
+  }
   public defineVariedadeFormulario(dropDown: Dropdown, variedade: ItemCardapioVariedade, index: number) {
-  this.vendaSalvar.itens[index].variedade = { ...variedade };
-  return dropDown.selectedOption = { ...variedade };
-}
+    //this.vendaSalvar.itens[index].variedade = { ...variedade };
+    return dropDown.selectedOption = { ...variedade };
+  }
 
   public defineOpcoes(item: ItemCardapio) {
-  const itemCardapio = this.itensCardapio.filter(it => item?.id === it?.id)[0];
-  return [new VariedadeCardapio].concat([...itemCardapio.variedades]);
-}
+    const itemCardapio = this.itensCardapio.filter(it => item?.id === it?.id)[0];
+    return [new VariedadeCardapio].concat([...itemCardapio.variedades]);
+  }
+
+  public parteLabel(option: any): string {
+    return option.nome;
+  }
 }

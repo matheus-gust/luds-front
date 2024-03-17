@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SolicitacaoInsumoComponent } from './solicitacao-insumo/solicitacao-insumo/solicitacao-insumo.component';
 import { VendasComponent } from './vendas/vendas/vendas.component';
-import { ComprasComponent } from './compras/vendas/compras.component';
+import { ComprasComponent } from './compras/compras/compras.component';
 
 const routes: Routes = [
   { path: 'solicitacao-insumo', component: SolicitacaoInsumoComponent},
