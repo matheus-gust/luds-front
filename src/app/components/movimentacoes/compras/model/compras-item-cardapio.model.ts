@@ -6,6 +6,7 @@ export class CompraInsumo {
     id: string;
     compra: Compra;
     insumo: Insumo;
-    quantidade: number;
-    valor: number;
+    quantidade: number = 0;
+    valor: number = 0;
+    desconto: number = 0;
 }

@@ -55,7 +55,7 @@
                                     <td  class="text-center" [attr.colspan]="2">{{ detail.insumo.nome }}</td>
                                     <td  class="text-center" [attr.colspan]="1">{{ detail.quantidade }}</td>
                                     <td  class="text-center" [attr.colspan]="1">R${{ detail.valor }}</td>
-                                    <td  class="text-center" [attr.colspan]="1">R${{ detail.quantidade * detail.valor }}</td>
+                                    <td  class="text-center" [attr.colspan]="1">R${{ calculaTotalItem(detail) }}</td>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="emptymessage">
@@ -111,8 +111,8 @@
                     </div>
                 </div>
                 <h2>Total: R${{compraSalvar.valorTotal}}</h2>
-                <div *ngFor="let venda of compraSalvar.itens; let i = index" class="grid mt-2">
-                    <div class="col-6 lg:col-4">
+                <div *ngFor="let item of compraSalvar.itens; let i = index" class="grid mt-2">
+                    <div class="col-6 lg:col-3">
                         <label>Insumo</label><br>
                         <span>
                             <p-dropdown 
@@ -129,7 +129,7 @@
                         <span style="position: relative;">
                             <label for="quantidade">Quantidade</label>
                             <span>
-                                <p-inputNumber ngModel [required]="true" [minFractionDigits]="2" mode="decimal" [disabled]="!compraSalvar.itens[i].insumo" (onBlur)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].quantidade"
+                                <p-inputNumber ngModel [required]="true" [minFractionDigits]="3" mode="decimal" [disabled]="!compraSalvar.itens[i].insumo" (onBlur)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].quantidade"
                                 name="quantidade{{i}}" id="quantidade{{i}}"></p-inputNumber>
                             </span>
                             <span style="right: 0.75rem; color: #6c757d; position: absolute; top: 56%;">{{compraSalvar.itens[i]?.insumo?.unidadeMedida}}</span>
@@ -139,17 +139,24 @@
                     <div class="col-6 lg:col-2">
                         <label for="valor">Valor {{(compraSalvar.itens[i]?.insumo?.unidadeMedida) ? '(' + compraSalvar.itens[i]?.insumo?.unidadeMedida + ')' : ''}}</label>
                         <span>
-                            <p-inputNumber ngModel [minFractionDigits]="2" mode="decimal" currency="BRL" locale="pt-BR" [required]="true" (onBlur)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].valor"
+                            <p-inputNumber [required]="true" ngModel [minFractionDigits]="2" mode="decimal" currency="BRL" locale="pt-BR" [required]="true" (ngModelChange)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].valor"
                             name="valor{{i}}" id="valor{{i}}"> </p-inputNumber>
                         </span>
                     </div>
                     <div class="col-6 lg:col-2">
+                        <label for="desconto">Desconto</label>
                         <span>
-                            <label for="valor">Valor Total</label>
-                            <p-inputNumber ngModel [minFractionDigits]="2" mode="decimal" currency="BRL" locale="pt-BR" [readonly]="true" name="valorTotal{{i}}" id="valorTotal{{i}}" type="text" [ngModel]="((compraSalvar.itens[i].valor * compraSalvar.itens[i].quantidade) || 0)"></p-inputNumber>
+                            <p-inputNumber ngModel [minFractionDigits]="2" mode="decimal" currency="BRL" locale="pt-BR" [required]="false" (onBlur)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].desconto"
+                            name="desconto{{i}}" id="desconto{{i}}"> </p-inputNumber>
                         </span>
                     </div>
-                    <div class="col-6 lg:col-2" style="margin-top: 20px;">
+                    <div class="col-6 lg:col-2">
+                        <span>
+                            <label for="valorTotal">Valor Total</label>
+                            <p-inputNumber ngModel [minFractionDigits]="2" mode="decimal" currency="BRL" locale="pt-BR" [readonly]="true" name="valorTotal{{i}}" id="valorTotal{{i}}" type="text" [ngModel]="calculaTotalItem(compraSalvar.itens[i])"></p-inputNumber>
+                        </span>
+                    </div>
+                    <div class="col-6 lg:col-1" style="margin-top: 20px;">
                         <button (click)="abreModalExclusaoitem(i)" pButton type="button"
                             class="p-button-outlined p-button-rounded p-button-danger" icon="pi pi-trash"></button>
                     </div>

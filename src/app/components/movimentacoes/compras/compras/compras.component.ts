@@ -185,7 +185,14 @@ export class ComprasComponent implements OnInit {
 
   public calculaValorTotal(venda: Compra) {
     let valorTotal: number = 0;
-    venda.itens.forEach(item => valorTotal = ((Number(item.valor) * Number(item.quantidade) || 0) + valorTotal));
+    venda.itens.forEach(item => {
+      if(item.valor && item.quantidade) {
+        valorTotal = valorTotal + (Number(item.valor) * Number(item.quantidade));
+        if(item.desconto) {
+          valorTotal = valorTotal - Number(item.desconto);
+        }
+      }
+    });
     venda.valorTotal = Number(valorTotal.toFixed(2));
   }
 
@@ -247,5 +254,16 @@ export class ComprasComponent implements OnInit {
 
   limpaInsumos() {
     this.compraSalvar.itens = []
+  }
+
+  calculaTotalItem(item: CompraInsumo) {
+    let valor = 0;
+    if((item.valor && item.quantidade)) {
+      valor = (item.valor * item.quantidade);
+      if(item.desconto) {
+        valor = valor - Number(item.desconto);
+      }
+    }
+    return valor.toFixed(2);
   }
 }
