@@ -141,7 +141,6 @@ export class ItemCardapioComponent implements OnInit {
         next: (response: ApiCollectionResponse<ItemCardapio>) => {
           this.itemCardapios = response.items;
           this.listagensDeItens = this.transformarParaItensListagem(response.items);
-          console.log(this.listagensDeItens);
           this.isGlobalLoading = false;
         }, error: () => {
           this.isGlobalLoading = false;

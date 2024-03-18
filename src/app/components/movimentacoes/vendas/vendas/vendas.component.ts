@@ -88,7 +88,6 @@ export class VendasComponent implements OnInit {
   }
 
   public salvarVenda() {
-    console.log(this.formularioVenda)
     if (!this.formValidService.validaFormularioInsercao(this.formularioVenda, 'formAdicionarVenda')) {
       return;
     }

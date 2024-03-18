@@ -139,7 +139,7 @@
                     <div class="col-6 lg:col-2">
                         <label for="valor">Valor {{(compraSalvar.itens[i]?.insumo?.unidadeMedida) ? '(' + compraSalvar.itens[i]?.insumo?.unidadeMedida + ')' : ''}}</label>
                         <span>
-                            <p-inputNumber [required]="true" ngModel [minFractionDigits]="2" mode="decimal" currency="BRL" locale="pt-BR" [required]="true" (ngModelChange)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].valor"
+                            <p-inputNumber [required]="true" ngModel [minFractionDigits]="2" mode="decimal" currency="BRL" locale="pt-BR" [required]="true" (onBlur)="calculaValorTotal(compraSalvar)" [(ngModel)]="compraSalvar.itens[i].valor"
                             name="valor{{i}}" id="valor{{i}}"> </p-inputNumber>
                         </span>
                     </div>

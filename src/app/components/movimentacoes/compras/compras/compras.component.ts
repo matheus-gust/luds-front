@@ -64,7 +64,6 @@ export class ComprasComponent implements OnInit {
   }
 
   salvarCompra() {
-    console.log(this.formularioCompra)
     if (!this.formValidService.validaFormularioInsercao(this.formularioCompra, 'formAdicionarCompra')) {
       return;
     }
@@ -158,7 +157,6 @@ export class ComprasComponent implements OnInit {
   abreSlideEditar(compra: Compra) {
     this.displaySaveBar = true;
     this.compraSalvar = { ...compra };
-    console.log(compra)
     const itens: CompraInsumo[] = [];
     compra.itens.forEach(item => itens.push({ ...item }));
     this.compraSalvar.itens = itens;
@@ -227,7 +225,6 @@ export class ComprasComponent implements OnInit {
     this.insumosService.listarInsumos().subscribe(
       (response) => {
         this.insumos = response.items;
-        console.log(response.items)
         if(this.insumos.length > 0) {
           this.insumos.unshift(new Insumo());
         }
