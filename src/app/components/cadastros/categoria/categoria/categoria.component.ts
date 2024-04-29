@@ -80,8 +80,7 @@ export class CategoriasComponent implements OnInit {
     this.unidadeMedidaService.listarUnidadeMedidas().subscribe(
       {
         next: (response: ApiCollectionResponse<UnidadeMedida>) => {
-          let unidades: UnidadeMedida[] = [new UnidadeMedida()];
-          this.unidadesMedida = unidades.concat(response.items);;
+          this.unidadesMedida = response.items;
           this.isGlobalLoading = false;
         }, error: () => {
           this.isGlobalLoading = false;
@@ -171,8 +170,7 @@ export class CategoriasComponent implements OnInit {
     this.fornecedorService.listarFornecedores().subscribe(
       {
         next: (response: ApiCollectionResponse<Fornecedor>) => {
-          let fornecedores: Fornecedor[] = [new Fornecedor()];
-          this.fornecedores = fornecedores.concat(response.items);
+          this.fornecedores = response.items;
           this.isGlobalLoading = false;
         }
       }

@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { Fornecedor } from '../model/fornecedor.model';
 import { FornecedorService } from '../service/fornecedor-service';
 import { FormValidService } from 'src/app/commons/services/form-valid.service';
 import { NgForm } from '@angular/forms';
+import { BaseComponent } from 'src/app/commons/componente-padrao.component';
 
 @Component({
   selector: 'app-fornecedores',
@@ -12,12 +13,13 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./fornecedor.component.css']
 })
 export class FornecedoresComponent implements OnInit {
+  @Input() hospedeiro: boolean;
 
   items: MenuItem[] = [];
   display: boolean = false;
   home: MenuItem = {};
 
-  displaySaveBar: boolean = false;
+  displaySaveBarFornecedor: boolean = false;
 
   fornecedores: Fornecedor[] = [];
   fornecedorSalvar: Fornecedor = new Fornecedor();
@@ -28,11 +30,13 @@ export class FornecedoresComponent implements OnInit {
 
   @ViewChild('fFormularioAdicionar', { static: false }) formularioAdicionar: NgForm;
 
-  constructor(    
+  constructor( 
     private fornecedorService: FornecedorService,
     private confirmationService: ConfirmationService,
     private formValidService: FormValidService,
-    private messageService: MessageService) { }
+    private messageService: MessageService) {
+      
+  }
 
   ngOnInit() {
     this.items = [
@@ -100,7 +104,7 @@ export class FornecedoresComponent implements OnInit {
           this.listarFornecedores();
           this.isGlobalLoading = false;
           this.fornecedorSalvar = new Fornecedor();
-          this.displaySaveBar = false;
+          this.displaySaveBarFornecedor = false;
           this.messageService.add({severity:'success', summary:'Sucesso', detail:'Fornecedor inserido com sucesso'});
         }, error: () => {
           this.isGlobalLoading = false;
@@ -115,7 +119,7 @@ export class FornecedoresComponent implements OnInit {
         next: (response: Fornecedor) => {
           this.listarFornecedores();
           this.fornecedorSalvar = new Fornecedor();
-          this.displaySaveBar = false;
+          this.displaySaveBarFornecedor = false;
           this.messageService.add({severity:'success', summary:'Sucesso', detail:'Fornecedor alterado com sucesso'});
         }, error: () => {
           this.isGlobalLoading = false;
@@ -139,12 +143,12 @@ export class FornecedoresComponent implements OnInit {
   }
 
   abreSlideInserir() {
-    this.displaySaveBar = true; 
+    this.displaySaveBarFornecedor = true; 
     this.fornecedorSalvar = new Fornecedor();
   }
 
   abreSlideEditar(fornecedor: Fornecedor) {
-    this.displaySaveBar = true; 
+    this.displaySaveBarFornecedor = true; 
     this.fornecedorSalvar = {...fornecedor}
   }
 

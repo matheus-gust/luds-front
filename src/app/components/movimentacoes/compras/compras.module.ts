@@ -15,7 +15,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TreeTableModule } from 'primeng/treetable';
 import { ComprasComponent } from './compras/compras.component';
 import { CalendarModule } from 'primeng/calendar';
-
+import {DialogModule} from 'primeng/dialog';
+import { FornecedoresModule } from '../../cadastros/fornecedores/fornecedor.module';
+import { FormaPagamentoModule } from '../../cadastros/formapagamento/formapagamento.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,10 @@ import { CalendarModule } from 'primeng/calendar';
     ProgressSpinnerModule,
     DropdownModule,
     TreeTableModule,
-    CalendarModule
+    CalendarModule,
+    DialogModule,
+    FornecedoresModule,
+    FormaPagamentoModule
   ]
 })
 export class ComprasModule { }

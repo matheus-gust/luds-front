@@ -31,6 +31,7 @@ import { FornecedoresComponent } from './fornecedores/fornecedor.component';
     InputNumberModule,
     InputMaskModule,
     ProgressSpinnerModule
-  ]
+  ],
+  exports: [FornecedoresComponent]
 })
 export class FornecedoresModule { }

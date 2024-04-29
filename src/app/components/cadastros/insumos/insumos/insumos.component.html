@@ -45,7 +45,7 @@
         </ng-template>
     </p-table>
 
-    <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
+    <p-sidebar [dismissible]="false"[(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
         <h1 style="font-size: 20pt;">
             Adicionar Insumo
         </h1>
@@ -68,20 +68,13 @@
                 </div>
 
                 <div class="col-12 mar-1">
-                    <label for="float-input">Unidade de Medida</label><br>
-                    <span class="p-float-label">
+                    <label>Unidade de Medida</label><br>
+                    <span>
                         <p-dropdown [required]="true" name="unidadeMedida"
                             [options]="unidadesMedida" [(ngModel)]="unidadeMedidaSelecionada"
-                            optionLabel="nome"></p-dropdown>
+                            optionLabel="nome" placeholder="Selecione" ></p-dropdown>
                     </span>
                 </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
             </div>
         </form>
         <ng-template pTemplate="footer">

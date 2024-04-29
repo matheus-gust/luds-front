@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,21 @@ export class AppComponent {
 
   public items: MenuItem[] = [];
 
+
+  traducaoPath = './assets/i18n/primeng-pt.json';
+
+  constructor(private config: PrimeNGConfig) { }
+
   ngOnInit() {
+
+    this.loadJSON(this.traducaoPath)
+      .then((translations) => {
+        this.config.setTranslation(translations);
+      })
+      .catch((error) => {
+        console.error('Erro ao carregar o arquivo JSON:', error);
+      });
+
     this.items = [
       {
         expanded: true,
@@ -35,5 +49,13 @@ export class AppComponent {
           { label: 'Solicitações', icon: 'pi pi-list' }
         ]
       }];
+  }
+
+  async loadJSON(path: string): Promise<any> {
+    const response = await fetch(path);
+    if (!response.ok) {
+      throw new Error(`Failed to load JSON file from ${path}`);
+    }
+    return await response.json();
   }
 }

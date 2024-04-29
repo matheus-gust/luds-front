@@ -110,7 +110,7 @@ export class ItemCardapioComponent implements OnInit {
     this.variedadeService.listarVariedadeCardapios().subscribe(
       {
         next: (response: ApiCollectionResponse<VariedadeCardapio>) => {
-          this.variedades = [new VariedadeCardapio].concat(response.items);
+          this.variedades = response.items;
           this.isGlobalLoading = false;
         }, error: () => {
           this.isGlobalLoading = false;
@@ -167,6 +167,7 @@ export class ItemCardapioComponent implements OnInit {
     this.isGlobalLoading = true;
     this.itemCardapioSalvar.categoria = new CategoriaCardapio();
     this.itemCardapioSalvar.categoria.id = this.categoriaSelecionada?.id;
+    console.log(this.itemCardapioSalvar)
     this.itemCardapioService.inserirItemCardapio(this.itemCardapioSalvar).subscribe(
       {
         next: (response: ItemCardapio) => {
@@ -220,7 +221,8 @@ export class ItemCardapioComponent implements OnInit {
 
   abreSlideEditar(itemCardapio: ItemCardapio) {
     this.displaySaveBar = true;
-    this.itemCardapioSalvar = { ...itemCardapio }
+    this.itemCardapioSalvar = {...itemCardapio};
+    this.categoriaSelecionada = {...itemCardapio.categoria};
   }
 
   abreModalExclusao(itemCardapio: ItemCardapio) {

@@ -29,7 +29,7 @@
                 <td class="text-center" style="justify-content: center !important;"
                     *ngFor="let col of columns; let i = index" [ngClass]="(i%2== 1)? 'table-row' : ''">
                     <span class="p-column-title" style="font-weight: bold; margin-right: 20px;">{{col.header}}:</span>
-                    <span>{{rowData[col.field]}}</span>
+                    <span>{{(col.prefix) ? col.prefix : ''}}{{getFieldValue(rowData,col.field)}}</span>
                 </td>
                 <td class="text-center" style="justify-content: space-around !important;">
                     <button (click)="abreSlideEditar(rowData)" style="margin-right: 5px;" pButton type="button"
@@ -43,22 +43,21 @@
             <tr style="background-color: #f8f9fa;">
                 <td [attr.colspan]="6">
                     <div style="display: flex; flex-direction: column;" class="p-3">
-                        <h3 style="justify-self: center; text-align: center;">Itens da venda</h3>
-                        <p-table [value]="rowData.itens" dataKey="id" [columns]="colunasDetalhes">
+                        <h3 style="justify-self: center; text-align: center;">Partes da venda</h3>
+                        <p-table [value]="rowData.partes" dataKey="id" [columns]="colunasPartes">
                             <ng-template pTemplate="header">
             <tr>
                 <th class="text-center" style="width: 5rem"></th>
-                <th class="text-center" pSortableColumn="nome">Nome<p-sortIcon field="nome"></p-sortIcon></th>
-                <th class="text-center" pSortableColumn="valor">Valor<p-sortIcon field="valor"></p-sortIcon></th>
-                <th class="text-center" pSortableColumn="quantidade">Quantidade<p-sortIcon
-                        field="quantidade"></p-sortIcon></th>
+                <th class="text-center" pSortableColumn="nome">Parte<p-sortIcon field="nome"></p-sortIcon></th>
+                <th class="text-center" pSortableColumn="valorParte">Valor<p-sortIcon field="valor"></p-sortIcon></th>
+                <th class="text-center" pSortableColumn="valorParte">Itens<p-sortIcon field="itens"></p-sortIcon></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-detail>
             <tr>
-                <td class="text-center" [attr.colspan]="2">{{ detail.item.nome }}</td>
-                <td class="text-center" [attr.colspan]="1">{{ detail.variedade.valor }}</td>
-                <td class="text-center" [attr.colspan]="1">{{ detail.quantidade }}</td>
+                <td class="text-center" [attr.colspan]="2">{{ detail.nome }}</td>
+                <td class="text-center" [attr.colspan]="1">R${{ detail.valorParte }}</td>
+                <td class="text-center" [attr.colspan]="1"><div *ngFor="let item of detail.itens; let iitem = index">Item: {{ item.variedade.item.nome }} - Qtd: {{item.quantidade}} - R$ {{item.variedade.valor}}</div></td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -82,7 +81,7 @@
 </p-table>
 </div>
 
-<p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-lg">
+<p-sidebar [dismissible]="false" [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-lg">
 
     <ng-template pTemplate="content">
         <h1 style="font-size: 20pt;">
@@ -93,15 +92,16 @@
                 <div class="col-6 col-md-6">
                     <label for="float-input">Data</label><br>
                     <span>
-                        <p-calendar [required]="true" ngModel style="display: inline-grid; width: 100%;"
-                            [(ngModel)]="vendaSalvar.data" dateFormat="dd/mm/yy" name="data"></p-calendar>
+                        <p-calendar placeholder="Informe a data" [required]="true" ngModel
+                            style="display: inline-grid; width: 100%;" [(ngModel)]="vendaSalvar.data"
+                            dataType="string" dateFormat="dd/mm/yy" name="data"></p-calendar>
                     </span>
                 </div>
                 <div class="col-6 col-md-6">
                     <label for="float-input">Origem</label><br>
                     <span>
-                        <p-dropdown [required]="true" name="origem" [options]="origens" [(ngModel)]="vendaSalvar.origem"
-                            optionLabel="label" optionValue="label"></p-dropdown>
+                        <p-dropdown placeholder="Selecione" [required]="true" name="origem" [options]="origens"
+                            [(ngModel)]="vendaSalvar.origem" optionLabel="label" optionValue="label"></p-dropdown>
                     </span>
                 </div>
             </div>
@@ -122,6 +122,42 @@
                 </div>
             </div>
             <hr>
+            <div class="grid">
+                <p-card class="col-12">
+                    <ng-template pTemplate="header">
+                        <div class="grid justify-content-center">
+                            <h2>Geral</h2>
+                        </div>
+
+                        <div class="col-12">
+                            <button pButton class="p-button-outlined p-button-raised"
+                            [label]="'Item'" icon="pi pi-plus" severity="secondary" (click)="abrirModalAdicionarItem('Geral')"></button>
+                        </div>
+                    </ng-template>
+                    <h4>Itens:</h4>
+                    <div class="grid" style="justify-content: space-around" *ngFor="let itemNaParte of this.parteGeral.itens; let i = index">
+                        <span class="col-2">
+                            <h5>Item:</h5>{{itemNaParte.item.nome}}
+                        </span>
+                        <span class="col-3">
+                            <h5>Variedade:</h5>{{itemNaParte.variedade.variedade.nome}}
+                        </span>
+                        <span class="col-3">
+                            <h5>Quantidade:</h5>{{itemNaParte.quantidade}}
+                        </span>
+                        <span class="col-2">
+                            <h5>Valor:</h5>{{itemNaParte.valor}}
+                        </span>
+                        <div style="display: flex; justify-content: center; align-items: center;" class="col-1">
+                            <i style="font-size: 15pt; color: #e24c4c; cursor: pointer;" class="pi pi-trash" (click)="abreModalExclusaoitem('Geral', i)"></i>
+                        </div>
+                    </div>
+                    <ng-template pTemplate="footer">
+                        <h3>Total: R${{parteGeral.valorParte || 0}}</h3>
+                    </ng-template>
+                </p-card>
+            </div>
+            
             <div class="grid mt-2">
                 <div class="col-12 col-md-12">
                     <div class="row justify-content-between">
@@ -131,120 +167,54 @@
                     </div>
                 </div>
             </div>
-            <div class="grid">
-                <p-card class="col-12">
-                    <ng-template pTemplate="header">
-                        <div class="grid justify-content-center">
-                            <h2>Geral</h2>
-                        </div>
-                    </ng-template>
-                    <h4>Itens:</h4>
-                    <div class="grid">
-                        <span class="col-2"><h5>Item:</h5>SHAUSUAH</span>
-                        <span class="col-2"><h5>Variedade:</h5> SHAUSUAH</span>
-                        <span class="col-2"><h5>Valor:</h5> SHAUSUAH</span>
-                        <div style="display: flex; justify-content: center; align-items: center;" class="col-1">
-                            <i style="font-size: 15pt; color: #e24c4c; cursor: pointer;" class="pi pi-trash"></i>
-                        </div>
-                    </div>
-                    <ng-template pTemplate="footer">
-                        <h3>Total: R$0</h3>
-                    </ng-template>
-                </p-card>
-            </div>
             <div class="grid mt-3">
                 <div *ngFor="let parte of partes; let i = index" class="col-12 lg:col-6">
                     <p-card>
                         <ng-template pTemplate="header">
-                            <div class="grid" style="align-items: baseline; justify-content: space-around; padding-left: 15px;padding-right: 15px;">
+                            <div class="grid"
+                                style="align-items: baseline; justify-content: space-around; padding-left: 15px;padding-right: 15px;">
                                 <h2 style="color: rgb(115, 115, 243);">{{i+1}} - </h2>
-                                <input required ngModel [(ngModel)]="partes[i].nome" name="nome-parte{{i}}" id="nome-parte{{i}}" class="col-8 mt-3" pInputText>
-                                <i (click)="abreModalExclusaoParte(i)" style="font-size: 15pt; color: #e24c4c; cursor: pointer;" class="pi pi-times"></i>
+                                <input required ngModel [(ngModel)]="partes[i].nome" name="nome-parte{{i}}"
+                                    id="nome-parte{{i}}" class="col-8 mt-3" pInputText>
+                                <i (click)="abreModalExclusaoParte(parte.nome, i)"
+                                    style="font-size: 15pt; color: #e24c4c; cursor: pointer;" class="pi pi-times"></i>
+                            </div>
+                            <div class="grid"
+                                style="align-items: baseline; padding-left: 15px;padding-right: 15px;">
+                                <button pButton class="p-button-outlined p-button-raised mt-2"
+                                [label]="'Item'" icon="pi pi-plus" severity="secondary" (click)="abrirModalAdicionarItem(parte.nome)"></button>
                             </div>
                         </ng-template>
                         <h4>Itens:</h4>
-                        <div class="grid" style="justify-content: space-around" *ngFor="let itemNaParte of parte.itens">
-                            <span class="col-2"><h5>Item:</h5>{{itemNaParte.item.nome}}</span>
-                            <span class="col-3"><h5>Variedade:</h5>{{itemNaParte.variedade.variedade.nome}}</span>
-                            <span class="col-3"><h5>Quantidade:</h5>{{itemNaParte.quantidade}}</span>
-                            <span class="col-2"><h5>Valor:</h5>{{itemNaParte.valor}}</span>
+                        <div class="grid" style="justify-content: space-around" *ngFor="let itemNaParte of parte.itens; let iitem = index">
+                            <span class="col-2">
+                                <h5>Item:</h5>{{itemNaParte.item.nome}}
+                            </span>
+                            <span class="col-3">
+                                <h5>Variedade:</h5>{{itemNaParte.variedade.variedade.nome}}
+                            </span>
+                            <span class="col-3">
+                                <h5>Quantidade:</h5>{{itemNaParte.quantidade}}
+                            </span>
+                            <span class="col-2">
+                                <h5>Valor:</h5>{{itemNaParte.valor}}
+                            </span>
                             <div style="display: flex; justify-content: center; align-items: center;" class="col-1">
-                                <i style="font-size: 15pt; color: #e24c4c; cursor: pointer;" class="pi pi-trash"></i>
+                                <i style="font-size: 15pt; color: #e24c4c; cursor: pointer;" class="pi pi-trash" (click)="abreModalExclusaoitem(parte.nome, iitem)"></i>
                             </div>
                         </div>
                         <ng-template pTemplate="footer">
-                            <h3>Total: R$0</h3>
+                            <h3>Total: R${{parte.valorParte || 0}}</h3>
                         </ng-template>
                     </p-card>
                 </div>
             </div>
-            <hr>
-            <div class="grid mt-2">
-                <div class="col-12 col-md-12">
-                    <div class="row justify-content-between">
-                        <h3>Itens</h3>
-                        <button pButton class="p-button-outlined p-button-raised p-button-rounded" icon="pi pi-plus"
-                            severity="secondary" (click)="adicionarItem()"></button>
-                    </div>
-                </div>
+            <div class="grid">
+                <h1>Total: R${{vendaSalvar.valor || 0}}</h1>
             </div>
-            <h2>Total: R${{vendaSalvar.valor}}</h2>
-            <div pDraggable="dd" *ngFor="let item of itens; let i = index"
-                class="grid justify-content-between mt-2">
-                <div class="col-6 lg:col-5">
-                    <label>Item</label><br>
-                    <span>
-                        <p-dropdown ngModel
-                            (onChange)="selecionaItem($event.value, i); calculaValor(item)"
-                            [ngModel]="defineItemFormulario(item)" [filter]="true" name="item{{i}}"
-                            id="item{{i}}" optionLabel="label" [options]="itensCardapio" [optionLabel]="'nome'"
-                            [required]="true"></p-dropdown>
-                    </span>
-                </div>
-                <div class="col-6 lg:col-3">
-                    <label>Variedade</label><br>
-                    <span>
-                        <p-dropdown #dropVariedade ngModel [disabled]="!item.item"
-                            [options]="defineOpcoes(item.item)"
-                            (onChange)="calculaValor(item)" [(ngModel)]="item.variedade"
-                            [filter]="true" name="variedade{{i}}" id="variedade{{i}}" optionLabel="label"
-                            [optionLabel]="'variedade.nome'"></p-dropdown>
-                    </span>
-                </div>
-                <div class="col-3 lg:col-2">
-                    <span>
-                        <label for="quantidade">Quantidade</label>
-                        <input ngModel required [disabled]="!item.item"
-                            (change)="calculaValor(item)" [(ngModel)]="item.quantidade"
-                            name="quantidade{{i}}" id="quantidade{{i}}" type="text" pInputText>
-                    </span>
-                </div>
-                <div class="col-3 lg:col-2">
-                    <span>
-                        <label for="valor">Valor</label>
-                        <input ngModel required [(ngModel)]="item.valor"
-                            (change)="calculaValorTotal(vendaSalvar)" [readOnly]="false" name="valor{{i}}"
-                            id="valor{{i}}" type="text" pInputText>
-                    </span>
-                </div>
-                <div class="col-5 col-md-2">
-                    <label for="float-input">Parte</label><br>
-                    <span>
-                        <p-dropdown [required]="true" name="parte" [options]="partes" [(ngModel)]="item.parte"
-                        optionLabel="nome">
-                        </p-dropdown>
-                    </span>
-                </div>
-                <div style="justify-content: space-around; display: flex; margin-top: 20px;" class="col-3 lg:col-2">
-                    <button (click)="confirmaItemNaParte(i, item, item.parte)" pButton type="button"
-                        class="p-button-outlined p-button-rounded p-button-success" icon="pi pi-check"></button>
-                    <button (click)="abreModalExclusaoitem(i)" pButton type="button"
-                        class="p-button-outlined p-button-rounded p-button-danger" icon="pi pi-trash"></button>
-                </div>
-            </div>
-            <div style="width: 100%; padding: 50px;">
-
-            </div>
+            <br>
+            <br>
+            <br>
         </form>
     </ng-template>
 
@@ -259,3 +229,53 @@
 </p-sidebar>
 
 <p-confirmDialog header="Confirmar Exclusão" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+<p-dialog header="Adicionar Item" [(visible)]="modalAdicionarItemVisible" [modal]="true"
+    [draggable]="false" [closable]="false" [resizable]="false">
+    
+    <ng-template pTemplate="body">
+        <form #fItem='ngForm'>
+            <div class="col-12">
+                <label>Item</label><br>
+                <span>
+                    <p-dropdown placeholder="Selecione" ngModel
+                        [(ngModel)]="novoItem.item"
+                        [filter]="true" name="item" id="item"
+                        optionLabel="label" [options]="itensCardapio" [optionLabel]="'nome'"
+                        [required]="true"></p-dropdown>
+                </span>
+            </div>
+            <div class="col-12">
+                <label>Variedade</label><br>
+                <span>
+                    <p-dropdown #dropVariedade ngModel [required]="true" placeholder="Selecione" [disabled]="!novoItem.item"
+                        [options]="defineOpcoes(novoItem.item)" (onChange)="calculaValorItem(novoItem)"
+                        [(ngModel)]="novoItem.variedade" [filter]="true" name="variedade" id="variedade"
+                        optionLabel="label" [optionLabel]="'variedade.nome'"></p-dropdown>
+                </span>
+            </div>
+            <div class="col-12">
+                <span>
+                    <label for="quantidade">Quantidade</label>
+                    <input ngModel required [disabled]="!novoItem.item || !novoItem.variedade" (change)="calculaValorItem(novoItem)"
+                        [(ngModel)]="novoItem.quantidade" name="quantidade" id="quantidade" type="text"
+                        pInputText>
+                </span>
+            </div>
+            <div class="col-12">
+                <span>
+                    <label for="valor">Valor</label>
+                    <input ngModel required [(ngModel)]="novoItem.valor"
+                        [readOnly]="true" name="valor" id="valor" type="text" pInputText>
+                </span>
+            </div>
+        </form>
+    </ng-template>
+    
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-times" (click)="modalAdicionarItemVisible=false" label="Fechar"
+            styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-check" (click)="adicionarItem(novoItem.parte)" label="Adicionar"
+            styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>

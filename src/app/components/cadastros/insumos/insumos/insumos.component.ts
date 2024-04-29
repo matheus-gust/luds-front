@@ -3,8 +3,6 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ApiCollectionResponse } from 'src/app/commons/api-collection-response.model';
 import { Insumo } from '../model/insumo.model';
 import { InsumoService } from '../service/insumo-service';
-import { Fornecedor } from '../../fornecedores/model/fornecedor.model';
-import { FornecedorService } from '../../fornecedores/service/fornecedor-service';
 import { UnidadeMedida } from '../../unidademedida/model/unidademedida.model';
 import { UnidadeMedidaService } from '../../unidademedida/service/unidademedida-service';
 import { FormValidService } from 'src/app/commons/services/form-valid.service';
@@ -56,7 +54,7 @@ export class InsumosComponent implements OnInit {
     this.colunas = [
       { field: 'codigo', header: 'Código', class: 'codigo' },
       { field: 'nome', header: 'Nome', class: 'nome' },
-      { field: 'unidadeMedida', header: 'Unidade Medida', class: 'unidadeMedida' }
+      { field: 'unidadeMedida.nome', header: 'Unidade Medida', class: 'unidadeMedida' }
     ];
   }
 
@@ -77,8 +75,7 @@ export class InsumosComponent implements OnInit {
     this.unidadeMedidaService.listarUnidadeMedidas().subscribe(
       {
         next: (response: ApiCollectionResponse<UnidadeMedida>) => {
-          let unidades: UnidadeMedida[] = [new UnidadeMedida()];
-          this.unidadesMedida = unidades.concat(response.items);;
+          this.unidadesMedida = response.items;
           this.isGlobalLoading = false;
         }, error: () => {
           this.isGlobalLoading = false;
@@ -117,7 +114,8 @@ export class InsumosComponent implements OnInit {
 
   inserirInsumo() {
     this.isGlobalLoading = true;
-    this.insumoSalvar.unidadeMedida = this.unidadeMedidaSelecionada?.id;
+    this.insumoSalvar.unidadeMedida = new UnidadeMedida();
+    this.insumoSalvar.unidadeMedida.id = this.unidadeMedidaSelecionada?.id;
     this.insumoService.inserirInsumo(this.insumoSalvar).subscribe(
       {
         next: (response: Insumo) => {
@@ -134,7 +132,8 @@ export class InsumosComponent implements OnInit {
   }
 
   alterarInsumo() {
-    this.insumoSalvar.unidadeMedida = this.unidadeMedidaSelecionada?.id;
+    this.insumoSalvar.unidadeMedida = new UnidadeMedida();
+    this.insumoSalvar.unidadeMedida.id = this.unidadeMedidaSelecionada?.id;
     this.insumoService.alterarInsumo(this.insumoSalvar).subscribe(
       {
         next: (response: Insumo) => {
@@ -171,7 +170,8 @@ export class InsumosComponent implements OnInit {
 
   abreSlideEditar(insumo: Insumo) {
     this.displaySaveBar = true;
-    this.insumoSalvar = { ...insumo }
+    this.insumoSalvar = { ...insumo };
+    this.unidadeMedidaSelecionada = {...insumo.unidadeMedida};
   }
 
   abreModalExclusao(insumo: Insumo) {

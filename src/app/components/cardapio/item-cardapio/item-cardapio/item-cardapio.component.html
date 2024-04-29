@@ -49,7 +49,7 @@
         <br>
     </div>
 
-    <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
+    <p-sidebar [dismissible]="false"[(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
         <h1 style="font-size: 20pt;">
             Adicionar Item ao Cardapio
         </h1>
@@ -60,20 +60,20 @@
                         <label class="label-arquivo" for="arquivo">Selecionar Imagem</label>
                         <input (change)="adicionarImagem($event)" type="file" name="arquivo" id="arquivo"
                             accept="image/x-png,image/gif,image/jpeg">
-                        <img width="150" height="200" [src]="'data:image/jpg;base64,' + itemCardapioSalvar.imagem">
+                        <img width="200" height="200" [src]="'data:image/jpg;base64,' + itemCardapioSalvar.imagem">
                     </div>
 
                     <div *ngIf="!itemCardapioSalvar.imagem" class="campo-foto">
                         <label class="label-arquivo" for="arquivo">Selecionar Imagem</label>
                         <input (change)="adicionarImagem($event)" type="file" name="arquivo" id="arquivo"
                             accept="image/x-png,image/gif,image/jpeg">
-                        <div style=" background-color: rgb(232, 232, 232); height: 175px; width: 150px;"></div>
+                        <div style=" background-color: rgb(232, 232, 232); height: 200px; width: 200px;"></div>
                     </div>
                 </div>
                 <div class="col-12 mt-2">
-                    <label for="float-input">Categoria no Cardapio</label><br>
-                    <span class="p-float-label">
-                        <p-dropdown [required]="true" name="categoria" [panelStyle]="{'width': '100%'}" [options]="categorias"
+                    <label>Categoria no Cardapio</label><br>
+                    <span>
+                        <p-dropdown placeholder="Selecione"  [required]="true" name="categoria" [panelStyle]="{'width': '100%'}" [options]="categorias"
                             [(ngModel)]="categoriaSelecionada" optionLabel="nome"></p-dropdown>
                     </span>
                 </div>
@@ -112,7 +112,7 @@
                 <div class="col-6">
                     <label>Variedade</label><br>
                     <span>
-                        <p-dropdown [required]="true" [(ngModel)]="itemCardapioSalvar.variedades[i].variedade" [filter]="true" name="item" optionLabel="label" [options]="variedades"[optionLabel]="'nome'"></p-dropdown>
+                        <p-dropdown placeholder="Selecione" [required]="true" [(ngModel)]="itemCardapioSalvar.variedades[i].variedade" [filter]="true" name="item" optionLabel="label" [options]="variedades"[optionLabel]="'nome'"></p-dropdown>
                     </span>
                 </div>
                 

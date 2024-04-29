@@ -42,6 +42,9 @@ export class MenuLateralComponent implements OnInit {
         items: [
           //{ label: 'Unidades', icon: 'pi pi-building', routerLink: ['/components/unidades'], command: this.fecharMenu.bind(this) },
           { label: 'Unidade Medida', icon: 'pi pi-at', routerLink: ['/components/unidade-medida'], command: this.fecharMenu.bind(this) },
+          { label: 'Tipo Pagamento', icon: 'pi pi-credit-card', routerLink: ['/components/tipo-pagamento'], command: this.fecharMenu.bind(this) },
+          { label: 'Forma Pagamento', icon: 'pi pi-money-bill', routerLink: ['/components/forma-pagamento'], command: this.fecharMenu.bind(this) },
+          { label: 'Contas a Pagar', icon: 'pi pi-calendar', routerLink: ['/components/conta-pagar'], command: this.fecharMenu.bind(this) },
           //{ label: 'Categoria', icon: 'pi pi-align-justify', routerLink: ['/components/categoria'], command: this.fecharMenu.bind(this) },
           { label: 'Fornecedores', icon: 'pi pi-box', routerLink: ['/components/fornecedores'], command: this.fecharMenu.bind(this) },
           { label: 'Insumos', icon: 'pi pi-download', routerLink: ['/components/insumos'], command: this.fecharMenu.bind(this) }

@@ -11,6 +11,8 @@ import { FornecedorService } from 'src/app/components/cadastros/fornecedores/ser
 import { Fornecedor } from 'src/app/components/cadastros/fornecedores/model/fornecedor.model';
 import { InsumoService } from 'src/app/components/cadastros/insumos/service/insumo-service';
 import { InsumoFilter } from 'src/app/components/cadastros/insumos/model/insumo-filter.model';
+import { FormaPagamentoService } from 'src/app/components/cadastros/formapagamento/service/formapagamento-service';
+import { FormaPagamento } from 'src/app/components/cadastros/formapagamento/model/formapagamento.model';
 
 @Component({
   selector: 'app-compras',
@@ -24,6 +26,8 @@ export class ComprasComponent implements OnInit {
   home: MenuItem = {};
 
   displaySaveBar: boolean = false;
+  modalFormaPagamentoVisible = false;
+  modalFornecedorVisible = false;
 
   compras: Compra[] = [];
   compraSalvar: Compra = new Compra();
@@ -35,12 +39,14 @@ export class ComprasComponent implements OnInit {
   public insumos: Insumo[] = [];
 
   public fornecedores: Fornecedor[] = [];
+  public formaPagamentos: FormaPagamento[] = [];
 
   @ViewChild('fCompra', { static: false }) formularioCompra: NgForm;
 
   constructor(
     private compraService: CompraService,
     private fornecedorService: FornecedorService,
+    private formaPagamentoService: FormaPagamentoService,
     private insumosService: InsumoService,
     private confirmationService: ConfirmationService,
     private formValidService: FormValidService,
@@ -59,6 +65,7 @@ export class ComprasComponent implements OnInit {
     this.colunas = [
       { field: 'data', header: 'Data', class: 'data' },
       { field: 'fornecedor.nome', header: 'Fornecedor', class: 'fornecedor' },
+      { field: 'formaPagamento.nome', header: 'Forma Pagamento', class: 'formaPagamento' },
       { field: 'valorTotal', header: 'Valor', class: 'valor', prefix: 'R$' }
     ];
   }
@@ -81,6 +88,20 @@ export class ComprasComponent implements OnInit {
       {
         next: (response: ApiCollectionResponse<Compra>) => {
           this.compras = response.items;
+          this.isGlobalLoading = false;
+        }, error: () => {
+          this.isGlobalLoading = false;
+        }
+      }
+    )
+  }
+
+  listarFormaPagamentos() {
+    this.isGlobalLoading = true;
+    this.formaPagamentoService.listarFormaPagamentos().subscribe(
+      {
+        next: (response: ApiCollectionResponse<FormaPagamento>) => {
+          this.formaPagamentos = response.items;
           this.isGlobalLoading = false;
         }, error: () => {
           this.isGlobalLoading = false;
@@ -158,7 +179,7 @@ export class ComprasComponent implements OnInit {
     this.displaySaveBar = true;
     this.compraSalvar = { ...compra };
     const itens: CompraInsumo[] = [];
-    compra.itens.forEach(item => itens.push({ ...item }));
+    compra.itens.forEach(item => {this.calculaTotalItem(item); itens.push({ ...item })});
     this.compraSalvar.itens = itens;
     this.atualizaDropdowns();
   }
@@ -181,9 +202,9 @@ export class ComprasComponent implements OnInit {
     this.calculaValorTotal(this.compraSalvar);
   }
 
-  public calculaValorTotal(venda: Compra) {
+  public calculaValorTotal(compra: Compra) {
     let valorTotal: number = 0;
-    venda.itens.forEach(item => {
+    compra.itens.forEach(item => {
       if(item.valor && item.quantidade) {
         valorTotal = valorTotal + (Number(item.valor) * Number(item.quantidade));
         if(item.desconto) {
@@ -191,7 +212,7 @@ export class ComprasComponent implements OnInit {
         }
       }
     });
-    venda.valorTotal = Number(valorTotal.toFixed(2));
+    compra.valorTotal = this.round(valorTotal);
   }
 
   abreModalExclusaoitem(index: number) {
@@ -216,7 +237,6 @@ export class ComprasComponent implements OnInit {
     this.fornecedorService.listarFornecedores().subscribe(
       (response) => {
         this.fornecedores = response.items;
-        this.fornecedores.unshift(new Fornecedor());
       }
     )
   }
@@ -225,9 +245,6 @@ export class ComprasComponent implements OnInit {
     this.insumosService.listarInsumos().subscribe(
       (response) => {
         this.insumos = response.items;
-        if(this.insumos.length > 0) {
-          this.insumos.unshift(new Insumo());
-        }
       }
     )
   }
@@ -261,6 +278,34 @@ export class ComprasComponent implements OnInit {
         valor = valor - Number(item.desconto);
       }
     }
-    return valor.toFixed(2);
+    item.valorTotalItem = this.round(valor);
+    return item.valorTotalItem;
+  }
+
+  public calculaValorUnitario(item: CompraInsumo, compra: Compra) {
+    let valorUnitario: number = 0;
+    if (item.quantidade) {
+      valorUnitario = item.valorTotalItem / Number(item.quantidade);
+    }
+    item.valor = this.round(valorUnitario);
+  }
+
+  editaValorTotalItem(compraSalvar: Compra, item: CompraInsumo) {
+    item.desconto = 0;
+    this.calculaValorUnitario(item, compraSalvar); 
+    this.calculaValorTotal(compraSalvar)
+    this.calculaTotalItem(item);
+  }
+
+  round(numero: number) {
+    return Number((Math.round(numero * 100) / 100).toFixed(2))
+  }
+
+  abreModalFornecedor() {
+    this.modalFornecedorVisible = true
+  }
+
+  abreModalFormaPagamento() {
+    this.modalFormaPagamentoVisible = true
   }
 }

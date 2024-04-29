@@ -45,7 +45,7 @@
         </ng-template>
     </p-table>
 
-    <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
+    <p-sidebar [dismissible]="false"[(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
         <h1 style="font-size: 20pt;">
             Adicionar Adicional Cardapio
         </h1>
@@ -64,9 +64,9 @@
                     </span>
                 </div>
                 <div class="col-12">
-                    <label for="float-input">Categoria no Cardapio</label><br>
-                    <span class="p-float-label">
-                        <p-dropdown name="categoria" [panelStyle]="{'width': '100%'}" [options]="categoriasCardapio" [(ngModel)]="categoriaCardapioSelecionada" optionLabel="nome"></p-dropdown>
+                    <label>Categoria no Cardapio</label><br>
+                    <span>
+                        <p-dropdown placeholder="Selecione"  name="categoria" [panelStyle]="{'width': '100%'}" [options]="categoriasCardapio" [(ngModel)]="categoriaCardapioSelecionada" optionLabel="nome"></p-dropdown>
                     </span>
                 </div>
             </div>

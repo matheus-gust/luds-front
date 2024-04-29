@@ -26,7 +26,6 @@ export class VendasComponent implements OnInit {
   display: boolean = false;
   home: MenuItem = {};
   origens: any[] = [
-    { id: '', label: '' },
     { id: 'ifood', label: 'Ifood' },
     { id: 'salao', label: 'Salão' },
     { id: 'delivery', label: 'Delivery' },
@@ -43,19 +42,23 @@ export class VendasComponent implements OnInit {
 
   vendas: Venda[] = [];
   vendaSalvar: Venda = new Venda();
+
   partes: Parte[] = [];
-  itens: VendaItemCardapio[] = [];
+  parteGeral: Parte = new Parte();
+
+  novoItem: VendaItemCardapio = new VendaItemCardapio();
 
   isGlobalLoading: boolean = false;
-
-  itemArrastado: VendaItemCardapio | null;
+  modalAdicionarItemVisible: boolean;
 
   public colunas: any[] = [];
-  public colunasDetalhes: any[] = [];
+  public colunasItens: any[] = [];
+  public colunasPartes: any[] = [];
 
   public varsSelecioandas: any[] = [];
 
   @ViewChild('fVenda', { static: false }) formularioVenda: NgForm;
+  @ViewChild('fItem', { static: false }) formularioItem: NgForm;
 
   constructor(
     private vendaService: VendaService,
@@ -78,12 +81,16 @@ export class VendasComponent implements OnInit {
     this.colunas = [
       { field: 'data', header: 'Data', class: 'data', type: 'date' },
       { field: 'origem', header: 'Origem', class: 'origem' },
+      { field: 'valor', header: 'Valor', class: 'valor', prefix: 'R$' }
+    ];
+    this.colunasPartes = [
+      { field: 'nome', header: 'Nome', class: 'nome' },
       { field: 'valor', header: 'Valor', class: 'valor' }
     ];
-    this.colunasDetalhes = [
+    this.colunasItens = [
       { field: 'nome', header: 'Nome', class: 'nome' },
       { field: 'valor', header: 'Valor', class: 'valor' },
-      { field: 'quantidade', header: 'Quantidade', class: 'Quantidade' }
+      { field: 'quantidade', header: 'Quantidade', class: 'quantidade' }
     ];
   }
 
@@ -91,6 +98,10 @@ export class VendasComponent implements OnInit {
     if (!this.formValidService.validaFormularioInsercao(this.formularioVenda, 'formAdicionarVenda')) {
       return;
     }
+
+    this.parteGeral.nome = 'Geral';
+    this.vendaSalvar.partes = this.partes;
+    this.vendaSalvar.partes.push(this.parteGeral);
 
     if (this.vendaSalvar.id) {
       this.alterarVenda();
@@ -103,7 +114,7 @@ export class VendasComponent implements OnInit {
     this.itemService.listarItensCardapioInfo().subscribe(
       {
         next: (response: ApiCollectionResponse<ItemCardapioInfoDTO>) => {
-          this.itensCardapio = [new ItemCardapioInfoDTO()].concat(response.items);
+          this.itensCardapio = response.items;
         }, error: () => {
         }
       }
@@ -116,11 +127,10 @@ export class VendasComponent implements OnInit {
     this.vendaService.listarVendas().subscribe(
       {
         next: (response: ApiCollectionResponse<Venda>) => {
-          /*response.items.forEach(venda => {
-            venda.itens.map(venda => venda.item = venda.variedade.item)
+          response.items.forEach(venda => {
             this.vendas.push(venda);
           });
-          this.isGlobalLoading = false;*/
+          this.isGlobalLoading = false;
         }, error: () => {
           this.isGlobalLoading = false;
         }
@@ -144,6 +154,7 @@ export class VendasComponent implements OnInit {
 
   public inserirVenda() {
     this.isGlobalLoading = true;
+    console.log(this.vendaSalvar)
     this.vendaService.inserirVenda(this.vendaSalvar).subscribe(
       {
         next: (response: Venda) => {
@@ -160,6 +171,7 @@ export class VendasComponent implements OnInit {
   }
 
   public alterarVenda() {
+    console.log('alterar')
     this.vendaService.alterarVenda(this.vendaSalvar).subscribe(
       {
         next: (response: Venda) => {
@@ -174,21 +186,21 @@ export class VendasComponent implements OnInit {
     )
   }
 
-  public abreModalExclusaoitem(index: number) {
+  public abreModalExclusaoitem(nomeParte: string, index: number) {
     this.confirmationService.confirm({
       message: 'Deseja mesmo remover o item?',
       accept: () => {
-        this.removerItem(index)
+        this.removerItem(nomeParte, index)
       }
     });
   }
 
   
-  public abreModalExclusaoParte(index: number) {
+  public abreModalExclusaoParte(nomeParte: string, index: number) {
     this.confirmationService.confirm({
       message: 'Deseja mesmo remover a parte?',
       accept: () => {
-        this.removerParte(index)
+        this.removerParte(nomeParte, index)
       }
     });
   }
@@ -210,14 +222,22 @@ export class VendasComponent implements OnInit {
   public abreSlideInserir() {
     this.displaySaveBar = true;
     this.vendaSalvar = new Venda();
+    this.partes = [];
+    this.parteGeral = new Parte();
   }
 
   public abreSlideEditar(venda: Venda) {
-    /*this.displaySaveBar = true;
+    this.partes = [];
+    venda.partes.forEach(part => {
+      if(part.nome != 'Geral') {
+        this.partes.push({...part});
+      } else {
+        this.parteGeral = { ...part };
+      }
+    });
     this.vendaSalvar = { ...venda };
-    const itens: VendaItemCardapio[] = [];
-    venda.itens.forEach(item => itens.push({ ...item }));
-    this.vendaSalvar.itens = itens;*/
+    
+    this.displaySaveBar = true;
   }
 
   public abreModalExclusao(venda: Venda) {
@@ -229,12 +249,34 @@ export class VendasComponent implements OnInit {
     });
   }
 
-  public adicionarItem() {
-    this.itens.push(new VendaItemCardapio());
+  public adicionarItem(nomeParte: string) {
+
+    if (!this.formValidService.validaFormularioInsercao(this.formularioItem, 'formAdicionarVenda')) {
+      return;
+    }
+
+    if(nomeParte === 'Geral') {
+      this.parteGeral.itens.push({...this.novoItem});
+    } else {
+      const parte = this.partes.find(part => part.nome === nomeParte);
+      if(parte) {
+        parte.itens.push({...this.novoItem});
+      }
+    }
+    this.calculaValorParte(nomeParte);
+    this.calculaValorTotal(this.vendaSalvar);
+    this.novoItem = new VendaItemCardapio();
+    this.modalAdicionarItemVisible = false;
   }
 
-  public removerItem(index: number) {
-    this.itens.splice(index!, 1);
+  public removerItem(nomeParte: string, index: number) {
+    if(nomeParte == "Geral") {
+      this.parteGeral.itens.splice(index!, 1);
+    } else {
+      const parte = this.partes.find(part => part.nome === nomeParte);
+      parte?.itens.splice(index!, 1);
+    }
+    this.calculaValorParte(nomeParte);
     this.calculaValorTotal(this.vendaSalvar);
   }
 
@@ -244,37 +286,50 @@ export class VendasComponent implements OnInit {
     this.partes.push(parte);
   }
 
-  public removerParte(index: number) {
+  public removerParte(nomeParte: string, index: number) {
     this.partes.splice(index!, 1);
     this.calculaValorTotal(this.vendaSalvar);
-  }
-
-  public confirmaItemNaParte(index: number, item: VendaItemCardapio, parte: Parte) {
-    this.partes[this.partes.indexOf(parte)].itens.push(item);
-    this.itens.splice(index!, 1);
   }
 
   public removerItemDaParte(indexItemNaParte: number, indexParte: number) {
     this.partes[indexParte].itens.splice(indexItemNaParte!, 1);
   }
 
-  public selecionaItem(item: ItemCardapio, index: number) {
-    this.itens[index].item = { ...item };
-    this.itens[index].variedade = new ItemCardapioVariedade();
-  }
-  public calculaValor(item: VendaItemCardapio) {
+  public calculaValorItem(item: VendaItemCardapio) {
     if (item.variedade.valor && item.quantidade) {
       let valor = item.variedade.valor * item.quantidade;
       item.valor = valor;
     } else {
       item.valor = 0;
     }
-    this.calculaValorTotal(this.vendaSalvar);
+  }
+
+  public calculaValorParte(nomeParte: string) {
+    let valorTotal = 0;
+    if(nomeParte === 'Geral') {
+      this.parteGeral.itens.forEach(item => {
+        valorTotal += Number(item.valor);
+      });
+      this.parteGeral.valorParte = valorTotal
+    } else {
+      const parte = this.partes.find(part => part.nome === nomeParte);
+      if(parte) {
+        parte.itens.forEach(item => {
+          valorTotal += Number(item.valor);
+        });
+        parte.valorParte = valorTotal;
+      }
+    }
   }
 
   public calculaValorTotal(venda: Venda) {
     let valorTotal = 0;
-    //venda.itens.forEach(item => valorTotal += Number(item.valor));
+    this.parteGeral.itens.forEach(item => {
+      valorTotal += Number(item.valor);
+    });
+    this.partes.forEach(parte => parte.itens.forEach(item => {
+      valorTotal += Number(item.valor);
+    }));
     venda.valor = valorTotal;
   }
 
@@ -293,10 +348,32 @@ export class VendasComponent implements OnInit {
 
   public defineOpcoes(item: ItemCardapio) {
     const itemCardapio = this.itensCardapio.filter(it => item?.id === it?.id)[0];
-    return [new VariedadeCardapio].concat([...itemCardapio.variedades]);
+    if(itemCardapio) {
+      return [...itemCardapio.variedades];
+    }
+    return [];
   }
 
   public parteLabel(option: any): string {
     return option.nome;
   }
+
+  public abrirModalAdicionarItem(nomeParte: string) {
+    this.modalAdicionarItemVisible = true;
+    this.novoItem = new VendaItemCardapio();
+    this.novoItem.parte = nomeParte;
+  }
+
+  getFieldValue(rowData: any, field: string): any {
+    const fields = field.split('.');
+    let value = rowData;
+    for (const f of fields) {
+      value = value[f];
+      if (value === undefined || value === null) {
+        return null;
+      }
+    }
+    return value;
+  }
+  
 }

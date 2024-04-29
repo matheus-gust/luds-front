@@ -1,5 +1,5 @@
 import { CommonModule, registerLocaleData } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SidebarModule} from 'primeng/sidebar';
@@ -37,7 +37,8 @@ registerLocaleData(localePt, 'pt');
     Interceptor,
     MenuLateralModule
   ],
-  providers: [MessageService],
+  providers: [MessageService, { provide: LOCALE_ID, useValue: 'pt' }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+}

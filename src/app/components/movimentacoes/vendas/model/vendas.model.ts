@@ -1,4 +1,4 @@
-import { VendaItemCardapio } from "./venda-item-cardapio.model";
+import { Parte } from "./partes.model";
 
 export class Venda {
     id: string;
@@ -7,4 +7,5 @@ export class Venda {
     data: Date;
     mesa: number;
     responsavel: string;
+    partes: Parte[] = [];
 }

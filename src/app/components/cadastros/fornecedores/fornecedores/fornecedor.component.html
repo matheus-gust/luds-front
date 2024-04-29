@@ -43,7 +43,7 @@
         </ng-template>
     </p-table>
 
-    <p-sidebar [(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
+    <p-sidebar [dismissible]="false"[(visible)]="displaySaveBarFornecedor" position="right" [modal]="!hospedeiro" styleClass="p-sidebar-md">
         <h1 style="font-size: 20pt;">
             Adicionar Fornecedor
         </h1>
@@ -73,7 +73,7 @@
     
                 <div class="col-6 mar-1">
                     <span class="p-float-label">
-                        <input [(ngModel)]="fornecedorSalvar.diaEntregaSemana" id="fornecedor-diassem-prev" type="text" pInputText>
+                        <input [(ngModel)]="fornecedorSalvar.diaEntregaSemana" name="diaEntregaSemana" id="fornecedor-diassem-prev" type="text" pInputText>
                         <label for="fornecedor-input">Dia Da Semana para Entrega</label>
                     </span>
                 </div>
@@ -84,7 +84,7 @@
             <div class="grid" style="justify-content: space-around;">
                 <button (click)="salvarFornecedor()" pButton type="button" label="Salvar"
                     class="col-5 p-button-success"></button>
-                <button (click)="displaySaveBar = false;" pButton type="button" label="Cancelar"
+                <button (click)="displaySaveBarFornecedor = false;" pButton type="button" label="Cancelar"
                     class="col-5 p-button-secondary"></button>
             </div>
         </ng-template>

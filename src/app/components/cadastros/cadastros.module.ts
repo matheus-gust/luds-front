@@ -7,6 +7,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FornecedoresModule } from './fornecedores/fornecedor.module';
 import { UnidadeMedidaModule } from './unidademedida/unidademedida.module';
 import { CategoriasModule } from './categoria/categoria.module';
+import { TipoPagamentoModule } from './tipopagamento/tipopagamento.module';
+import { FormaPagamentoModule } from './formapagamento/formapagamento.module';
+import { ContaPagarModule } from './contaspagar/contapagar.module';
 
 
 
@@ -16,6 +19,9 @@ import { CategoriasModule } from './categoria/categoria.module';
     CommonModule,
     UnidadeModule,
     UnidadeMedidaModule,
+    TipoPagamentoModule,
+    FormaPagamentoModule,
+    ContaPagarModule,
     CategoriasModule,
     FornecedoresModule,
     InsumosModule,

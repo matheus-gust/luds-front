@@ -76,4 +76,17 @@ hr {
     height: 1px;
     background: #ccc;
     margin: 20px 0;
-  }
+}
+
+.p-sidebar-footer {
+    background-color: white;
+}
+
+.incrementador-injetado {
+    cursor: pointer !important;
+    align-self: center !important;
+    font-size: x-small !important;
+    margin-left: 5px !important;
+    font-weight: bolder !important;
+    color: rgb(0, 172, 0) !important;
+}

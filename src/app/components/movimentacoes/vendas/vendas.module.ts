@@ -17,6 +17,7 @@ import { TreeTableModule } from 'primeng/treetable';
 import { CalendarModule } from 'primeng/calendar';
 import {CardModule} from 'primeng/card';
 import {DragDropModule} from 'primeng/dragdrop';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {DragDropModule} from 'primeng/dragdrop';
     TreeTableModule,
     CalendarModule,
     CardModule,
-    DragDropModule
+    DragDropModule,
+    DialogModule
   ]
 })
 export class VendasModule { }
