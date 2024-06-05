@@ -68,6 +68,7 @@
     width: 90%;
     height: 96%;
     box-shadow: 1px 1px 5px 0 black;
+    overflow: auto;
 }
 
 .button-sidevav {

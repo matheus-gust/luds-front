@@ -10,6 +10,7 @@ import { CategoriasModule } from './categoria/categoria.module';
 import { TipoPagamentoModule } from './tipopagamento/tipopagamento.module';
 import { FormaPagamentoModule } from './formapagamento/formapagamento.module';
 import { ContaPagarModule } from './contaspagar/contapagar.module';
+import { ClienteModule } from './cliente/cliente.module';
 
 
 
@@ -26,7 +27,8 @@ import { ContaPagarModule } from './contaspagar/contapagar.module';
     FornecedoresModule,
     InsumosModule,
     CadastrosRoutingModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ClienteModule
   ]
 })
 export class CadastrosModule { }

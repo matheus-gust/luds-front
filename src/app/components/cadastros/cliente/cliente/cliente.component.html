@@ -1,0 +1,89 @@
+<div class="system-body">
+    <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
+    <br>
+    <p-table #tabelaClientes [paginator]="true" [rows]="8" [columns]="colunas" [value]="clientes" responsiveLayout="stack" [breakpoint]="'800px'">
+        <ng-template pTemplate="caption">
+            <div class="row justify-content-between">
+                <div class="col-12 col-md-3">
+                    <button (click)="abreSlideInserir()" pButton type="button" label="Adicionar Cliente"></button>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th class="text-center" *ngFor="let col of columns" [ngClass]="col.class">
+                    {{col.header}}
+                </th>
+                <th class="text-center">Ações</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td class="text-center" style="justify-content: center !important;" *ngFor="let col of columns; let i = index" [ngClass]="(i%2== 1)? 'table-row' : ''">
+                    <span class="p-column-title" style="font-weight: bold; margin-right: 20px;">{{col.header}}:</span>
+                    {{rowData[col.field]}}
+                </td>
+                <td class="text-center" style="justify-content: space-around !important;">
+                    <button (click)="abreSlideEditar(rowData)" style="margin-right: 5px;" pButton type="button"
+                        class="p-button-outlined p-button-rounded p-button-warn" icon="pi pi-pencil"></button>
+                    <button (click)="abreModalExclusao(rowData)" pButton type="button"
+                        class="p-button-outlined p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+                <td class="text-center" *ngIf="isGlobalLoading" [attr.colspan]="columns.length+1">
+                    <p-progressSpinner></p-progressSpinner>
+                </td>
+                <td class="text-center" *ngIf="!isGlobalLoading" [attr.colspan]="columns.length+1">
+                    Nenhum dado encontrado
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-sidebar [dismissible]="false"[(visible)]="displaySaveBar" position="right" styleClass="p-sidebar-md">
+        <h1 style="font-size: 20pt;">
+            Adicionar Cliente
+        </h1>
+        <form #fFormularioAdicionar='ngForm' id="fFormAdicionar" autocomplete="off">
+            <div class="grid">
+                <div class="col-12 mar-1">
+                    <span class="p-float-label">
+                        <input required [(ngModel)]="clienteSalvar.nome" name="nome-cliente" id="nome-cliente" type="text" pInputText>
+                        <label for="nome-cliente">Nome</label>
+                    </span>
+                </div>
+                <div class="col-6 mar-1">
+                    <span class="p-float-label">
+                        <p-inputMask mask="(99)99999-9999" [(ngModel)]="clienteSalvar.telefone" name="telefone" id="telefone"> </p-inputMask>
+                        <label for="telefone">Celular</label>
+                    </span>
+                </div>
+                <div class="col-6 mar-1">
+                    <span class="p-float-label">
+                        <input [(ngModel)]="clienteSalvar.telefoneAlternativo" name="telefone-alternativo" id="telefone-alternativo" type="text" pInputText>
+                        <label for="telefone-alternativo">Telefone Alternativo</label>
+                    </span>
+                </div>
+                <div class="col-6 col-md-6 mar-1">
+                    <span class="p-float-label">
+                        <p-inputMask mask="99/99/9999" [(ngModel)]="clienteSalvar.dataNascimento" name="data-nascimento" id="data-nascimento"> </p-inputMask>
+                        <label for="telefone">Data de Nascimento</label>
+                    </span>
+                </div>
+            </div>
+        </form>
+        <ng-template pTemplate="footer">
+            <div class="grid" style="justify-content: space-around;">
+                <button (click)="salvarCliente()" pButton type="button" label="Salvar"
+                    class="col-5 p-button-success"></button>
+                <button (click)="displaySaveBar = false;" pButton type="button" label="Cancelar"
+                    class="col-5 p-button-secondary"></button>
+            </div>
+        </ng-template>
+    </p-sidebar>
+</div>
+
+<p-confirmDialog header="Confirmar Exclusão" icon="pi pi-exclamation-triangle"></p-confirmDialog>

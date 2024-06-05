@@ -8,6 +8,7 @@ import { CategoriasComponent } from './categoria/categoria/categoria.component';
 import { TipoPagamentosComponent } from './tipopagamento/tipopagamento/tipopagamento.component';
 import { ContaPagarsComponent } from './contaspagar/contapagar/contapagar.component';
 import { FormaPagamentosComponent } from './formapagamento/formapagamento/formapagamento.component';
+import { ClientesComponent } from './cliente/cliente/cliente.component';
 
 const routes: Routes = [
   { path: 'unidades', component: UnidadeComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'insumos', component: InsumosComponent},
   { path: 'forma-pagamento', component: FormaPagamentosComponent},
   { path: 'conta-pagar', component: ContaPagarsComponent},
+  { path: 'clientes', component: ClientesComponent},
 ];
 
 @NgModule({
